@@ -1,2 +1,2 @@
-# eos-abm
-This is an android battery manager. we build it as it is the pinal project of our class.
+# eos-apm
+This is an android battery manager. Apm is shortfor Apm Power Manager. :)
