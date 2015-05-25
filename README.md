@@ -10,6 +10,8 @@ In order no to confuse yourself and myself, here is the instructions:
 3. Add a Button in the Mainactivity, and name of the button can be bt3, bt4...
 
 3. Create a OnClickListener for that button, and add the method **startActivity** to invoke the slidingTabActivity, so that everyone can test new features in this branch without messing the **MainActivity** up
+4. If you like to upload a snapshot of the new feature, put it in ./ApmPowerManager/pic/, and add som instruction or explaination in this README file
+
 
 
 
@@ -19,4 +21,4 @@ In order no to confuse yourself and myself, here is the instructions:
 something wrong with imagebutton, need someone fix it!
 
 
-<img src="https://raw.githubusercontent.com/hult1989/eos-apm/listviewDemo/ApmPowerManager/listview.png" width="360px" />
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/listview.png" width="360px" />
