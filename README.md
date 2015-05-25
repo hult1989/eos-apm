@@ -1,7 +1,7 @@
 # eos-apm
 This a dev branch of APM, you can test new features and do demo in this branch.
 
-In order no to confuse yourself and myself, here is the instructions:
+In order no to confuse yourself and myself, here are the instructions:
 
 1. Create a activity in the project of dev branch, for example, to demonstarte sliding tab feature, you create a slidingTabActivity 
 
