@@ -14,17 +14,6 @@
         android:text="listViewDemo"
         android:id="@+id/btn0"
         />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="appinfodemo"
-        android:elevation="6dp"
-        android:translationZ="6dp"
-        android:background="@drawable/myrect"
-        android:id="@+id/btn1"
-        android:layout_below="@+id/btn0"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

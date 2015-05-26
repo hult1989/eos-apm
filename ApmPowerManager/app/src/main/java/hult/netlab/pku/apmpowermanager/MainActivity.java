@@ -14,12 +14,12 @@ import android.widget.RelativeLayout;
 public class MainActivity extends ActionBarActivity {
     Button btn0 = null;
     Button btn1 = null;
-    Button btn2 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        RelativeLayout layout = (RelativeLayout)findViewById(R.id.main);
         btn0 = (Button)findViewById(R.id.btn0);
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -27,28 +27,22 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(new Intent(MainActivity.this, listviewDemo.class));
             }
         });
-        btn1 = (Button)findViewById(R.id.btn1);
+
+        btn1 = new Button(MainActivity.this);
+        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT);
+        btn1.setText("appinfo");
+
+        p.addRule(RelativeLayout.BELOW, R.id.btn0);
+        btn1.setLayoutParams(p);
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, appinfoActivity.class));
             }
         });
-        btn2 = new Button(MainActivity.this);
-        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT);
-        btn2.setText("chartdemo");
-        p.addRule(RelativeLayout.BELOW, R.id.btn1);
-        btn2.setLayoutParams(p);
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, chartDemo.class));
-            }
-        });
 
-        RelativeLayout layout = (RelativeLayout)findViewById(R.id.main);
-        layout.addView(btn2);
+        layout.addView(btn1);
     }
 
 

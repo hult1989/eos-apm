@@ -2,8 +2,10 @@ package hult.netlab.pku.apmpowermanager;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 
 public class appinfoActivity extends ActionBarActivity {
@@ -12,6 +14,9 @@ public class appinfoActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appinfo);
+        FrameLayout layout = (FrameLayout)findViewById(R.id.chartframe);
+        layout.addView(new LineChart().execute(appinfoActivity.this));
+
     }
 
 
