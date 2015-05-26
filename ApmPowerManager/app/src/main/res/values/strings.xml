@@ -4,4 +4,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_listview_demo">listviewDemo</string>
+    <string name="title_activity_appinfo">appinfoActivity</string>
+    <string name="title_activity_chart_demo">chartDemo</string>
 </resources>

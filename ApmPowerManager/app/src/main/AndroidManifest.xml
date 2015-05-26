@@ -16,9 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="org.achartengine.GraphicalActivity"/>
         <activity
             android:name=".listviewDemo"
             android:label="@string/title_activity_listview_demo" >
+        </activity>
+        <activity
+            android:name=".appinfoActivity"
+            android:label="@string/title_activity_appinfo" >
+        </activity>
+        <activity
+            android:name=".chartDemo"
+            android:label="@string/title_activity_chart_demo" >
         </activity>
     </application>
 

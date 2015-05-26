@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 
 public class MainActivity extends ActionBarActivity {
     Button btn0 = null;
+    Button btn1 = null;
+    Button btn2 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +27,30 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(new Intent(MainActivity.this, listviewDemo.class));
             }
         });
+        btn1 = (Button)findViewById(R.id.btn1);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, appinfoActivity.class));
+            }
+        });
+        btn2 = new Button(MainActivity.this);
+        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT);
+        btn2.setText("chartdemo");
+        p.addRule(RelativeLayout.BELOW, R.id.btn1);
+        btn2.setLayoutParams(p);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, chartDemo.class));
+            }
+        });
+
+        RelativeLayout layout = (RelativeLayout)findViewById(R.id.main);
+        layout.addView(btn2);
     }
+
 
 
     @Override
