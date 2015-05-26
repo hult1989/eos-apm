@@ -14,11 +14,17 @@ In order no to confuse yourself and myself, here are the instructions:
 
 
 
+- - -
+**a appinfoview demo at 26th May, 2015**
+
+add a appinfoview with with chart. `achartengine library already included`
+
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/appinfoview.png" width="360px"/>
+
 
 - - -
 **a listview demo at 24th May, 2015**
 
 something wrong with imagebutton, need someone fix it!
-
 
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/listview.png" width="360px" />
