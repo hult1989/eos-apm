@@ -13,6 +13,14 @@ In order no to confuse yourself and myself, here are the instructions:
 4. If you like to upload a snapshot of the new feature, put it in ./ApmPowerManager/pic/, and add som instruction or explaination in this README file
 
 
+- - -
+**a appinfoview demo at 27th May, 2015**
+
+add a appinfoview with cardview 
+
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/appinfoviewwithcardview.png" width="360px"/>
+
+
 
 - - -
 **a appinfoview demo at 26th May, 2015**
