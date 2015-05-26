@@ -2,20 +2,32 @@ package hult.netlab.pku.apmpowermanager;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 
 public class appinfoActivity extends ActionBarActivity {
-
+    CardView cardView = null;
+    CardView infoView = null;
+    CardView frameView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appinfo);
-        FrameLayout layout = (FrameLayout)findViewById(R.id.chartframe);
-        layout.addView(new LineChart().execute(appinfoActivity.this));
+        cardView = (CardView)findViewById(R.id.cardview);
+        infoView = (CardView)findViewById(R.id.info);
+        frameView = (CardView)findViewById(R.id.frame);
+        cardView.setElevation(6);
+        infoView.setElevation(6);
+        frameView.setElevation(6);
+//        linearLayout = (LinearLayout)findViewById(R.id.info);
+  //      linearLayout.setElevation(16);
+        frameView.addView(new LineChart().execute(appinfoActivity.this));
 
     }
 
