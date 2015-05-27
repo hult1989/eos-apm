@@ -7,6 +7,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import org.achartengine.ChartFactory;
@@ -26,6 +28,7 @@ public class chartDemo extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart_demo);
         RelativeLayout layout = (RelativeLayout)findViewById(R.id.chartlayout);
+        View view = new LineChart().execute(chartDemo.this);
         layout.addView(new LineChart().execute(chartDemo.this));
     }
 

@@ -16,9 +16,12 @@ In order no to confuse yourself and myself, here are the instructions:
 - - -
 **a appinfoview demo at 28th May, 2015**
 
-add battery status view by @pkufool 
+1. add battery status view by @pkufool 
+2. change cardview's color to white, take a lot of time to get achartengine done by @hult1989
 
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/firstview.png" width="360px"/>
+
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/firstviewv2.png" width="360px"/>
 
 
 
