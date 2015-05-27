@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#40c4ff"
+    tools:context="hult.netlab.pku.apmpowermanager.batteryinfomain">
+
+    <LinearLayout
+        android:id="@+id/process"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
+        <hult.netlab.pku.apmpowermanager.ArcProgress
+            android:id="@+id/arc_progress"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="20dp"
+            android:background="#40c4ff"
+            custom:arc_bottom_text="BATTERY"
+            custom:arc_bottom_text_size="30dp"
+            custom:arc_progress="10"
+            custom:arc_stroke_width="10dp"
+            custom:arc_suffix_text_size="40dp"
+            custom:arc_text_size="90dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/remaintime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/process"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:text="剩余时间: 16h34m"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/remaintime">
+        <ListView
+            android:id="@+id/mode_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_add_circle_white_48dp"/>
+
+</RelativeLayout>

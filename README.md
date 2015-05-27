@@ -14,11 +14,11 @@ In order no to confuse yourself and myself, here are the instructions:
 
 
 - - -
-**a appinfoview demo at 27th May, 2015**
+**a appinfoview demo at 28th May, 2015**
 
-add a appinfoview with cardview 
+add battery status view by @pkufool 
 
-<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/appinfowithcardview.png" width="360px"/>
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/firstview.png" width="360px"/>
 
 
 
@@ -36,3 +36,7 @@ add a appinfoview with with chart. `achartengine library already included`
 something wrong with imagebutton, need someone fix it!
 
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/listview.png" width="360px" />
+
+This is an android battery manager. Apm is shortfor Apm Power Manager. :)
+
+ 
