@@ -21,7 +21,7 @@ In order no to confuse yourself and myself, here are the instructions:
 
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/firstview.png" width="360px"/>
 
-<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/firstviewv2.png" width="360px"/>
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/appinfoviewv2.png" width="360px"/>
 
 
 
