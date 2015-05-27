@@ -16,4 +16,6 @@
     <string name="title_activity_listview_demo">listviewDemo</string>
     <string name="title_activity_appinfo">appinfoActivity</string>
     <string name="title_activity_chart_demo">chartDemo</string>
+    <string name="title_activity_batterymain">batterymain</string>
+    <string name="title_activity_batteryinfomain">batteryinfomain</string>
 </resources>
