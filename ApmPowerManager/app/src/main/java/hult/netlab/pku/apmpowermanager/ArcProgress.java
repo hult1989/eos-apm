@@ -81,7 +81,8 @@ public class ArcProgress extends View {
         default_text_size = Utils.sp2px(getResources(), 18);
         min_size = (int) Utils.dp2px(getResources(), 100);
         default_text_size = Utils.sp2px(getResources(), 40);
-        default_suffix_text_size = Utils.sp2px(getResources(), 15);
+        //change the size of 'per cent' from 15 to 16
+        default_suffix_text_size = Utils.sp2px(getResources(), 16);
         default_suffix_padding = Utils.dp2px(getResources(), 4);
         default_suffix_text = "%";
         default_bottom_text_size = Utils.sp2px(getResources(), 10);
