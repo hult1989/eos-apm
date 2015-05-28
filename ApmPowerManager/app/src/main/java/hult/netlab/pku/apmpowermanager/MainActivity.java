@@ -16,6 +16,9 @@ public class MainActivity extends ActionBarActivity {
     Button btn0 = null;
     Button btn1 = null;
     Button btn2 = null;
+
+    private Button button;
+    private Button button2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +38,16 @@ public class MainActivity extends ActionBarActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),batteryinfomain.class);
+                Intent intent = new Intent(v.getContext(),BatteryInfoMain.class);
+                startActivity(intent);
+            }
+        });
+
+        button2 = (Button)findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(),BatteryChartActivity.class);
                 startActivity(intent);
             }
         });

@@ -21,16 +21,16 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class batteryinfomain extends ActionBarActivity {
+public class BatteryInfoMain extends ActionBarActivity {
     private Timer timer;
-    private ArcProgress arcProgress;
+    private DonutProgress donutProgress;
     private ArrayList<Mode> modeList;
     private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_batteryinfomain);
-        arcProgress = (ArcProgress) findViewById(R.id.arc_progress);
+        donutProgress = (DonutProgress) findViewById(R.id.donut_progress);
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -38,7 +38,7 @@ public class batteryinfomain extends ActionBarActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        arcProgress.setProgress(arcProgress.getProgress() + 1);
+                        donutProgress.setProgress(donutProgress.getProgress() + 1);
                     }
                 });
             }
@@ -47,6 +47,8 @@ public class batteryinfomain extends ActionBarActivity {
         modeList = getData();
         modeAdapter adapter =new modeAdapter(this);
         listView.setAdapter(adapter);
+
+
     }
 
     private ArrayList<Mode> getData(){

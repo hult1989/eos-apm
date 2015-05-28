@@ -21,4 +21,15 @@
         android:text="button"
         android:id="@+id/button1"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="button2"
+        android:id="@+id/button2"
+        android:layout_below="@+id/button1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="52dp" />
+
+
 </LinearLayout>
