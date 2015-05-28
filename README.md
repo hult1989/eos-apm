@@ -18,10 +18,13 @@ In order no to confuse yourself and myself, here are the instructions:
 
 1. add battery chart view by @pkufool 
 2. change appinfoview's color to white by @pkufool
+3. apply cardview to each item in listview, add click listener to each item by @hult1989
 
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/batterychart.png" width="360px"/>
 
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/appinfoviewv3.png" width="360px"/>
+
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/listviewv2.png" width="360px" />
 
 - - -
 **a appinfoview demo at 28th May, 2015**
