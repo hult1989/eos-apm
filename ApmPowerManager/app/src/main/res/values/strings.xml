@@ -18,4 +18,5 @@
     <string name="title_activity_chart_demo">chartDemo</string>
     <string name="title_activity_batterymain">batterymain</string>
     <string name="title_activity_batteryinfomain">batteryinfomain</string>
+    <string name="title_activity_battery_chart">BatteryChartActivity</string>
 </resources>
