@@ -14,6 +14,16 @@ In order no to confuse yourself and myself, here are the instructions:
 
 
 - - -
+**a batterychart demo at 28th May, 2015**
+
+1. add battery chart view by @pkufool 
+2. change appinfoview's color to white by @pkufool
+
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/batterychart.png" width="360px"/>
+
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/appinfoviewv3.png" width="360px"/>
+
+- - -
 **a appinfoview demo at 28th May, 2015**
 
 1. add battery status view by @pkufool 
