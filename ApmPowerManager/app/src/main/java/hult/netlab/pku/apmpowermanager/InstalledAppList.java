@@ -1,5 +1,7 @@
 package hult.netlab.pku.apmpowermanager;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -24,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class InstalledAppList extends ActionBarActivity {
+public class InstalledAppList extends Activity {
     ListView applistview;
     ImageView imageView = null;
     ArrayList<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
@@ -34,6 +36,7 @@ public class InstalledAppList extends ActionBarActivity {
     CardView cardView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.LowBatteryRed);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_installed_app_list);
         pm = getPackageManager();

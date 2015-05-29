@@ -1,5 +1,6 @@
 package hult.netlab.pku.apmpowermanager;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -11,12 +12,13 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 
-public class appinfoActivity extends ActionBarActivity {
+public class appinfoActivity extends Activity {
     CardView cardView = null;
     CardView infoView = null;
     CardView frameView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.LowBatteryRed);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appinfo);
         cardView = (CardView)findViewById(R.id.cardview);

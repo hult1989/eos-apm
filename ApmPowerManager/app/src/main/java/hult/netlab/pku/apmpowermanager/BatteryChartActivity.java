@@ -1,5 +1,6 @@
 package hult.netlab.pku.apmpowermanager;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -18,7 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
-public class BatteryChartActivity extends ActionBarActivity {
+public class BatteryChartActivity extends Activity {
     private LinearLayout chartLayout;
     private View view;
     private ListView listView;

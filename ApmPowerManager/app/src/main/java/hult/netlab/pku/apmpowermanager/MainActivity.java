@@ -1,5 +1,6 @@
 package hult.netlab.pku.apmpowermanager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -12,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Button;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
     Button btn0 = null;
     Button btn1 = null;
     Button btn2 = null;
@@ -21,6 +22,7 @@ public class MainActivity extends ActionBarActivity {
     private Button button2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.LowBatteryRed);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         

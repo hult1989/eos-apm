@@ -14,7 +14,17 @@ In order no to confuse yourself and myself, here are the instructions:
 
 
 - - -
-**a batterychart demo at 28th May, 2015**
+**a appinfoview demo at 30th May, 2015**
+
+1. remove actitonbar
+2. apply a colorful theme
+
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/applistcolored.png" width="360px"/>
+
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/appinfocolored.png" width="360px"/>
+
+- - -
+**a batterychart demo at 29th May, 2015**
 
 1. add battery chart view by @pkufool 
 2. change appinfoview's color to white by @pkufool
