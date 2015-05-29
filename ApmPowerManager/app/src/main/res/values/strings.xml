@@ -19,4 +19,5 @@
     <string name="title_activity_batterymain">batterymain</string>
     <string name="title_activity_batteryinfomain">batteryinfomain</string>
     <string name="title_activity_battery_chart">BatteryChartActivity</string>
+    <string name="title_activity_installed_app_list">InstalledAppList</string>
 </resources>

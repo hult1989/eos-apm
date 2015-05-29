@@ -29,7 +29,7 @@ public class MainActivity extends ActionBarActivity {
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, listviewDemo.class));
+                startActivity(new Intent(MainActivity.this, InstalledAppList.class));
             }
         });
 

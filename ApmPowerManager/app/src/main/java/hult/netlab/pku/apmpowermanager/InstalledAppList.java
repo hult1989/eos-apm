@@ -1,6 +1,5 @@
 package hult.netlab.pku.apmpowermanager;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -9,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
@@ -25,23 +22,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 
-public class listviewDemo extends ListActivity {
-
+public class InstalledAppList extends ActionBarActivity {
+    ListView applistview;
     ImageView imageView = null;
-    ListView listView = null;
     ArrayList<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
-    ImageButton btn = null;
     PackageManager pm ;
     List<ApplicationInfo> appInfoList = null;
     ApplicationInfo appInfo;
     CardView cardView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_installed_app_list);
         pm = getPackageManager();
         List<PackageInfo> packageInfoLists = pm.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES);
         appInfoList = new ArrayList<ApplicationInfo>();
@@ -54,21 +48,20 @@ public class listviewDemo extends ListActivity {
             item.put("name",  packageInfo.applicationInfo.loadLabel(pm));
             mData.add(item);
         }
-
-        listView = getListView();
-        listView.setDividerHeight(0);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        applistview = (ListView)findViewById(R.id.applistview);
+        applistview.setDividerHeight(0);
+        applistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(listviewDemo.this,  " id:" + l, Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(listviewDemo.this, appinfoActivity.class));
+                Toast.makeText(InstalledAppList.this, " id:" + l, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(InstalledAppList.this, appinfoActivity.class));
 
             }
         });
 
         SimpleAdapter adapter = new SimpleAdapter(this, mData, R.layout.listlayout, new String[]{"image", "name"},
                 new int[]{R.id.image, R.id.title});
-        setListAdapter(adapter);
+        applistview.setAdapter(adapter);
 
         adapter.setViewBinder(new SimpleAdapter.ViewBinder() {
             @Override
@@ -83,25 +76,13 @@ public class listviewDemo extends ListActivity {
             }
 
         });
-
-
-    }
-
-    public boolean filterApp(ApplicationInfo info){
-        if ((info.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
-             return true;
-        } else if ((info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-            return true;
-
-        }
-        return false;
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_installed_app_list, menu);
         return true;
     }
 
@@ -120,4 +101,3 @@ public class listviewDemo extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 }
-
