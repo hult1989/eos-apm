@@ -39,19 +39,32 @@ public class InstalledAppList extends Activity {
         setTheme(R.style.LowBatteryRed);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_installed_app_list);
-        pm = getPackageManager();
-        List<PackageInfo> packageInfoLists = pm.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES);
-        appInfoList = new ArrayList<ApplicationInfo>();
-        for(PackageInfo packageInfo: packageInfoLists){
-            appInfo = new ApplicationInfo();
-            appInfoList.add(appInfo);
-            Map<String, Object> item = new HashMap<String , Object>();
-            int icon = R.id.image;
-            item.put("image", packageInfo.applicationInfo.loadIcon(pm));
-            item.put("name",  packageInfo.applicationInfo.loadLabel(pm));
-            mData.add(item);
-        }
-        applistview = (ListView)findViewById(R.id.applistview);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Thread.sleep(2000);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                pm = getPackageManager();
+                List<PackageInfo> packageInfoLists = pm.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES);
+                appInfoList = new ArrayList<ApplicationInfo>();
+                for(PackageInfo packageInfo: packageInfoLists){
+                    appInfo = new ApplicationInfo();
+                    appInfoList.add(appInfo);
+                    Map<String, Object> item = new HashMap<String , Object>();
+                    int icon = R.id.image;
+                    item.put("image", packageInfo.applicationInfo.loadIcon(pm));
+                    item.put("name",  packageInfo.applicationInfo.loadLabel(pm));
+                    mData.add(item);
+                }
+                applistview = (ListView)findViewById(R.id.applistview);
+            }
+        });
+
         applistview.setDividerHeight(0);
         applistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

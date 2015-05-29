@@ -52,8 +52,7 @@
         style="@android:style/Widget.Material.ProgressBar.Horizontal"
         android:progress="70"
         android:max="100"
-        android:progressTint="@android:color/holo_red_dark"
-        android:progressBackgroundTint="@android:color/holo_red_light"
+        android:progressBackgroundTint="@android:color/darker_gray"
         android:layout_toRightOf="@+id/image"
         android:id="@+id/bar"
     />
