@@ -16,8 +16,9 @@ In order no to confuse yourself and myself, here are the instructions:
 - - -
 **a appinfoview demo at 30th May, 2015**
 
-1. remove actitonbar
-2. apply a colorful theme
+1. remove actitonbar by @hult1989
+2. apply a colorful theme by @hult1989
+3. wrap time consuming operation in runOnUiThread by @hult1989
 
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/applistcolored.png" width="360px"/>
 
