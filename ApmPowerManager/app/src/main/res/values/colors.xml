@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="opaque_red">#f00</color>
+    <color name="translucent_red">#80ff0000</color>
+    <color name="test_blue">#71C3DE</color>
+    <color name="app_default_background">#fafafa</color>
+    <color name="kingway_blue">#40c4ff</color>
+</resources>
