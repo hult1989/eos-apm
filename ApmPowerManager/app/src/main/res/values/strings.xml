@@ -1,6 +1,23 @@
 <resources>
     <string name="app_name">ApmPowerManager</string>
-
+            <string name="cardview_contents">This is a CardView widget. CardView widgets can have
+        shadows and rounded corners.
+        \n\nTo create a card with a shadow, use the <font fgcolor="#FFFFFFFF">android:elevation</font>
+        attribute.
+        \n\nTo set the corner radius in your layouts, use the <font
+            fgcolor="#FFFFFFFF">card_view:cardCornerRadius</font> attribute.
+                      \n\nTo create a card with a shadow, use the <font fgcolor="#FFFFFFFF">android:elevation</font>
+        attribute.
+                      \n\nTo create a card with a shadow, use the <font fgcolor="#FFFFFFFF">android:elevation</font>
+        attribute.
+    </string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_listview_demo">listviewDemo</string>
+    <string name="title_activity_appinfo">appinfoActivity</string>
+    <string name="title_activity_chart_demo">chartDemo</string>
+    <string name="title_activity_batterymain">batterymain</string>
+    <string name="title_activity_batteryinfomain">batteryinfomain</string>
+    <string name="title_activity_battery_chart">BatteryChartActivity</string>
+    <string name="title_activity_installed_app_list">InstalledAppList</string>
 </resources>
