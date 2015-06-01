@@ -1,50 +1,61 @@
 package hult.netlab.pku.apmpowermanager;
 
+import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-
-
-import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 
-public class BatteryChartActivity extends FragmentActivity{
-    private LinearLayout chartLayout;
-    private View view;
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link BatteryChartFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link BatteryChartFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class BatteryChartFragment extends Fragment {
+
     private ListView listView;
     private ArrayList<Item> items;
     private static final int NUM_PAGES = 3;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
 
+    public BatteryChartFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_battery_chart);
-//        chartLayout = (LinearLayout) findViewById(R.id.chartview);
-//        view = new LineChart().execute(BatteryChartActivity.this);
-//        chartLayout.addView(view);
-        mPager = (ViewPager)findViewById(R.id.battery_paper);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        ViewGroup rootview = (ViewGroup)inflater.inflate(R.layout.activity_battery_chart,container,false);
+
+        mPager = (ViewPager)rootview.findViewById(R.id.battery_paper);
+        mPagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -53,15 +64,17 @@ public class BatteryChartActivity extends FragmentActivity{
                 // on which page is currently active. An alternative approach is to have each
                 // fragment expose actions itself (rather than the activity exposing actions),
                 // but for simplicity, the activity provides the actions in this sample.
-                invalidateOptionsMenu();
+              //  invalidateOptionsMenu();
             }
         });
 
 
-        listView = (ListView) findViewById(R.id.remain_list);
+        listView = (ListView)rootview.findViewById(R.id.remain_list);
         items = getData();
-        itemAdapter adapter = new itemAdapter(this);
+        itemAdapter adapter = new itemAdapter(container.getContext());
         listView.setAdapter(adapter);
+
+        return rootview;
     }
 
     private ArrayList<Item> getData() {
@@ -121,29 +134,7 @@ public class BatteryChartActivity extends FragmentActivity{
 
             return convertView;
         }
-    }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_battery_chart, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-         if (id == R.id.action_settings) {
-             return true;
-         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     class Item {
@@ -181,4 +172,9 @@ public class BatteryChartActivity extends FragmentActivity{
             return NUM_PAGES;
         }
     }
+
+
+
+
+
 }

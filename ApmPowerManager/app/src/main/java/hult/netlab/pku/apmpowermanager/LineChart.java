@@ -12,15 +12,12 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
-import org.achartengine.ChartFactory;
-import org.achartengine.model.CategorySeries;
+
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
-import android.app.Activity;
-import android.graphics.Color;
+
 import android.graphics.Paint.Align;
-import android.os.Bundle;
-import android.view.View;
+
 
 public class LineChart {
     public View execute(Context context) {

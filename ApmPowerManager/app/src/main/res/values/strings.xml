@@ -6,4 +6,7 @@
     <string name="title_activity_batterymain">batterymain</string>
     <string name="title_activity_batteryinfomain">batteryinfomain</string>
     <string name="title_activity_battery_chart">BatteryChartActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

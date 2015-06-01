@@ -1,5 +1,13 @@
 package hult.netlab.pku.apmpowermanager;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentStatePagerAdapter;
+
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -8,10 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends FragmentActivity {
 
     private Button button;
     private Button button2;
+    private ViewPager mPager;
+    PagerAdapter mainPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,10 +40,49 @@ public class MainActivity extends ActionBarActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),BatteryChartActivity.class);
+                Intent intent = new Intent(v.getContext(), BatteryChartActivity.class);
                 startActivity(intent);
             }
         });
+
+        mPager = (ViewPager)findViewById(R.id.main_pager);
+        mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mainPagerAdapter);
+        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                // When changing pages, reset the action bar actions since they are dependent
+                // on which page is currently active. An alternative approach is to have each
+                // fragment expose actions itself (rather than the activity exposing actions),
+                // but for simplicity, the activity provides the actions in this sample.
+               // invalidateOptionsMenu();
+            }
+        });
+
+    }
+
+
+    private class  MainPagerAdapter extends  FragmentStatePagerAdapter{
+        public MainPagerAdapter(FragmentManager fm){
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+
+            switch(position) {
+                case 0:
+                    return new BatteryRateFragment();
+                case 1:
+                    return new BatteryChartFragment();
+                default: return new BatteryChartFragment();
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
     }
 
 
