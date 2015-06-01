@@ -3,6 +3,19 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+
+    </style>
+
+    <style name="LowBatteryRed" parent="android:Theme.Material">
+
+        <!-- Customize your theme here. -->
+        <item name="android:colorPrimary">@android:color/holo_red_light </item>
+        <!--   darker variant for the status bar and contextual app bars -->
+        <item name="android:colorPrimaryDark">@android:color/holo_red_dark</item>
+        <!--   theme UI controls like checkboxes and text fields -->
+        <item name="android:windowBackground">@color/app_default_background</item>
+        <item name="android:colorAccent">@android:color/holo_red_light</item>
+        <item name="android:navigationBarColor">@android:color/holo_red_light</item>
     </style>
 
 </resources>
