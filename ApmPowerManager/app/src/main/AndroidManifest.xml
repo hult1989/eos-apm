@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="hult.netlab.pku.apmpowermanager" >
+<uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/apmlogo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -15,6 +16,27 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name="org.achartengine.GraphicalActivity" />
+        <activity
+            android:name=".appinfoActivity"
+            android:label="@string/title_activity_appinfo" >
+        </activity>
+        <activity
+            android:name=".BatteryInfoMain"
+            android:label="@string/title_activity_batteryinfomain" >
+        </activity>
+        <activity
+            android:name=".BatteryChartActivity"
+            android:label="@string/title_activity_battery_chart" >
+        </activity>
+        <activity
+            android:name=".InstalledAppList"
+            android:label="@string/title_activity_installed_app_list" >
+        </activity>
+        <activity
+            android:name=".aboutActivity"
+            android:label="@string/title_activity_about" >
         </activity>
     </application>
 
