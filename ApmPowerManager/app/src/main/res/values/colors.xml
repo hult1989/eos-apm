@@ -5,4 +5,6 @@
     <color name="test_blue">#71C3DE</color>
     <color name="app_default_background">#fafafa</color>
     <color name="kingway_blue">#40c4ff</color>
+    <color name="icon_teal">#32bda7</color>
+    <color name="google_teal">#009688</color>
 </resources>

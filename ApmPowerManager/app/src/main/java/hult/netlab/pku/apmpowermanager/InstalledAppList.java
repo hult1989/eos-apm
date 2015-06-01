@@ -2,6 +2,7 @@ package hult.netlab.pku.apmpowermanager;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.TabActivity;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -9,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.internal.app.ToolbarActionBar;
 import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,36 +38,29 @@ public class InstalledAppList extends Activity {
     CardView cardView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.LowBatteryRed);
+ //       setTheme(R.style.appt);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_installed_app_list);
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                try{
-                    Thread.sleep(2000);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
                 pm = getPackageManager();
                 List<PackageInfo> packageInfoLists = pm.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES);
                 appInfoList = new ArrayList<ApplicationInfo>();
-                for(PackageInfo packageInfo: packageInfoLists){
+                for (PackageInfo packageInfo : packageInfoLists) {
                     appInfo = new ApplicationInfo();
                     appInfoList.add(appInfo);
-                    Map<String, Object> item = new HashMap<String , Object>();
+                    Map<String, Object> item = new HashMap<String, Object>();
                     int icon = R.id.image;
                     item.put("image", packageInfo.applicationInfo.loadIcon(pm));
-                    item.put("name",  packageInfo.applicationInfo.loadLabel(pm));
+                    item.put("name", packageInfo.applicationInfo.loadLabel(pm));
                     mData.add(item);
                 }
-                applistview = (ListView)findViewById(R.id.applistview);
+                applistview = (ListView) findViewById(R.id.applistview);
             }
         });
 
-        applistview.setDividerHeight(0);
         applistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -75,7 +70,7 @@ public class InstalledAppList extends Activity {
             }
         });
 
-        SimpleAdapter adapter = new SimpleAdapter(this, mData, R.layout.listlayout, new String[]{"image", "name"},
+        SimpleAdapter adapter = new SimpleAdapter(this, mData, R.layout.listlayout_backup, new String[]{"image", "name"},
                 new int[]{R.id.image, R.id.title});
         applistview.setAdapter(adapter);
 

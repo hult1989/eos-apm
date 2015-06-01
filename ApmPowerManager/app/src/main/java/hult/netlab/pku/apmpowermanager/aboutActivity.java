@@ -1,25 +1,23 @@
 package hult.netlab.pku.apmpowermanager;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
+import android.webkit.WebView;
 
 
-public class appinfoActivity extends Activity {
+public class aboutActivity extends Activity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        setTheme(R.style.LowBatteryRed);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_appinfo);
-        LinearLayout frameView = (LinearLayout)findViewById(R.id.frame);
-        frameView.addView(new LineChart().execute(appinfoActivity.this));
+        WebView webView = new WebView(this);
+        setContentView(webView);
+        webView.loadUrl("http://hult1989.github.io/eos-apm/");
+        getActionBar().hide();
 
     }
 
@@ -27,7 +25,7 @@ public class appinfoActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_appinfo, menu);
+        getMenuInflater().inflate(R.menu.menu_about, menu);
         return true;
     }
 

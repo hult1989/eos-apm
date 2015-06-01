@@ -22,8 +22,8 @@
             android:layout_width="290dp"
             android:layout_height="290dp"
             custom:donut_text_size="80dp"
-            custom:donut_finished_color="@color/test_blue"
-            custom:donut_text_color="@color/test_blue"
+            custom:donut_finished_color="@color/google_teal"
+            custom:donut_text_color="@color/google_teal"
             custom:donut_unfinished_stroke_width="10dp"
             custom:donut_finished_stroke_width="10dp"
             custom:donut_progress="10" />

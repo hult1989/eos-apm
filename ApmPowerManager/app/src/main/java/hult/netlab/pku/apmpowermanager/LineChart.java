@@ -26,16 +26,8 @@ import android.view.View;
 //用来画app的cpu耗电的图的
 public class LineChart {
     public View execute(Context context) {
-        /*
-        int[] colors = new int[] { Color.RED, Color.YELLOW, Color.BLUE };
-        DefaultRenderer renderer = buildCategoryRenderer(colors);
-        CategorySeries categorySeries = new CategorySeries("Vehicles Chart");
-        categorySeries.add("win ", 30);
-        categorySeries.add("lose", 20);
-        categorySeries.add("tie", 60);
-        return ChartFactory
-                .getPieChartView(context, categorySeries, renderer);
-                */
+
+
         String[] titles = new String[] { "CPU" };
         List<double[]> x = new ArrayList<double[]>();
         for (int i = 0; i < titles.length; i++) {
@@ -44,7 +36,9 @@ public class LineChart {
         List<double[]> values = new ArrayList<double[]>();
         values.add(new double[] { 39, 50, 41, 45, 29, 23, 56, 45, 22, 18, 43, 10 });
         //int[] colors = new int[] { Color.rgb(113, 195, 222)  };
-        int[] colors = new int[] {  Color.RED};
+        //int[] colors = new int[] {  Color.RED};
+   //     int[] colors = new int[]{Color.rgb(0, 189, 167)};
+        int[] colors = new int[]{Color.rgb(0, 150, 136)};
         PointStyle[] styles = new PointStyle[] { PointStyle.CIRCLE };
         XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
         int length = renderer.getSeriesRendererCount();

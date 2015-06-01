@@ -6,6 +6,7 @@
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
     tools:context="hult.netlab.pku.apmpowermanager.InstalledAppList">
+<!--        android:dividerHeight="0dp"  -->
     <ListView
         android:id="@+id/applistview"
         android:layout_width="fill_parent"

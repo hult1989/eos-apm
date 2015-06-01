@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
     private Button button2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.LowBatteryRed);
+        //setTheme(R.style.LowBatteryRed);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
@@ -88,7 +88,8 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.about) {
+            startActivity(new Intent(MainActivity.this, aboutActivity.class));
             return true;
         }
 
