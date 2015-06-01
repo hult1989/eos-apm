@@ -15,13 +15,7 @@ import android.widget.TextView;
 
 import com.example.flowstatistics.R;
 
-/**
- * 
- * 此代码仿照“http://www.eoeandroid.com/thread-171911-1-1.html”
- *javaapk.com提供测试
- * @author yand
- *
- */
+
 public class Adapterforimage extends BaseAdapter {
 	private Context context;
 	private ArrayList<HashMap<String, Object>> item;
