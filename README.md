@@ -1,4 +1,7 @@
 # eos-apm
+<<<<<<< HEAD
+This is an android battery manager. Apm is shortfor Apm Power Manager. :)
+=======
 This a dev branch of APM, you can test new features and do demo in this branch.
 
 In order no to confuse yourself and myself, here are the instructions:
@@ -67,3 +70,4 @@ something wrong with imagebutton, need someone fix it!
 This is an android battery manager. Apm is shortfor Apm Power Manager. :)
 
  
+>>>>>>> 7109efb320734a3db61c194776ec09b075d54e2f
