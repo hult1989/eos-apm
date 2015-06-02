@@ -18,32 +18,14 @@ import android.widget.Button;
 
 public class MainActivity extends FragmentActivity {
 
-    private Button button;
-    private Button button2;
+
     private ViewPager mPager;
     PagerAdapter mainPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        button = (Button)findViewById(R.id.button1);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),BatteryInfoMain.class);
-                startActivity(intent);
-            }
-        });
-
-        button2 = (Button)findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), BatteryChartActivity.class);
-                startActivity(intent);
-            }
-        });
 
         mPager = (ViewPager)findViewById(R.id.main_pager);
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
@@ -75,7 +57,7 @@ public class MainActivity extends FragmentActivity {
                     return new BatteryRateFragment();
                 case 1:
                     return new BatteryChartFragment();
-                default: return new BatteryChartFragment();
+                default: return new BatteryRateFragment();
             }
         }
 

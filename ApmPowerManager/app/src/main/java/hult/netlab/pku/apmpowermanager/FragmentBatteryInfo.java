@@ -1,16 +1,10 @@
 package hult.netlab.pku.apmpowermanager;
 
-import android.app.Activity;
+
 import android.content.Context;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,48 +19,31 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BatteryChartFragment.OnFragmentInteractionListener} interface
+ * {@link FragmentBatteryInfo.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link BatteryChartFragment#newInstance} factory method to
+ * Use the {@link FragmentBatteryInfo#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BatteryChartFragment extends Fragment {
+public class FragmentBatteryInfo extends Fragment {
 
     private ListView listView;
     private ArrayList<Item> items;
-    private static final int NUM_PAGES = 3;
-    private ViewPager mPager;
-    private PagerAdapter mPagerAdapter;
 
-    public BatteryChartFragment() {
+    public FragmentBatteryInfo() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        ViewGroup rootview = (ViewGroup)inflater.inflate(R.layout.activity_battery_chart,container,false);
-
-        mPager = (ViewPager)rootview.findViewById(R.id.battery_paper);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
-        mPager.setCurrentItem(2);
-        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-        });
-
-
-        listView = (ListView)rootview.findViewById(R.id.remain_list);
+        ViewGroup rootview = (ViewGroup)inflater.inflate(R.layout.fragment_fragment_battery_info,container,false);
+        listView = (ListView)rootview.findViewById(R.id.battery_info_list);
         items = getData();
         itemAdapter adapter = new itemAdapter(container.getContext());
         listView.setAdapter(adapter);
@@ -76,15 +53,15 @@ public class BatteryChartFragment extends Fragment {
 
     private ArrayList<Item> getData() {
         ArrayList<Item> list = new ArrayList<Item>();
-        Item item1 = new Item(R.drawable.ic_picture_as_pdf_white_48dp, "Reading", "10h23m");
+        Item item1 = new Item(R.drawable.ic_local_hospital_white_48dp, "Health status", "Good");
         list.add(item1);
-        Item item2 = new Item(R.drawable.ic_local_movies_white_48dp, "Watching movies", "5h29m");
+        Item item2 = new Item(R.drawable.ic_battery_80_white_48dp, "Current power", "80%");
         list.add(item2);
-        Item item3 = new Item(R.drawable.ic_local_phone_white_48dp, "Phoneing", "5h24m");
+        Item item3 = new Item(R.drawable.ic_assessment_white_48dp, "Battery temperature", "40`C");
         list.add(item3);
-        Item item4 = new Item(R.drawable.ic_photo_camera_white_72dp, "Taking pictures", "6h23m");
+        Item item4 = new Item(R.drawable.ic_flash_on_white_48dp, "Battery voltage", "4.1V");
         list.add(item4);
-        Item item5 = new Item(R.drawable.ic_wifi_white_48dp, "Wifi", "8h12m");
+        Item item5 = new Item(R.drawable.ic_build_white_48dp, "Battery type", "Li-poly");
         list.add(item5);
         return list;
     }
@@ -151,27 +128,6 @@ public class BatteryChartFragment extends Fragment {
         public TextView name;
         public TextView time;
     }
-
-
-
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-
-        public Fragment getItem(int position) {
-            return BatterySlidePageFragment.create(position);
-        }
-
-
-        public int getCount() {
-            return NUM_PAGES;
-        }
-    }
-
-
-
 
 
 }

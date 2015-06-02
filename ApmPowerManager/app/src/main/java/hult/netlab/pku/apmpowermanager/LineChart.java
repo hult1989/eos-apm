@@ -38,7 +38,7 @@ public class LineChart {
         }
         List<double[]> values = new ArrayList<double[]>();
         values.add(new double[] { 39, 50, 41, 45, 29, 23, 56, 45, 22, 18, 43, 10 });
-        int[] colors = new int[] { Color.rgb(113, 195, 222)  };
+        int[] colors = new int[] { Color.WHITE  };
         PointStyle[] styles = new PointStyle[] { PointStyle.CIRCLE };
         XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
         int length = renderer.getSeriesRendererCount();

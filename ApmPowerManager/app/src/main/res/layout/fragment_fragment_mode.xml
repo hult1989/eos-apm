@@ -2,27 +2,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#40c4ff"
-    tools:context="hult.netlab.pku.apmpowermanager.BatteryChartActivity">
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/battery_paper"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
+    tools:context="hult.netlab.pku.apmpowermanager.FragmentMode">
 
     <LinearLayout
-        android:id="@+id/remain_list_layout"
+        android:id="@+id/list_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/battery_paper"
         android:orientation="vertical">
 
         <ListView
-            android:id="@+id/remain_list"
+            android:id="@+id/mode_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
         </ListView>
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_add_circle_white_48dp"/>
 
 </RelativeLayout>

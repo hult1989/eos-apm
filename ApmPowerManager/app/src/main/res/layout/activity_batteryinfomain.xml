@@ -21,7 +21,7 @@
             custom:donut_text_size="75dp"
             custom:donut_unfinished_stroke_width="10dp"
             custom:donut_finished_stroke_width="10dp"
-            custom:donut_progress="10" />
+            custom:donut_progress="0" />
     </LinearLayout>
 
     <LinearLayout
@@ -36,28 +36,18 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:text="剩余时间: 16h34m"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:textColor="#ffffff"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/list_layout"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/sub_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_below="@+id/remaintime">
-        <ListView
-            android:id="@+id/mode_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </ListView>
-    </LinearLayout>
 
-    <ImageView
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_add_circle_white_48dp"/>
+    </android.support.v4.view.ViewPager>
+
+
 
 </RelativeLayout>
