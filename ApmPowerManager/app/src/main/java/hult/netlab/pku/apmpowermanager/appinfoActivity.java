@@ -1,18 +1,26 @@
 package hult.netlab.pku.apmpowermanager;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.text.Layout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 public class appinfoActivity extends Activity {
+    ImageView iconView = null;
+    TextView textView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        setTheme(R.style.LowBatteryRed);
@@ -20,6 +28,12 @@ public class appinfoActivity extends Activity {
         setContentView(R.layout.activity_appinfo);
         LinearLayout frameView = (LinearLayout)findViewById(R.id.frame);
         frameView.addView(new LineChart().execute(appinfoActivity.this));
+        Intent intent = getIntent();
+        textView = (TextView)findViewById(R.id.appname);
+        int position = (int)intent.getExtras().get("id");
+        iconView = (ImageView)findViewById(R.id.image);
+        iconView.setImageDrawable(InstalledAppList.packageInfoLists.get(position).applicationInfo.loadIcon(InstalledAppList.pm));
+        textView.setText(InstalledAppList.packageInfoLists.get(position).applicationInfo.loadLabel(InstalledAppList.pm));
 
     }
 

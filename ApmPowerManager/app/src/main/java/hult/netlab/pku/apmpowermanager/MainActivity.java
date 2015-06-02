@@ -1,9 +1,12 @@
 package hult.netlab.pku.apmpowermanager;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,10 +16,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Button;
 
+import java.util.List;
+
 public class MainActivity extends Activity {
     Button btn0 = null;
     Button btn1 = null;
     Button btn2 = null;
+    Button btn3 = null;
 
     private Button button;
     private Button button2;
@@ -69,6 +75,18 @@ public class MainActivity extends Activity {
         });
 
         layout.addView(btn2);
+
+/*
+        ActivityManager am = (ActivityManager) getApplication().getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
+		for (ActivityManager.RunningAppProcessInfo info : runningApps) {
+           // Log.e("processName", info.processName + "pid:" + info.pid + "uid: "+ info.uid );
+                for(int i = 0; i < info.pkgList.length; i++)
+                    if(info.pkgList[i].contains("system") == false)
+                        Log.e(info.processName, info.pkgList[0]);
+
+        }
+        */
     }
 
 

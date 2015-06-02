@@ -2,11 +2,15 @@ package hult.netlab.pku.apmpowermanager;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -22,6 +26,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,10 +37,18 @@ public class InstalledAppList extends Activity {
     ListView applistview;
     ImageView imageView = null;
     ArrayList<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
-    PackageManager pm ;
+    public  static PackageManager pm ;
     List<ApplicationInfo> appInfoList = null;
     ApplicationInfo appInfo;
+
+   public static List<PackageInfo> packageInfoLists;
     CardView cardView;
+
+
+    public  static  List<PackageInfo> getPackageInfoLists(){
+        return packageInfoLists;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
  //       setTheme(R.style.appt);
@@ -46,7 +59,8 @@ public class InstalledAppList extends Activity {
             @Override
             public void run() {
                 pm = getPackageManager();
-                List<PackageInfo> packageInfoLists = pm.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES);
+
+                packageInfoLists = pm.getInstalledPackages(PackageManager.GET_UNINSTALLED_PACKAGES);
                 appInfoList = new ArrayList<ApplicationInfo>();
                 for (PackageInfo packageInfo : packageInfoLists) {
                     appInfo = new ApplicationInfo();
@@ -63,9 +77,14 @@ public class InstalledAppList extends Activity {
 
         applistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(InstalledAppList.this, " id:" + l, Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(InstalledAppList.this, appinfoActivity.class));
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+                Toast.makeText(InstalledAppList.this, " id:" + position + ", " + packageInfoLists.get(position).applicationInfo.loadLabel(pm), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(InstalledAppList.this, appinfoActivity.class);
+                Bundle mBundle = new Bundle();
+                mBundle.putInt("id", position);
+                intent.putExtras(mBundle);
+                startActivity(intent);
 
             }
         });

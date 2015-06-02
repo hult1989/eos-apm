@@ -35,6 +35,7 @@
                     android:paddingRight="8dp"/>
 
             <TextView
+                    android:id="@+id/appname"
                     android:layout_toRightOf="@+id/image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
