@@ -46,9 +46,10 @@
         android:layout_width="match_parent"
         android:layout_marginRight="16dp"
         android:layout_height="wrap_content"
-        style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+        style="@android:style/Widget.Material.ProgressBar.Horizontal"
         android:progress="70"
         android:max="100"
+        android:progressBackgroundTint="@android:color/darker_gray"
         android:id="@+id/bar"
         android:layout_below="@+id/title"
         android:layout_toEndOf="@+id/image" />
