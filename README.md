@@ -15,7 +15,7 @@ In order no to confuse yourself and myself, here are the instructions:
 
 
 - - -
-**a appinfoview demo at 30th May, 2015**
+**a appinfoview demo at 2nd June, 2015**
 
 1. update all main userface and batteryinfo view by @pkufool 
 2. update theme color by @hult19899
