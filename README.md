@@ -17,6 +17,17 @@ In order no to confuse yourself and myself, here are the instructions:
 - - -
 **a appinfoview demo at 30th May, 2015**
 
+1. update all main userface and batteryinfo view by @pkufool 
+2. update theme color by @hult19899
+
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/1screen.png" width="360px"/>
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/2screen.png" width="360px"/>
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/3screen.png" width="360px"/>
+<img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/4screen.png" width="360px"/>
+
+- - -
+**a appinfoview demo at 30th May, 2015**
+
 1. remove actitonbar by @hult1989
 2. apply a colorful theme by @hult1989
 3. wrap time consuming operation in runOnUiThread by @hult1989
