@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ public class FragmentMode extends Fragment {
 
     private ArrayList<Mode> modeList;
     private ListView listView;
+    private ImageView addView;
 
     public FragmentMode() {
         // Required empty public constructor
@@ -46,21 +48,41 @@ public class FragmentMode extends Fragment {
 
         listView = (ListView)rootview.findViewById(R.id.mode_list);
         modeList = getData();
-        modeAdapter adapter =new modeAdapter(container.getContext());
+        final modeAdapter adapter =new modeAdapter(container.getContext());
         listView.setAdapter(adapter);
+
+        addView = (ImageView)rootview.findViewById(R.id.add_mode);
+        addView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modeList = addData(modeList);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
 
         return rootview;
     }
 
     private ArrayList<Mode> getData(){
         ArrayList<Mode> list = new ArrayList<Mode>();
-        for(int i=1;i<4;i++) {
+    //    for(int i=1;i<4;i++) {
             Mode mode = new Mode();
             mode.check = Math.random()>0.5 ? true : false;
-            mode.name = "mode"+i;
-            mode.description = "mode"+i+" description!";
+            mode.name = "mode"+1;
+            mode.description = "mode"+1+" description!";
             list.add(mode);
-        }
+     //   }
+        return list;
+    }
+
+    private ArrayList<Mode> addData(ArrayList<Mode> list){
+        int length = list.size()+1;
+        Mode mode = new Mode();
+        mode.check = Math.random()>0.5 ? true : false;
+        mode.name = "mode"+length;
+        mode.description = "mode"+length+" description!";
+        list.add(mode);
         return list;
     }
 
