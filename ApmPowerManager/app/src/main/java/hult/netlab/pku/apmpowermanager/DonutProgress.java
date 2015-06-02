@@ -36,7 +36,7 @@ public class DonutProgress extends View {
     private float finishedStrokeWidth;
     private float unfinishedStrokeWidth;
     private int innerBackgroundColor;
-    private String prefixText = "";
+    private String prefixText = "  ";
     private String suffixText = "%";
     private String text = null;
     private float innerBottomTextSize;

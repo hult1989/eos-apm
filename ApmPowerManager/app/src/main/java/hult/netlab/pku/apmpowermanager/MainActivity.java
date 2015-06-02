@@ -3,6 +3,12 @@ package hult.netlab.pku.apmpowermanager;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -18,63 +24,19 @@ import android.widget.Button;
 
 import java.util.List;
 
-public class MainActivity extends Activity {
-    Button btn0 = null;
-    Button btn1 = null;
-    Button btn2 = null;
-    Button btn3 = null;
+public class MainActivity extends FragmentActivity {
 
-    private Button button;
-    private Button button2;
+    private ViewPager mPager;
+    PagerAdapter mainPagerAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //setTheme(R.style.LowBatteryRed);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-	LinearLayout layout = (LinearLayout)findViewById(R.id.main);
-        btn0 = (Button)findViewById(R.id.btn0);
-        btn0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, InstalledAppList.class));
-            }
-        });
 
-        btn1 = (Button)findViewById(R.id.button1);
 
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),BatteryInfoMain.class);
-                startActivity(intent);
-            }
-        });
-
-        button2 = (Button)findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),BatteryChartActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btn2 = new Button(MainActivity.this);
-        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT);
-        btn2.setText("appinfo");
-
-        p.addRule(RelativeLayout.BELOW, R.id.button1);
-        btn2.setLayoutParams(p);
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, appinfoActivity.class));
-            }
-        });
-
-        layout.addView(btn2);
 
 /*
         ActivityManager am = (ActivityManager) getApplication().getSystemService(Context.ACTIVITY_SERVICE);
@@ -87,6 +49,43 @@ public class MainActivity extends Activity {
 
         }
         */
+        mPager = (ViewPager)findViewById(R.id.main_pager);
+        mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mainPagerAdapter);
+        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                // When changing pages, reset the action bar actions since they are dependent
+                // on which page is currently active. An alternative approach is to have each
+                // fragment expose actions itself (rather than the activity exposing actions),
+                // but for simplicity, the activity provides the actions in this sample.
+               // invalidateOptionsMenu();
+            }
+        });
+    }
+
+
+    private class  MainPagerAdapter extends  FragmentStatePagerAdapter{
+        public MainPagerAdapter(FragmentManager fm){
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+
+            switch(position) {
+                case 0:
+                    return new BatteryRateFragment();
+                case 1:
+                    return new BatteryChartFragment();
+                default: return new BatteryChartFragment();
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
     }
 
 
@@ -109,6 +108,10 @@ public class MainActivity extends Activity {
         if (id == R.id.about) {
             startActivity(new Intent(MainActivity.this, aboutActivity.class));
             return true;
+        }
+        if(id==R.id.installedapp){
+            startActivity(new Intent(MainActivity.this, InstalledAppList.class));
+
         }
 
         return super.onOptionsItemSelected(item);

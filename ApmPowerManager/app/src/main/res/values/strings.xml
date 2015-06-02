@@ -22,4 +22,7 @@
     <string name="title_activity_installed_app_list">InstalledAppList</string>
     <string name="title_activity_about">aboutActivity</string>
     <string name="title_activity_test">TestActivity</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+<!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -28,6 +28,12 @@
             custom:donut_finished_stroke_width="10dp"
             custom:donut_progress="10" />
 
+        <!--
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+
+            custom:donut_text_size="75dp"
+            -->
     </RelativeLayout>
 
     <RelativeLayout

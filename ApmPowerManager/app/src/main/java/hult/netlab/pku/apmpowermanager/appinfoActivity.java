@@ -34,7 +34,6 @@ public class appinfoActivity extends Activity {
         iconView = (ImageView)findViewById(R.id.image);
         iconView.setImageDrawable(InstalledAppList.packageInfoLists.get(position).applicationInfo.loadIcon(InstalledAppList.pm));
         textView.setText(InstalledAppList.packageInfoLists.get(position).applicationInfo.loadLabel(InstalledAppList.pm));
-
     }
 
 

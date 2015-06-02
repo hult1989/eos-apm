@@ -51,6 +51,7 @@ public class InstalledAppList extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+      //  getActionBar().setElevation(0);
  //       setTheme(R.style.appt);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_installed_app_list);
@@ -89,7 +90,7 @@ public class InstalledAppList extends Activity {
             }
         });
 
-        SimpleAdapter adapter = new SimpleAdapter(this, mData, R.layout.listlayout_backup, new String[]{"image", "name"},
+        SimpleAdapter adapter = new SimpleAdapter(this, mData, R.layout.listlayout, new String[]{"image", "name"},
                 new int[]{R.id.image, R.id.title});
         applistview.setAdapter(adapter);
 
