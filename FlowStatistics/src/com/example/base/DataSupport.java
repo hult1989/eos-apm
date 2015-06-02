@@ -5,12 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * 此代码仿照“http://www.eoeandroid.com/thread-171911-1-1.html”
- * javaapk.com提供测试
- * @author yand
- * 
- */
 public class DataSupport extends SQLiteOpenHelper {
 
 	/**
@@ -22,9 +16,7 @@ public class DataSupport extends SQLiteOpenHelper {
 	public DataSupport(Context context) {
 		// 创建名为liuliangdata的数据库
 		super(context, "liuliangdata", null, 1);
-		// if (MainActivity.isLog) {
-		// Log.i("liuliang", "support>>>>>>>>start");
-		// }
+		
 	}
 
 	/*
