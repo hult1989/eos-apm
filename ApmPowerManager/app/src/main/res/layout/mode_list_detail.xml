@@ -5,23 +5,23 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:orientation="horizontal">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:id="@+id/modename"
-            android:layout_centerVertical="true"
-            android:text="mode"
-            android:textSize="16sp"/>
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:id="@+id/modecheckbutton"
-            android:checked="true"
-            android:layout_toLeftOf="@id/modename"
-            android:layout_alignParentRight="true"
-            />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:id="@+id/modename"
+        android:layout_centerVertical="true"
+        android:text="mode"
+        android:textSize="16sp"/>
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:id="@+id/modecheckbutton"
+        android:checked="true"
+        android:layout_toLeftOf="@id/modename"
+        android:layout_alignParentRight="true"
+        />
 
 </RelativeLayout>
