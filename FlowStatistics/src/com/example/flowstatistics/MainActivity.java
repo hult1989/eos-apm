@@ -6,7 +6,7 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -21,9 +21,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.example.base.DataSupport;
-import com.example.base.MyDatePickerDialog;
+import com.example.base.MyTimePickerDialog;
 
 /**
  * ´Ë´úÂë·ÂÕÕ¡°http://www.eoeandroid.com/thread-171911-1-1.html¡±
@@ -91,7 +92,7 @@ public class MainActivity extends Activity {
 				showdata();
 			}
 		});
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd:MM");
 		date_over_textview = (TextView) findViewById(R.id.date_over);
 		date_over_textview.setText(sdf.format(new Date()));
 		date_start_textview = (TextView) findViewById(R.id.date_start);
@@ -257,26 +258,26 @@ public class MainActivity extends Activity {
 	 * 
 	 */
 	private void selectdate(final TextView tex) {
-		new MyDatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-			public void onDateSet(DatePicker view, int year, int monthOfYear,
-					int dayOfMonth) {
-				String monthstr, daystr;
-				monthOfYear = monthOfYear + 1;
-				if (monthOfYear < 10) {
-					monthstr = "" + 0 + monthOfYear;
+		
+		new MyTimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				String hourstr,  minutestr;
+				hourOfDay = hourOfDay + 1;
+				if (hourOfDay < 10) {
+					hourstr = "" + 0 + hourOfDay;
 				} else {
-					monthstr = "" + monthOfYear;
+					hourstr = "" +hourOfDay;
 				}
-				if (dayOfMonth < 10) {
-					daystr = "" + 0 + dayOfMonth;
+				if ( minute < 10) {
+					minutestr = "" + 0 + minute;
 				} else {
-					daystr = "" + dayOfMonth;
+					minutestr = "" + minute;
 				}
-				tex.setText(year + "-" + monthstr + "-" + daystr);
-
+				tex.setText( hourstr + "-" + minutestr );
+				
 			}
-		}, mcalendar.get(Calendar.YEAR), mcalendar.get(Calendar.MONTH),
-				mcalendar.get(Calendar.DAY_OF_MONTH)).show();
+		}, mcalendar.get(Calendar.HOUR), mcalendar.get(Calendar.MINUTE), true).show();
+		
 	}
 
 	/**

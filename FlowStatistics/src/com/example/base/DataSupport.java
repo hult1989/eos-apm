@@ -107,6 +107,7 @@ public class DataSupport extends SQLiteOpenHelper {
 		// }
 		return nowcursor;
 	}
+	
 
 	/**
 	 * 
