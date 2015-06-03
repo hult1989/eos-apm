@@ -28,12 +28,6 @@
             custom:donut_finished_stroke_width="10dp"
             custom:donut_progress="10" />
 
-        <!--
-            android:layout_width="280dp"
-            android:layout_height="280dp"
-
-            custom:donut_text_size="75dp"
-            -->
     </RelativeLayout>
 
     <RelativeLayout
@@ -52,25 +46,27 @@
             android:textSize="20dp" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/list_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/remaintime">
+
+
         <ListView
+            android:layout_below="@id/remaintime"
             android:id="@+id/mode_list"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content">
         </ListView>
-    </LinearLayout>
 
-    <ImageView
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+
+    <ImageButton
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_add_circle_white_48dp"/>
+        android:elevation="6dp"
+        android:background="@drawable/ff"
+        android:textSize="40dp">
+
+        </ImageButton>
 
 </RelativeLayout>

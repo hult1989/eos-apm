@@ -21,14 +21,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link BatteryRateFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link BatteryRateFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class BatteryRateFragment extends Fragment {
 
     private Timer timer;
@@ -80,7 +73,7 @@ public class BatteryRateFragment extends Fragment {
             Mode mode = new Mode();
             mode.check = Math.random()>0.5 ? true : false;
             mode.name = "mode"+i;
-            mode.description = "mode"+i+" description!";
+     //       mode.description = "mode"+i+" description!";
             list.add(mode);
         }
         return list;
@@ -117,14 +110,13 @@ public class BatteryRateFragment extends Fragment {
                 convertView = layoutInflater.inflate(R.layout.mode_list_detail,null);
                 holder.checkbutton = (RadioButton)convertView.findViewById(R.id.modecheckbutton);
                 holder.name = (TextView)convertView.findViewById(R.id.modename);
-                holder.description = (TextView)convertView.findViewById(R.id.modedescription);
                 convertView.setTag(holder);
             }else{
                 holder = (ViewHloder)convertView.getTag();
             }
             holder.checkbutton.setChecked(modeList.get(position).check);
             holder.name.setText(modeList.get(position).name);
-            holder.description.setText(modeList.get(position).description);
+ //           holder.description.setText(modeList.get(position).description);
 
             return convertView;
         }
@@ -133,13 +125,13 @@ public class BatteryRateFragment extends Fragment {
     class Mode {
         boolean check;
         String name;
-        String description;
+//        String description;
     }
 
     public final class ViewHloder{
         public RadioButton checkbutton;
         public TextView name;
-        public TextView description;
+     //   public TextView description;
     }
 
 }
