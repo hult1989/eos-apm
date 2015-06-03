@@ -1,16 +1,17 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:orientation="vertical"
+    android:clipToPadding="false"
+    android:id="@+id/main"
     tools:context=".MainActivity">
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/main_pager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+            android:id="@+id/main_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_tab">
-    </android.support.v4.view.ViewPager>
+        </android.support.v4.view.ViewPager>
 
     <LinearLayout
         android:id="@+id/bottom_tab"
@@ -49,7 +50,7 @@
                 android:layout_marginTop="5dp"
                 android:text="drain"
                 android:textSize="25sp"
-                 />
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -66,7 +67,7 @@
                 android:layout_marginTop="5dp"
                 android:text="rank"
                 android:textSize="25sp"
-                 />
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -88,4 +89,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
