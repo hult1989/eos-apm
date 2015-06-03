@@ -3,6 +3,7 @@ package hult.netlab.pku.apmpowermanager;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
@@ -41,6 +42,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getActionBar().setElevation(0);
         //setTheme(R.style.LowBatteryRed);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -74,28 +76,28 @@ public class MainActivity extends FragmentActivity {
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        save_tab.setTextColor(getResources().getColor(R.color.icon_teal));
-                        drain_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
-                        rank_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
-                        mode_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        save_tab.setTextColor(Color.WHITE);
+                        drain_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        rank_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        mode_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         break;
                     case 1:
-                        save_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
-                        drain_tab.setTextColor(getResources().getColor(R.color.icon_teal));
-                        rank_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
-                        mode_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        save_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        drain_tab.setTextColor(Color.WHITE);
+                        rank_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        mode_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         break;
                     case 2:
-                        save_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
-                        drain_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
-                        rank_tab.setTextColor(getResources().getColor(R.color.icon_teal));
-                        mode_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        save_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        drain_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        rank_tab.setTextColor(Color.WHITE);
+                        mode_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         break;
                     default:
-                        save_tab.setTextColor(getResources().getColor(R.color.icon_teal));
-                        drain_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
-                        rank_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
-                        mode_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        save_tab.setTextColor(Color.WHITE);
+                        drain_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        rank_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        mode_tab.setTextColor(getResources().getColor(R.color.google_teal));
                 }
             }
         });

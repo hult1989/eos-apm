@@ -29,6 +29,7 @@ public class BatteryInfoMain extends Activity {
     private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_batteryinfomain);
         donutProgress = (DonutProgress) findViewById(R.id.donut_progress);

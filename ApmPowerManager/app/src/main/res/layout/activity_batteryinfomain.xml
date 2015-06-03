@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@color/icon_teal"
         android:padding="10dp"
+        android:elevation="4dp"
         android:layout_centerHorizontal="true">
 
         <hult.netlab.pku.apmpowermanager.DonutProgress
@@ -33,24 +34,32 @@
 
     <RelativeLayout
         android:id="@+id/remaintime"
-        android:layout_marginTop="10dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/process"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:background="@color/backgroundGREY"
         android:layout_centerHorizontal="true">
 
         <TextView
             android:layout_marginBottom="8dp"
-            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="BatteryLife: 16h 34m"
             android:id="@+id/batterylife"
+            android:textColor="@android:color/white"
             android:textSize="20dp" />
         <ImageButton
+            android:layout_centerVertical="true"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginRight="16dp"
+            android:padding="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:background="@drawable/ff"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true">
