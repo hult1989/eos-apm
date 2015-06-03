@@ -1,5 +1,6 @@
 package hult.netlab.pku.apmpowermanager;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.MediaDescription;
 import android.support.v7.app.ActionBarActivity;
@@ -21,7 +22,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class BatteryInfoMain extends ActionBarActivity {
+public class BatteryInfoMain extends Activity {
     private Timer timer;
     private DonutProgress donutProgress;
     private ArrayList<Mode> modeList;

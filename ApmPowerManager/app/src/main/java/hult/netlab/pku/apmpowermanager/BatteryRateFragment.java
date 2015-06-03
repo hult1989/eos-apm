@@ -2,6 +2,7 @@ package hult.netlab.pku.apmpowermanager;
 
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -75,10 +76,8 @@ public class BatteryRateFragment extends Fragment {
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-
             }
         });
-
         return rootview;
     }
 

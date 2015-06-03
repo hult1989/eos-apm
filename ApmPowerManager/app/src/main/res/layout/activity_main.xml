@@ -8,9 +8,84 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/main_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_tab">
     </android.support.v4.view.ViewPager>
 
+    <LinearLayout
+        android:id="@+id/bottom_tab"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <LinearLayout
+            android:id="@+id/bottom_tab1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tab_save_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:text="save"
+                android:textSize="25sp"
+                android:textColor="@color/icon_teal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_tab2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tab_drain_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:text="drain"
+                android:textSize="25sp"
+                 />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_tab3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tab_rank_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:text="rank"
+                android:textSize="25sp"
+                 />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_tab4"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tab_mode_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:text="mode"
+                android:textSize="25sp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

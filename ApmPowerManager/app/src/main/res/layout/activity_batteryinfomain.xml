@@ -3,28 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#40c4ff"
+    android:background="@color/app_default_background"
     tools:context="hult.netlab.pku.apmpowermanager.batteryinfomain">
 
-    <LinearLayout
+
+    <RelativeLayout
         android:id="@+id/process"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true">
 
         <hult.netlab.pku.apmpowermanager.DonutProgress
-            android:layout_margin="20dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginRight="35dp"
+            android:layout_marginBottom="25dp"
             android:id="@+id/donut_progress"
-            android:layout_width="280dp"
-            android:layout_height="280dp"
-
-            custom:donut_text_size="75dp"
+            android:layout_width="290dp"
+            android:layout_height="290dp"
+            custom:donut_text_size="80dp"
+            custom:donut_finished_color="@color/google_teal"
+            custom:donut_text_color="@color/google_teal"
             custom:donut_unfinished_stroke_width="10dp"
             custom:donut_finished_stroke_width="10dp"
-            custom:donut_progress="0" />
-    </LinearLayout>
+            custom:donut_progress="10" />
 
-    <LinearLayout
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/remaintime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,13 +38,13 @@
         android:layout_centerHorizontal="true">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:text="剩余时间: 16h34m"
-            android:textSize="20dp"
-            android:textColor="#ffffff"/>
-    </LinearLayout>
+            android:text="BatteryLife: 16h 34m"
+            android:textSize="20dp" />
+    </RelativeLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/sub_pager"

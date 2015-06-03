@@ -1,5 +1,6 @@
 package hult.netlab.pku.apmpowermanager;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

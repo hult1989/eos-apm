@@ -1,69 +1,151 @@
 package hult.netlab.pku.apmpowermanager;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
-
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.List;
 
 public class MainActivity extends FragmentActivity {
 
-
+    private static final int PAGENUM = 3;
     private ViewPager mPager;
-    PagerAdapter mainPagerAdapter;
+    private PagerAdapter mainPagerAdapter;
+    private LinearLayout bottom_tab1;
+    private LinearLayout bottom_tab2;
+    private LinearLayout bottom_tab3;
+    private LinearLayout bottom_tab4;
+    private TextView save_tab;
+    private TextView drain_tab;
+    private TextView rank_tab;
+    private TextView mode_tab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //setTheme(R.style.LowBatteryRed);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+       /*
+        ActivityManager am = (ActivityManager) getApplication().getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
+		for (ActivityManager.RunningAppProcessInfo info : runningApps) {
+           // Log.e("processName", info.processName + "pid:" + info.pid + "uid: "+ info.uid );
+                for(int i = 0; i < info.pkgList.length; i++)
+                    if(info.pkgList[i].contains("system") == false)
+                        Log.e(info.processName, info.pkgList[0]);
 
+        }
+        */
+        bottom_tab1 = (LinearLayout) findViewById(R.id.bottom_tab1);
+        bottom_tab2 = (LinearLayout) findViewById(R.id.bottom_tab2);
+        bottom_tab3 = (LinearLayout) findViewById(R.id.bottom_tab3);
+        bottom_tab4 = (LinearLayout) findViewById(R.id.bottom_tab4);
+        save_tab = (TextView) findViewById(R.id.tab_save_text);
+        drain_tab = (TextView) findViewById(R.id.tab_drain_text);
+        rank_tab = (TextView) findViewById(R.id.tab_rank_text);
+        mode_tab = (TextView) findViewById(R.id.tab_mode_text);
 
-        mPager = (ViewPager)findViewById(R.id.main_pager);
+        mPager = (ViewPager) findViewById(R.id.main_pager);
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mainPagerAdapter);
+        mPager.setCurrentItem(0);
+        save_tab.setTextColor(getResources().getColor(R.color.icon_teal));
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                // When changing pages, reset the action bar actions since they are dependent
-                // on which page is currently active. An alternative approach is to have each
-                // fragment expose actions itself (rather than the activity exposing actions),
-                // but for simplicity, the activity provides the actions in this sample.
-               // invalidateOptionsMenu();
+                switch (position) {
+                    case 0:
+                        save_tab.setTextColor(getResources().getColor(R.color.icon_teal));
+                        drain_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        rank_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        mode_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        break;
+                    case 1:
+                        save_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        drain_tab.setTextColor(getResources().getColor(R.color.icon_teal));
+                        rank_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        mode_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        break;
+                    case 2:
+                        save_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        drain_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        rank_tab.setTextColor(getResources().getColor(R.color.icon_teal));
+                        mode_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        break;
+                    default:
+                        save_tab.setTextColor(getResources().getColor(R.color.icon_teal));
+                        drain_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        rank_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                        mode_tab.setTextColor(getResources().getColor(R.color.abc_secondary_text_material_light));
+                }
+            }
+        });
+
+        bottom_tab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPager.setCurrentItem(0);
+            }
+        });
+
+        bottom_tab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPager.setCurrentItem(1);
+            }
+        });
+        bottom_tab3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPager.setCurrentItem(2);
             }
         });
 
     }
 
 
-    private class  MainPagerAdapter extends  FragmentStatePagerAdapter{
-        public MainPagerAdapter(FragmentManager fm){
+    private class MainPagerAdapter extends FragmentStatePagerAdapter {
+        public MainPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
 
-            switch(position) {
+            switch (position) {
                 case 0:
                     return new BatteryRateFragment();
                 case 1:
                     return new BatteryChartFragment();
-                default: return new BatteryRateFragment();
+                case 2:
+                    return new FragmentRank();
+                default:
+                    return new BatteryRateFragment();
             }
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return PAGENUM;
         }
     }
 
@@ -83,8 +165,13 @@ public class MainActivity extends FragmentActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.about) {
+            startActivity(new Intent(MainActivity.this, aboutActivity.class));
             return true;
+        }
+        if (id == R.id.installedapp) {
+            startActivity(new Intent(MainActivity.this, InstalledAppList.class));
+
         }
 
         return super.onOptionsItemSelected(item);
