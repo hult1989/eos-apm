@@ -31,10 +31,10 @@ public class MainActivity extends FragmentActivity {
     private static final int PAGENUM = 3;
     private ViewPager mPager;
     private PagerAdapter mainPagerAdapter;
-    private LinearLayout bottom_tab1;
-    private LinearLayout bottom_tab2;
-    private LinearLayout bottom_tab3;
-    private LinearLayout bottom_tab4;
+    private RelativeLayout bottom_tab1;
+    private RelativeLayout bottom_tab2;
+    private RelativeLayout bottom_tab3;
+    private RelativeLayout bottom_tab4;
     private TextView save_tab;
     private TextView drain_tab;
     private TextView rank_tab;
@@ -57,10 +57,10 @@ public class MainActivity extends FragmentActivity {
 
         }
         */
-        bottom_tab1 = (LinearLayout) findViewById(R.id.bottom_tab1);
-        bottom_tab2 = (LinearLayout) findViewById(R.id.bottom_tab2);
-        bottom_tab3 = (LinearLayout) findViewById(R.id.bottom_tab3);
-        bottom_tab4 = (LinearLayout) findViewById(R.id.bottom_tab4);
+        bottom_tab1 = (RelativeLayout) findViewById(R.id.bottom_tab1);
+        bottom_tab2 = (RelativeLayout) findViewById(R.id.bottom_tab2);
+        bottom_tab3 = (RelativeLayout) findViewById(R.id.bottom_tab3);
+        bottom_tab4 = (RelativeLayout) findViewById(R.id.bottom_tab4);
         save_tab = (TextView) findViewById(R.id.tab_save_text);
         drain_tab = (TextView) findViewById(R.id.tab_drain_text);
         rank_tab = (TextView) findViewById(R.id.tab_rank_text);
@@ -70,7 +70,7 @@ public class MainActivity extends FragmentActivity {
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mainPagerAdapter);
         mPager.setCurrentItem(0);
-        save_tab.setTextColor(getResources().getColor(R.color.icon_teal));
+        save_tab.setTextColor(Color.WHITE);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -108,7 +108,6 @@ public class MainActivity extends FragmentActivity {
                 mPager.setCurrentItem(0);
             }
         });
-
         bottom_tab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,14 +165,9 @@ public class MainActivity extends FragmentActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.about) {
             startActivity(new Intent(MainActivity.this, aboutActivity.class));
             return true;
-        }
-        if (id == R.id.installedapp) {
-            startActivity(new Intent(MainActivity.this, InstalledAppList.class));
-
         }
 
         return super.onOptionsItemSelected(item);

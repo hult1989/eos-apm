@@ -36,6 +36,7 @@ public class LineChart {
         //int[] colors = new int[] {  Color.RED};
    //     int[] colors = new int[]{Color.rgb(0, 189, 167)};
         int[] colors = new int[]{Color.rgb(0, 150, 136)};
+    //    int[] colors = new int[]{Color.WHITE};
         PointStyle[] styles = new PointStyle[] { PointStyle.CIRCLE };
         XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
         int length = renderer.getSeriesRendererCount();
