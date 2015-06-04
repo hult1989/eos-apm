@@ -53,6 +53,7 @@
                  />
         </RelativeLayout>
 
+
         <RelativeLayout
             android:id="@+id/bottom_tab3"
             android:layout_width="0dp"
@@ -70,6 +71,7 @@
                  />
         </RelativeLayout>
 
+
         <RelativeLayout
             android:id="@+id/bottom_tab4"
             android:layout_width="0dp"
@@ -85,6 +87,7 @@
                 android:textSize="14sp"
                 />
         </RelativeLayout>
+
 
     </LinearLayout>
 
