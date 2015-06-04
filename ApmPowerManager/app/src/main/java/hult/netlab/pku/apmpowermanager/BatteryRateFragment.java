@@ -46,12 +46,14 @@ public class BatteryRateFragment extends Fragment {
 
         donutProgress = (DonutProgress)rootview.findViewById(R.id.donut_progress);
         timer = new Timer();
-       final MainActivity main = new MainActivity();
         timer.schedule(new TimerTask() {
             public void run() {
-                main.runOnUiThread(new Runnable() {
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if(donutProgress.getProgress()>80){
+                            donutProgress.setProgress(0);
+                        }
                         donutProgress.setProgress(donutProgress.getProgress() + 1);
                         if (donutProgress.getProgress() == 80) {
                             timer.cancel();

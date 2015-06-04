@@ -50,7 +50,7 @@
                 android:layout_marginTop="5dp"
                 android:text="drain"
                 android:textSize="25sp"
-                 />
+                android:textColor="@color/google_teal"/>
         </LinearLayout>
 
         <LinearLayout
@@ -67,7 +67,7 @@
                 android:layout_marginTop="5dp"
                 android:text="rank"
                 android:textSize="25sp"
-                 />
+                android:textColor="@color/google_teal" />
         </LinearLayout>
 
         <LinearLayout
@@ -84,7 +84,7 @@
                 android:layout_marginTop="5dp"
                 android:text="mode"
                 android:textSize="25sp"
-                />
+                android:textColor="@color/google_teal"/>
         </LinearLayout>
 
     </LinearLayout>
