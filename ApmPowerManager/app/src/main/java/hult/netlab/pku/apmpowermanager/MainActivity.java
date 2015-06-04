@@ -43,6 +43,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getActionBar().setElevation(0);
+     //   getActionBar().setElevation(0);
         //setTheme(R.style.LowBatteryRed);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -71,6 +72,7 @@ public class MainActivity extends FragmentActivity {
         mPager.setAdapter(mainPagerAdapter);
         mPager.setCurrentItem(0);
         save_tab.setTextColor(Color.WHITE);
+
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -122,7 +124,6 @@ public class MainActivity extends FragmentActivity {
         });
 
     }
-
 
     private class MainPagerAdapter extends FragmentStatePagerAdapter {
         public MainPagerAdapter(FragmentManager fm) {
