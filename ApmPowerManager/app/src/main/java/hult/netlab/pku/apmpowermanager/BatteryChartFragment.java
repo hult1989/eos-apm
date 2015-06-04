@@ -72,24 +72,24 @@ public class BatteryChartFragment extends Fragment {
             public void onPageSelected(int position) {
                 switch (position){
                     case 0 :
-                        indicator1.setBackgroundColor(getResources().getColor(R.color.icon_teal));
+                        indicator1.setBackgroundColor(getResources().getColor(android.R.color.white));
                         indicator2.setBackgroundColor(getResources().getColor(R.color.google_teal));
                         indicator3.setBackgroundColor(getResources().getColor(R.color.google_teal));
                         break;
                     case 1 :
                         indicator1.setBackgroundColor(getResources().getColor(R.color.google_teal));
-                        indicator2.setBackgroundColor(getResources().getColor(R.color.icon_teal));
+                        indicator2.setBackgroundColor(getResources().getColor(android.R.color.white));
                         indicator3.setBackgroundColor(getResources().getColor(R.color.google_teal));
                         break;
                     case 2 :
                         indicator1.setBackgroundColor(getResources().getColor(R.color.google_teal));
                         indicator2.setBackgroundColor(getResources().getColor(R.color.google_teal));
-                        indicator3.setBackgroundColor(getResources().getColor(R.color.icon_teal));
+                        indicator3.setBackgroundColor(getResources().getColor(android.R.color.white));
                         break;
                     default:
                         indicator1.setBackgroundColor(getResources().getColor(R.color.google_teal));
                         indicator2.setBackgroundColor(getResources().getColor(R.color.google_teal));
-                        indicator3.setBackgroundColor(getResources().getColor(R.color.icon_teal));
+                        indicator3.setBackgroundColor(getResources().getColor(android.R.color.white));
                         break;
                 }
             }

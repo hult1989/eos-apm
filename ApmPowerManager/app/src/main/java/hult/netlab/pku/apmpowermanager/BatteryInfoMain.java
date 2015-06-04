@@ -29,6 +29,7 @@ public class BatteryInfoMain extends Activity {
     private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_batteryinfomain);
         donutProgress = (DonutProgress) findViewById(R.id.donut_progress);
@@ -95,7 +96,7 @@ public class BatteryInfoMain extends Activity {
                 convertView = layoutInflater.inflate(R.layout.mode_list_detail,null);
                 holder.checkbutton = (RadioButton)convertView.findViewById(R.id.modecheckbutton);
                 holder.name = (TextView)convertView.findViewById(R.id.modename);
-                holder.description = (TextView)convertView.findViewById(R.id.modedescription);
+            //    holder.description = (TextView)convertView.findViewById(R.id.modedescription);
                 convertView.setTag(holder);
             }else{
                 holder = (ViewHloder)convertView.getTag();

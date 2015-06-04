@@ -19,14 +19,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link BatteryRateFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link BatteryRateFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class BatteryRateFragment extends Fragment {
 
     private static final int NUM_PAGES = 2;
@@ -53,12 +46,14 @@ public class BatteryRateFragment extends Fragment {
 
         donutProgress = (DonutProgress)rootview.findViewById(R.id.donut_progress);
         timer = new Timer();
-       final MainActivity main = new MainActivity();
         timer.schedule(new TimerTask() {
             public void run() {
-                main.runOnUiThread(new Runnable() {
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if(donutProgress.getProgress()>80){
+                            donutProgress.setProgress(0);
+                        }
                         donutProgress.setProgress(donutProgress.getProgress() + 1);
                         if (donutProgress.getProgress() == 80) {
                             timer.cancel();
@@ -82,11 +77,11 @@ public class BatteryRateFragment extends Fragment {
     }
 
 
-
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
+
 
 
         public Fragment getItem(int position) {
@@ -98,6 +93,7 @@ public class BatteryRateFragment extends Fragment {
                 default: return new FragmentMode();
             }
         }
+
 
         public int getCount() {
             return NUM_PAGES;

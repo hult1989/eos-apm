@@ -70,7 +70,7 @@ public class FragmentMode extends Fragment {
             Mode mode = new Mode();
             mode.check = Math.random()>0.5 ? true : false;
             mode.name = "mode"+1;
-            mode.description = "mode"+1+" description!";
+        //    mode.description = "mode"+1+" description!";
             list.add(mode);
      //   }
         return list;
@@ -81,7 +81,7 @@ public class FragmentMode extends Fragment {
         Mode mode = new Mode();
         mode.check = Math.random()>0.5 ? true : false;
         mode.name = "mode"+length;
-        mode.description = "mode"+length+" description!";
+     //   mode.description = "mode"+length+" description!";
         list.add(mode);
         return list;
     }
@@ -117,14 +117,14 @@ public class FragmentMode extends Fragment {
                 convertView = layoutInflater.inflate(R.layout.mode_list_detail,null);
                 holder.checkbutton = (RadioButton)convertView.findViewById(R.id.modecheckbutton);
                 holder.name = (TextView)convertView.findViewById(R.id.modename);
-                holder.description = (TextView)convertView.findViewById(R.id.modedescription);
+           //     holder.description = (TextView)convertView.findViewById(R.id.modedescription);
                 convertView.setTag(holder);
             }else{
                 holder = (ViewHloder)convertView.getTag();
             }
             holder.checkbutton.setChecked(modeList.get(position).check);
             holder.name.setText(modeList.get(position).name);
-            holder.description.setText(modeList.get(position).description);
+    //        holder.description.setText(modeList.get(position).description);
 
             return convertView;
         }
@@ -133,13 +133,13 @@ public class FragmentMode extends Fragment {
     class Mode {
         boolean check;
         String name;
-        String description;
+   //     String description;
     }
 
     public final class ViewHloder{
         public RadioButton checkbutton;
         public TextView name;
-        public TextView description;
+ //       public TextView description;
     }
 
 

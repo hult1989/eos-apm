@@ -17,6 +17,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:background="@color/icon_teal"
         android:layout_height="45dp">
         <LinearLayout
             android:id="@+id/bottom_tab1"
@@ -32,7 +33,7 @@
                 android:layout_marginTop="5dp"
                 android:text="save"
                 android:textSize="25sp"
-                android:textColor="@color/icon_teal"/>
+                android:textColor="@android:color/white"/>
         </LinearLayout>
 
         <LinearLayout
@@ -49,7 +50,7 @@
                 android:layout_marginTop="5dp"
                 android:text="drain"
                 android:textSize="25sp"
-                 />
+                android:textColor="@color/google_teal"/>
         </LinearLayout>
 
         <LinearLayout
@@ -66,7 +67,7 @@
                 android:layout_marginTop="5dp"
                 android:text="rank"
                 android:textSize="25sp"
-                 />
+                android:textColor="@color/google_teal" />
         </LinearLayout>
 
         <LinearLayout
@@ -83,7 +84,7 @@
                 android:layout_marginTop="5dp"
                 android:text="mode"
                 android:textSize="25sp"
-                />
+                android:textColor="@color/google_teal"/>
         </LinearLayout>
 
     </LinearLayout>
