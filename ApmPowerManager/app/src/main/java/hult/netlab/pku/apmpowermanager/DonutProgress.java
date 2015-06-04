@@ -345,16 +345,16 @@ public class DonutProgress extends View {
         canvas.drawArc(finishedOuterRect, 0, getProgressAngle(), false, finishedPaint);
         canvas.drawArc(unfinishedOuterRect, getProgressAngle(), 360 - getProgressAngle(), false, unfinishedPaint);
 
-        String text = this.text != null ? this.text : prefixText + 80 + suffixText;
-        if (!TextUtils.isEmpty(text)) {
-            float textHeight = textPaint.descent() + textPaint.ascent();
-            canvas.drawText(text, (getWidth() - textPaint.measureText(text)) / 2.0f, (getWidth() - textHeight) / 2.0f, textPaint);
+      //  String text = this.text != null ? this.text : prefixText + getText() + suffixText;
+        if (!TextUtils.isEmpty(getText())) {
+       //     float textHeight = textPaint.descent() + textPaint.ascent();
+            canvas.drawText(getText()+"%", (getWidth() - textPaint.measureText(getText()+"%")) / 2.0f, getHeight()/2, textPaint);
         }
 
         if (!TextUtils.isEmpty(getInnerBottomText())) {
-            innerBottomTextPaint.setTextSize(innerBottomTextSize);
-            float bottomTextBaseline = getHeight() - innerBottomTextHeight - (textPaint.descent() + textPaint.ascent()) / 2;
-            canvas.drawText(getInnerBottomText(), (getWidth() - innerBottomTextPaint.measureText(getInnerBottomText())) / 2.0f, bottomTextBaseline, innerBottomTextPaint);
+            float bottomTextHeight = innerBottomTextPaint.descent()-innerBottomTextPaint.ascent();
+            float bottomTextBaseline = getHeight()/2f + getHeight()/10f + bottomTextHeight ;
+            canvas.drawText(getInnerBottomText(), (getWidth() - innerBottomTextPaint.measureText(getInnerBottomText())) / 2.0f, bottomTextBaseline , innerBottomTextPaint);
         }
 
     }

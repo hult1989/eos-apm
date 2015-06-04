@@ -45,6 +45,7 @@ public class BatteryRateFragment extends Fragment {
         ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.activity_batteryinfomain,container,false);
 
         donutProgress = (DonutProgress)rootview.findViewById(R.id.donut_progress);
+        donutProgress.setText("80");
         timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
