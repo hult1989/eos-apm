@@ -49,7 +49,8 @@ public class FragmentRank extends Fragment {
             @Override
             public void run() {
                 pm = getActivity().getPackageManager();
-                appInfoList = pm.getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
+          //      appInfoList = pm.getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
+                appInfoList = pm.getInstalledApplications(0);
                 for (ApplicationInfo applicationInfo : appInfoList) {
                     Map<String, Object> item = new HashMap<String, Object>();
                     item.put("pkgName",applicationInfo.packageName);

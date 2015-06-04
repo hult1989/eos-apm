@@ -4,7 +4,6 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    android:paddingBottom="8dp"
     tools:context="hult.netlab.pku.apmpowermanager.InstalledAppList">
 <!--        android:dividerHeight="0dp"  -->
     <ListView
