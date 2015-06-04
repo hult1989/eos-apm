@@ -37,6 +37,10 @@ public class BatteryChartFragment extends Fragment {
     private static final int NUM_PAGES = 3;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
+    private TextView indicator1;
+    private TextView indicator2;
+    private TextView indicator3;
+
 
     public BatteryChartFragment() {
         // Required empty public constructor
@@ -54,17 +58,42 @@ public class BatteryChartFragment extends Fragment {
         // Inflate the layout for this fragment
         ViewGroup rootview = (ViewGroup)inflater.inflate(R.layout.activity_battery_chart,container,false);
 
+        indicator1 = (TextView)rootview.findViewById(R.id.indicator1);
+        indicator2 = (TextView)rootview.findViewById(R.id.indicator2);
+        indicator3 = (TextView)rootview.findViewById(R.id.indicator3);
+
         mPager = (ViewPager)rootview.findViewById(R.id.battery_paper);
         mPagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
         mPager.setAdapter(mPagerAdapter);
+
         mPager.setCurrentItem(2);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-
+                switch (position){
+                    case 0 :
+                        indicator1.setBackgroundColor(getResources().getColor(R.color.icon_teal));
+                        indicator2.setBackgroundColor(getResources().getColor(R.color.google_teal));
+                        indicator3.setBackgroundColor(getResources().getColor(R.color.google_teal));
+                        break;
+                    case 1 :
+                        indicator1.setBackgroundColor(getResources().getColor(R.color.google_teal));
+                        indicator2.setBackgroundColor(getResources().getColor(R.color.icon_teal));
+                        indicator3.setBackgroundColor(getResources().getColor(R.color.google_teal));
+                        break;
+                    case 2 :
+                        indicator1.setBackgroundColor(getResources().getColor(R.color.google_teal));
+                        indicator2.setBackgroundColor(getResources().getColor(R.color.google_teal));
+                        indicator3.setBackgroundColor(getResources().getColor(R.color.icon_teal));
+                        break;
+                    default:
+                        indicator1.setBackgroundColor(getResources().getColor(R.color.google_teal));
+                        indicator2.setBackgroundColor(getResources().getColor(R.color.google_teal));
+                        indicator3.setBackgroundColor(getResources().getColor(R.color.icon_teal));
+                        break;
+                }
             }
         });
-
 
         listView = (ListView)rootview.findViewById(R.id.remain_list);
         items = getData();
