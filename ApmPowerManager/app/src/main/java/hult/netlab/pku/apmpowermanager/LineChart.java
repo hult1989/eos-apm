@@ -23,46 +23,54 @@ import android.graphics.Paint.Align;
 //用来画app的cpu耗电的图的
 public class LineChart {
     private int start;
-    private int[] appConsume;
-    public LineChart(int start, int[] appConsume) {
+    private double[] appConsume;
+    public LineChart(int start, double[] appConsume) {
         this.start = start;
         this.appConsume = appConsume;
+    }
+    public LineChart(){
+        this.start = 0;
     }
 
 
     public View execute(Context context) {
-
-
+        double[] timeline = new double[24];
+        double[] yValue = new double[24];
+        for(int i = 0; i < 24; i++){
+            timeline[i] = -(start + i) % 24;
+            yValue[i] = Math.random() * 60;
+        }
         String[] titles = new String[] { "CPU" };
         List<double[]> x = new ArrayList<double[]>();
         for (int i = 0; i < titles.length; i++) {
-            x.add(new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
+            x.add(timeline);
         }
         List<double[]> values = new ArrayList<double[]>();
-        values.add(new double[] { 39, 50, 41, 45, 29, 23, 56, 45, 22, 18, 43, 10 });
+        values.add(yValue);
         //int[] colors = new int[] { Color.rgb(113, 195, 222)  };
         //int[] colors = new int[] {  Color.RED};
    //     int[] colors = new int[]{Color.rgb(0, 189, 167)};
-        int[] colors = new int[]{Color.rgb(0, 150, 136)};
     //    int[] colors = new int[]{Color.WHITE};
+        int[] colors = new int[]{Color.rgb(0, 150, 136)};
         PointStyle[] styles = new PointStyle[] { PointStyle.CIRCLE };
         XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
         int length = renderer.getSeriesRendererCount();
         for (int i = 0; i < length; i++) {
             ((XYSeriesRenderer) renderer.getSeriesRendererAt(i)).setFillPoints(true);
         }
-        setChartSettings(renderer, "", "Last 24 hour", "Use minutes", 0, 13, 0, 60, Color.LTGRAY, Color.LTGRAY);
+        setChartSettings(renderer, "", "Last 24 hour", "", -24, 0, 0, 60, Color.LTGRAY, Color.LTGRAY);
         renderer.setXLabels(12);
         renderer.setYLabels(10);
         renderer.setShowGrid(true);
-        double[] range = {0,13, 0, 60};
-        renderer.setRange(range);
+        //double[] range = {0,, 0, 60};
+    //    renderer.setRange(range);
         renderer.setGridColor(Color.LTGRAY);
-        renderer.setXLabelsAlign(Align.RIGHT);
+        renderer.setXLabelsAlign(Align.CENTER);
         renderer.setYLabelsAlign(Align.RIGHT);
         renderer.setInScroll(false);
         renderer.setZoomButtonsVisible(false);
-        renderer.setPanLimits(new double[] { 0, 13, 0, 60 });
+        renderer.setPanLimits(new double[] { -24, 0, 0, 60 });
+        renderer.setZoomLimits(new double[] { -24, 0, 0, 60 });
         View view = ChartFactory.getLineChartView(context, buildDataset(titles, x, values), renderer);
         return view;
     }
@@ -75,13 +83,13 @@ public class LineChart {
             renderer.addSeriesRenderer(r);
         }
         //显示标签
-        renderer.setShowLabels(true);
+        renderer.setShowLabels(false);
         //不显示底部说明
         renderer.setShowLegend(false);
         //设置标签字体大小
-        renderer.setLabelsTextSize(15);
+        renderer.setLabelsTextSize(14);
         renderer.setLabelsColor(Color.RED);
-        renderer.setZoomEnabled(true);
+        renderer.setZoomEnabled(false);
         renderer.setPanEnabled(false);
         return renderer;
     }
@@ -103,7 +111,7 @@ public class LineChart {
         //renderer.setMarginsColor(Color.TRANSPARENT);
         renderer.setApplyBackgroundColor(true);
         renderer.setBackgroundColor(Color.TRANSPARENT);
-        renderer.setFitLegend(false);
+        renderer.setFitLegend(true);
 
         renderer.setMargins(new int[] { 20, 30, 15, 20 });
         int length = colors.length;

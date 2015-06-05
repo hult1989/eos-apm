@@ -35,6 +35,7 @@ public class appinfoActivity extends Activity {
         setContentView(R.layout.activity_appinfo);
         pm = getPackageManager();
         LinearLayout frameView = (LinearLayout)findViewById(R.id.frame);
+        double[] num = new double[24];
         frameView.addView(new LineChart().execute(appinfoActivity.this));
         Intent intent = getIntent();
         textView = (TextView)findViewById(R.id.appname);
