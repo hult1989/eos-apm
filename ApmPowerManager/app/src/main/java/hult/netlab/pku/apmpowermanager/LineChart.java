@@ -22,6 +22,14 @@ import android.graphics.Paint.Align;
 
 //用来画app的cpu耗电的图的
 public class LineChart {
+    private int start;
+    private int[] appConsume;
+    public LineChart(int start, int[] appConsume) {
+        this.start = start;
+        this.appConsume = appConsume;
+    }
+
+
     public View execute(Context context) {
 
 

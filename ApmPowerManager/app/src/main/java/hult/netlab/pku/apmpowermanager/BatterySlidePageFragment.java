@@ -18,6 +18,7 @@ package hult.netlab.pku.apmpowermanager;
  */
 
 
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -27,13 +28,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 
-/**
- * A fragment representing a single step in a wizard. The fragment shows a dummy title indicating
- * the page number, along with some dummy text.
- * <p/>
- * <p>This class is used by the {@link CardFlipActivity} and {@link
- * ScreenSlideActivity} samples.</p>
- */
 public class BatterySlidePageFragment extends Fragment {
     /**
      * The argument key for the page number this fragment represents.
@@ -72,10 +66,19 @@ public class BatterySlidePageFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.abttery_slide_page, container, false);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         CardView chartLayout = (CardView)rootView.findViewById(R.id.chartview);
+            // Running on something older than API level 11, so disable
         chartLayout.setElevation(4);
+            // the drag/drop features that use ClipboardManager APIs
         View view = new LineChart().execute(container.getContext());
         chartLayout.addView(view);
+        }else{
+            LinearLayout chartLayout = (LinearLayout)rootView.findViewById(R.id.chartview);
+            View view = new LineChart().execute(container.getContext());
+            chartLayout.addView(view);
+
+        }
 
         return rootView;
     }

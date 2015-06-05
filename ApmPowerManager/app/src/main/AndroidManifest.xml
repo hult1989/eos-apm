@@ -32,13 +32,18 @@
             android:label="@string/title_activity_battery_chart" >
         </activity>
         <activity
-            android:name=".InstalledAppList"
-            android:label="@string/title_activity_installed_app_list" >
-        </activity>
-        <activity
             android:name=".aboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
+
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="MyService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

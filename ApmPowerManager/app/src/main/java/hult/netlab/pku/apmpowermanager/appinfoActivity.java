@@ -24,12 +24,13 @@ import android.widget.TextView;
 public class appinfoActivity extends Activity {
     private ImageView iconView = null;
     private TextView textView = null;
+    private TextView consumeText = null;
+
     private Button uninstall_button;
     private Button close_button;
     private PackageManager pm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        setTheme(R.style.LowBatteryRed);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appinfo);
         pm = getPackageManager();
@@ -37,11 +38,14 @@ public class appinfoActivity extends Activity {
         frameView.addView(new LineChart().execute(appinfoActivity.this));
         Intent intent = getIntent();
         textView = (TextView)findViewById(R.id.appname);
+        consumeText = (TextView)findViewById(R.id.batteryconsumption);
         String pkgName = (String)intent.getExtras().get("pkgName");
+        String appConsume = (String)intent.getExtras().get("consume");
         iconView = (ImageView)findViewById(R.id.image);
         try {
             iconView.setImageDrawable(pm.getApplicationIcon(pkgName));
-            textView.setText(pm.getApplicationLabel(pm.getApplicationInfo(pkgName, PackageManager.GET_UNINSTALLED_PACKAGES)));
+            textView.setText(pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
+            consumeText.setText(appConsume);
         } catch (PackageManager.NameNotFoundException e){
             e.printStackTrace();
         }

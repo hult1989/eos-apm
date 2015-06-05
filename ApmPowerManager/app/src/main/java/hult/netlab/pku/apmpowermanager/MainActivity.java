@@ -3,6 +3,7 @@ package hult.netlab.pku.apmpowermanager;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,7 +25,10 @@ import android.widget.RelativeLayout;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends FragmentActivity {
 
@@ -39,25 +43,49 @@ public class MainActivity extends FragmentActivity {
     private TextView drain_tab;
     private TextView rank_tab;
     private TextView mode_tab;
+    public static SQLiteDatabase appDatabase;
+    public static ArrayList<Map<String, Object>> appConsumptionArrayList;
+    public static HashMap<String, AppConsumption> appList;
+
+
+
+    public void sqliteInit(){
+        String createSQL = "create table appinfo (id integer primary key autoincrement, pkgname text, quantity integer, time integer);";
+        try {
+            appDatabase = SQLiteDatabase.openOrCreateDatabase(getFilesDir().toString()+"/appdb.db3", null);
+            Log.e("file location", getFilesDir().toString());
+            appDatabase.execSQL("drop table appinfo");
+        }catch (Exception e){
+            appDatabase.execSQL(createSQL);
+            Log.e("drop table" , "create table");
+            e.printStackTrace();
+        }
+    }
+
+    public void startMyService(){
+        appConsumptionArrayList = new ArrayList<Map<String, Object>>();
+        appList = new HashMap<>();
+        Intent intent = new Intent();
+        intent.setAction("MyService");
+        intent.setPackage(getPackageName());
+        startService(intent);
+        /*
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Service.ALARM_SERVICE);
+        Intent intent = new Intent(MainActivity.this, InthreadService.class);
+        final PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, 2000, pendingIntent);
+        */
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getActionBar().setElevation(0);
+        sqliteInit();
+        startMyService();
      //   getActionBar().setElevation(0);
-        //setTheme(R.style.LowBatteryRed);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       /*
-        ActivityManager am = (ActivityManager) getApplication().getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
-		for (ActivityManager.RunningAppProcessInfo info : runningApps) {
-           // Log.e("processName", info.processName + "pid:" + info.pid + "uid: "+ info.uid );
-                for(int i = 0; i < info.pkgList.length; i++)
-                    if(info.pkgList[i].contains("system") == false)
-                        Log.e(info.processName, info.pkgList[0]);
 
-        }
-        */
         bottom_tab1 = (RelativeLayout) findViewById(R.id.bottom_tab1);
         bottom_tab2 = (RelativeLayout) findViewById(R.id.bottom_tab2);
         bottom_tab3 = (RelativeLayout) findViewById(R.id.bottom_tab3);
