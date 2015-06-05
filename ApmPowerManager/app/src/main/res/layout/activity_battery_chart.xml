@@ -6,59 +6,63 @@
 
 
     <android.support.v4.view.ViewPager
-            android:background="@color/icon_teal"
-            android:id="@+id/battery_paper"
-            android:layout_width="match_parent"
-            android:layout_height="230dp">
-            </android.support.v4.view.ViewPager>
+        android:background="@color/icon_teal"
+        android:id="@+id/battery_paper"
+        android:layout_width="match_parent"
+        android:layout_height="228dp">
+    </android.support.v4.view.ViewPager>
 
 
-    <LinearLayout
-        android:layout_width="100dp"
-        android:layout_height="20dp"
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:id="@+id/indicator"
+        android:layout_height="12dp"
         android:orientation="horizontal"
-        android:layout_marginTop="230dp"
+        android:background="@color/icon_teal"
+        android:layout_below="@+id/battery_paper"
         android:layout_centerHorizontal="true">
 
         <TextView
             android:id="@+id/indicator1"
-            android:layout_width="25dp"
+            android:layout_width="20dp"
             android:layout_height="3dp"
-            android:layout_marginTop="7dp"
+            android:layout_toLeftOf="@+id/barl"
             android:background="@color/google_teal"/>
         <TextView
             android:layout_width="12dp"
+            android:id="@+id/barl"
             android:layout_height="3dp"
-            android:layout_marginTop="7dp"
+            android:layout_toLeftOf="@+id/indicator2"
             android:background="@color/icon_teal"/>
         <TextView
+            android:layout_centerHorizontal="true"
             android:id="@+id/indicator2"
-            android:layout_width="25dp"
+            android:layout_width="20dp"
             android:layout_height="3dp"
-            android:layout_marginTop="7dp"
             android:background="@color/google_teal"/>
         <TextView
             android:layout_width="12dp"
+            android:id="@+id/barr"
+            android:layout_toRightOf="@+id/indicator2"
             android:layout_height="3dp"
-            android:layout_marginTop="7dp"
             android:background="@color/icon_teal"/>
         <TextView
             android:id="@+id/indicator3"
-            android:layout_width="25dp"
+            android:layout_toRightOf="@+id/barr"
+            android:layout_width="20dp"
             android:layout_height="3dp"
-            android:layout_marginTop="7dp"
             android:background="@android:color/white"/>
-
-        </LinearLayout>
+    </RelativeLayout>
 
 
 
     <LinearLayout
         android:id="@+id/remain_list_layout"
-            android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/battery_paper"
+        android:layout_below="@+id/indicator"
         android:orientation="vertical">
 
         <ListView
@@ -68,5 +72,7 @@
 
         </ListView>
     </LinearLayout>
+
+
 
 </RelativeLayout>

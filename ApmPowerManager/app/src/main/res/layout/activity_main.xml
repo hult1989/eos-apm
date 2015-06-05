@@ -9,16 +9,16 @@
         android:id="@+id/main_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_tab">
+        android:layout_below="@+id/bottom_tab">
     </android.support.v4.view.ViewPager>
 
     <LinearLayout
         android:id="@+id/bottom_tab"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:background="@color/icon_teal"
-        android:layout_height="24dp">
+        android:layout_height="56dp">
         <RelativeLayout
             android:id="@+id/bottom_tab1"
             android:layout_width="0dp"
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="5dp"
-                android:text="save"
+                android:text="STATE"
                 android:textSize="14sp"
                 android:textColor="@android:color/white"/>
         </RelativeLayout>
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="5dp"
-                android:text="drain"
+                android:text="INFO"
                 android:textSize="14sp"
                  />
         </RelativeLayout>
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="5dp"
-                android:text="rank"
+                android:text="RANK"
                 android:textSize="14sp"
                  />
         </RelativeLayout>
@@ -83,11 +83,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="mode"
+                android:text="MODE"
                 android:textSize="14sp"
                 />
         </RelativeLayout>
-
 
     </LinearLayout>
 

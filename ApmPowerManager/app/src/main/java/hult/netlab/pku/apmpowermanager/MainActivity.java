@@ -2,6 +2,9 @@ package hult.netlab.pku.apmpowermanager;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -19,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -47,39 +51,41 @@ public class MainActivity extends FragmentActivity {
     public static ArrayList<Map<String, Object>> appConsumptionArrayList;
     public static HashMap<String, AppConsumption> appList;
 
-
-
     public void sqliteInit(){
-        String createSQL = "create table appinfo (id integer primary key autoincrement, pkgname text, quantity integer, time integer);";
+        String createAppDatabase = "create table appinfo (id integer primary key autoincrement, pkgname text, quantity integer, time integer);";
+        String createBatteryDatabase = "create table batteryinfo (id integer primary key autoincrement, quantity integer, time integer);";
         try {
             appDatabase = SQLiteDatabase.openOrCreateDatabase(getFilesDir().toString()+"/appdb.db3", null);
             Log.e("file location", getFilesDir().toString());
-            appDatabase.execSQL("drop table appinfo");
+            appDatabase.execSQL(createAppDatabase);
+            appDatabase.execSQL(createBatteryDatabase);
         }catch (Exception e){
-            appDatabase.execSQL(createSQL);
-            Log.e("drop table" , "create table");
-            e.printStackTrace();
+            appDatabase.execSQL("drop table appinfo");
+            appDatabase.execSQL("drop table batteryinfo");
+            appDatabase.execSQL(createAppDatabase);
+            appDatabase.execSQL(createBatteryDatabase);
         }
     }
 
     public void startMyService(){
         appConsumptionArrayList = new ArrayList<Map<String, Object>>();
         appList = new HashMap<>();
+       /*
         Intent intent = new Intent();
         intent.setAction("MyService");
         intent.setPackage(getPackageName());
         startService(intent);
-        /*
-        AlarmManager alarmManager = (AlarmManager)getSystemService(Service.ALARM_SERVICE);
-        Intent intent = new Intent(MainActivity.this, InthreadService.class);
-        final PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, 2000, pendingIntent);
         */
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Service.ALARM_SERVICE);
+        Intent intent = new Intent(MainActivity.this, MyService.class);
+        final PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, 10000, pendingIntent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getActionBar().setElevation(0);
+        getActionBar().hide();
         sqliteInit();
         startMyService();
      //   getActionBar().setElevation(0);
@@ -90,6 +96,7 @@ public class MainActivity extends FragmentActivity {
         bottom_tab2 = (RelativeLayout) findViewById(R.id.bottom_tab2);
         bottom_tab3 = (RelativeLayout) findViewById(R.id.bottom_tab3);
         bottom_tab4 = (RelativeLayout) findViewById(R.id.bottom_tab4);
+
         save_tab = (TextView) findViewById(R.id.tab_save_text);
         drain_tab = (TextView) findViewById(R.id.tab_drain_text);
         rank_tab = (TextView) findViewById(R.id.tab_rank_text);
@@ -122,6 +129,12 @@ public class MainActivity extends FragmentActivity {
                         drain_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         rank_tab.setTextColor(Color.WHITE);
                         mode_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        break;
+                    case 3:
+                        save_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        drain_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        rank_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        mode_tab.setTextColor(Color.WHITE);
                         break;
                     default:
                         save_tab.setTextColor(Color.WHITE);

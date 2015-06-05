@@ -4,7 +4,7 @@
     <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
         <item name="android:colorPrimary">@color/icon_teal </item>
         <item name="android:colorPrimaryDark">@color/google_teal</item>
-        <item name="android:colorAccent">@color/icon_teal</item>
+        <item name="android:colorAccent">@color/google_teal</item>
         <item name="android:showAsAction">always</item>
         <item name="android:navigationBarColor">@color/google_teal</item>
         <item name="android:background">@android:color/transparent</item>

@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.PointStyle;
@@ -22,31 +23,33 @@ import android.graphics.Paint.Align;
 
 //用来画app的cpu耗电的图的
 public class LineChart {
-    private int start;
     private double[] appConsume;
-    public LineChart(int start, double[] appConsume) {
-        this.start = start;
+    public LineChart(double[] appConsume) {
         this.appConsume = appConsume;
     }
     public LineChart(){
-        this.start = 0;
-    }
+        this.appConsume = new double[24];
+        for(int i = 23; i >=0; i--){
+            this.appConsume[i] = i;
+        }
 
+    }
 
     public View execute(Context context) {
         double[] timeline = new double[24];
-        double[] yValue = new double[24];
         for(int i = 0; i < 24; i++){
-            timeline[i] = -(start + i) % 24;
-            yValue[i] = Math.random() * 60;
+            timeline[i] = -23 + i;
         }
-        String[] titles = new String[] { "CPU" };
+        String[] titles = new String[] { "CPU history" };
         List<double[]> x = new ArrayList<double[]>();
         for (int i = 0; i < titles.length; i++) {
             x.add(timeline);
         }
         List<double[]> values = new ArrayList<double[]>();
-        values.add(yValue);
+        for(int i = 0; i < 24; i++){
+            Log.e(i + ":", appConsume[i] + "");
+        }
+        values.add(appConsume);
         //int[] colors = new int[] { Color.rgb(113, 195, 222)  };
         //int[] colors = new int[] {  Color.RED};
    //     int[] colors = new int[]{Color.rgb(0, 189, 167)};
@@ -113,7 +116,7 @@ public class LineChart {
         renderer.setBackgroundColor(Color.TRANSPARENT);
         renderer.setFitLegend(true);
 
-        renderer.setMargins(new int[] { 20, 30, 15, 20 });
+        renderer.setMargins(new int[] { 20, 20, 20, 20 });
         int length = colors.length;
         for (int i = 0; i < length; i++) {
             XYSeriesRenderer r = new XYSeriesRenderer();

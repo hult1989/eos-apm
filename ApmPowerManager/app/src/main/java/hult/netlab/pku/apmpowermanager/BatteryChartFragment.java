@@ -21,15 +21,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link BatteryChartFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link BatteryChartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class BatteryChartFragment extends Fragment {
 
     private ListView listView;

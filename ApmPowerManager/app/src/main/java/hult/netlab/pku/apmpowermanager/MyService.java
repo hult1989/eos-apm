@@ -39,6 +39,7 @@ public class MyService extends Service {
         Log.d("in thread service", "create");
         mActivityManager = (ActivityManager)this.getSystemService(ACTIVITY_SERVICE);
         mRunningProcess = mActivityManager.getRunningAppProcesses();
+        new Thread(new sqlOpRunnable()).start();
     }
 
     class sqlOpRunnable implements Runnable {
@@ -47,10 +48,10 @@ public class MyService extends Service {
                 refreshAppList();
                 getAppComsumption();
             }catch (Exception e){
-                MainActivity.appDatabase.execSQL("drop table appinfo");
+//                MainActivity.appDatabase.execSQL("drop table appinfo");
                 e.printStackTrace();
             }finally {
-                MainActivity.appDatabase.execSQL("drop table appinfo");
+//                MainActivity.appDatabase.execSQL("drop table appinfo");
             }
             Collections.sort(MainActivity.appConsumptionArrayList, new SortByConsume());
             /*
@@ -60,6 +61,24 @@ public class MyService extends Service {
              */
         }
     }
+
+    class fakeConsumption implements Runnable{
+        public void run(){
+            for (ActivityManager.RunningAppProcessInfo amProcess: mRunningProcess) {
+                try {
+                    PackageManager pm = getPackageManager();
+                    PackageInfo packageInfo = pm.getPackageInfo(amProcess.pkgList[0], 0);
+                    String SQLcommand = "insert into appinfo (pkgname, quantity, time) values (\"" + amProcess.pkgList[0] + "\", "
+                                        + (int)(Math.random() * 50 % 60) + ", " + System.currentTimeMillis() + ");";
+                    MainActivity.appDatabase.execSQL(SQLcommand);
+               //     Log.d("runnable in service", SQLcommand);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     class SortByConsume implements Comparator{
         public int compare(Object o1, Object o2) {
             Map<String, Object> s1 = ( Map<String, Object>) o1;
@@ -74,7 +93,8 @@ public class MyService extends Service {
     }
 
     public int onStartCommand(Intent intent, int flags, int startID){
-        new Thread(new sqlOpRunnable()).start();
+        new Thread(new fakeConsumption()).start();
+        Log.d("time: ", System.currentTimeMillis() + " ");
         return START_STICKY;
 
     }
@@ -82,26 +102,24 @@ public class MyService extends Service {
 
     public void getAppComsumption(){
         Iterator iterator = MainActivity.appList.entrySet().iterator();
-        String filter = "filterapp";
         String pkgName = "";
         while(iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
             pkgName = (String) entry.getKey();
             AppConsumption appConsumption = (AppConsumption) entry.getValue();
-            if(filter != pkgName){
-                Map<String, Object> app = new HashMap<String, Object>();
-                app.put("pkgName", pkgName);
-                app.put("label", appConsumption.getLabel());
-                app.put("consume", appConsumption.getCpuConsumption().get(23));
-                MainActivity.appConsumptionArrayList.add(app);
-                String SQLcommand = "insert into appinfo (pkgname, quantity, time) values (\"" + appConsumption.getLabel() + "\", "
+            Map<String, Object> app = new HashMap<String, Object>();
+            app.put("pkgName", pkgName);
+            app.put("label", appConsumption.getLabel());
+            app.put("consume", appConsumption.getCpuConsumption().get(23));
+            MainActivity.appConsumptionArrayList.add(app);
+                String SQLcommand = "insert into appinfo (pkgname, quantity, time) values (\"" + pkgName + "\", "
                         + appConsumption.getCpuConsumption().get(23) + ", " + System.currentTimeMillis() + ");";
-                try {
-                    MainActivity.appDatabase.execSQL(SQLcommand);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                filter = pkgName;
+//            String SQLcommand = "insert into appinfo (pkgname, quantity, time) values (\"" + pkgName + "\", "
+//                    + (int)(Math.random() * 60) + ", " + System.currentTimeMillis() + ");";
+            try {
+                MainActivity.appDatabase.execSQL(SQLcommand);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -134,6 +152,7 @@ public class MyService extends Service {
                     MainActivity.appList.put(pkgName, new AppConsumption());
                     MainActivity.appList.get(pkgName).addCpuComsumption(getAppProcessTime(amProcess.pid));
                     String label = pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)).toString();
+
                     MainActivity.appList.get(pkgName).addLabel(label);
             //    }
             }catch (Exception e){

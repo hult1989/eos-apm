@@ -19,22 +19,20 @@
         </ListView>
     </LinearLayout>
 
-    <ImageButton
+
+
+    <com.melnykov.fab.FloatingActionButton
         android:id="@+id/add_mode"
-        android:layout_centerVertical="true"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginRight="8dp"
-        android:padding="4dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/ff"
-        android:layout_alignParentRight="true"
         android:elevation="4dp"
-        android:layout_alignParentBottom="true">
-    </ImageButton>
-
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_white_36dp"
+        fab:fab_colorNormal="@color/google_teal"
+        fab:fab_colorPressed="@color/google_teal"
+        fab:fab_colorRipple="@color/google_teal" />
 
 
 </RelativeLayout>

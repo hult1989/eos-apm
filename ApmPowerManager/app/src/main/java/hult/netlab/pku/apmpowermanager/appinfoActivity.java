@@ -2,8 +2,12 @@ package hult.netlab.pku.apmpowermanager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.TrafficStats;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
@@ -25,28 +29,72 @@ public class appinfoActivity extends Activity {
     private ImageView iconView = null;
     private TextView textView = null;
     private TextView consumeText = null;
+    private TextView uploadText = null;
+    private TextView downloadText = null;
 
     private Button uninstall_button;
     private Button close_button;
     private PackageManager pm;
+
+    public double[] readSql(String pkgName){
+        String sqlCmd = "select quantity from appinfo where pkgname = \""
+                + pkgName + "\" order by time desc limit 0, 24";
+        Cursor cursor = MainActivity.appDatabase.rawQuery(sqlCmd, null);
+        int index = 23;
+        Log.e("readsql", cursor.getCount() + "");
+        double[] result = new double[24];
+        while(cursor.moveToNext() != false){
+            result[index] = cursor.getDouble(0) % 60;
+            index--;
+        }
+        while(index >= 0){
+            result[index] = 0;
+            index--;
+        }
+        return result;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getActionBar().setElevation(0);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appinfo);
         pm = getPackageManager();
         LinearLayout frameView = (LinearLayout)findViewById(R.id.frame);
-        double[] num = new double[24];
-        frameView.addView(new LineChart().execute(appinfoActivity.this));
+
         Intent intent = getIntent();
         textView = (TextView)findViewById(R.id.appname);
         consumeText = (TextView)findViewById(R.id.batteryconsumption);
+        uploadText = (TextView)findViewById(R.id.upload);
+        downloadText = (TextView)findViewById(R.id.download);
         String pkgName = (String)intent.getExtras().get("pkgName");
         String appConsume = (String)intent.getExtras().get("consume");
         iconView = (ImageView)findViewById(R.id.image);
+        double[] num = readSql(pkgName);
+        frameView.addView(new LineChart(num).execute(appinfoActivity.this));
+
+
         try {
             iconView.setImageDrawable(pm.getApplicationIcon(pkgName));
             textView.setText(pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
-            consumeText.setText(appConsume);
+            int uid = pm.getPackageInfo(pkgName, 0).applicationInfo.uid;
+            long cellularDownload = TrafficStats.getUidRxBytes(uid) / 1024;
+            long cellularUpload = TrafficStats.getUidTxBytes(uid) / 1024;
+            String upload = "";
+            if(cellularUpload / 1024 > 1){
+                upload +=  cellularUpload / 1024 + " MB " + cellularUpload % 1024 + " KB";
+            }else{
+                upload +=  cellularUpload % 1024 + " KB";
+            }
+            uploadText.setText(upload);
+            String download = "";
+            if(cellularDownload / 1024 > 1){
+                download += cellularDownload / 1024 + " MB " + cellularDownload % 1024 + " KB";
+            }else{
+                download += cellularDownload % 1024 + " KB";
+            }
+            downloadText.setText(download);
         } catch (PackageManager.NameNotFoundException e){
             e.printStackTrace();
         }
