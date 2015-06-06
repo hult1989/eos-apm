@@ -42,13 +42,11 @@ public class appinfoActivity extends Activity {
         String sqlCmd = "select ratio from apphistory where pkgname = \""
                 + pkgName + "\" order by timestamp desc limit 0, 24;";
         Log.e("appinfo", sqlCmd);
-
         Cursor cursor = MainActivity.appDatabase.rawQuery(sqlCmd, null);
         Log.e("length", cursor.getCount() + "");
         int index = 23;
         double[] result = new double[24];
         while(cursor.moveToNext() != false){
-            Log.e(pkgName, cursor.getDouble(0) * 100 + "");
             Log.e(pkgName, cursor.getDouble(0)*100 + "");
             result[index] = cursor.getDouble(0) * 100  ;
             index--;

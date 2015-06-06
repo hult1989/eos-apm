@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -52,21 +53,23 @@ public class MyService extends Service {
 
     class fakeConsumption implements Runnable{
         public void run(){
-            double totalProcTime = 0;
+            double totalRunningTime = 0;
             mRunningProcess = mActivityManager.getRunningAppProcesses();
+            HashMap<String, Object> tempItem = new HashMap<>();
             for (ActivityManager.RunningAppProcessInfo amProcess: mRunningProcess) {
                 try {
                     PackageManager pm = getPackageManager();
                     PackageInfo packageInfo = pm.getPackageInfo(amProcess.pkgList[0], 0);
                     long appProcTime = getAppProcessTime(amProcess.pid);
-                    totalProcTime += appProcTime;
                     String pkgName = amProcess.pkgList[0];
                     Long timestamp = System.currentTimeMillis();
                     Long runningTime = calcRunningTime(pkgName, amProcess.pid);
+                    totalRunningTime += runningTime;
+                    tempItem.put(pkgName, runningTime);
                     String SQLcommand = "insert into appinfo (pkgname, pid, proctime, runningtime, timestamp) "
                             + "values ( \"" + pkgName + "\", " + amProcess.pid + ", "
                             + appProcTime + ", " + runningTime + ", " + System.currentTimeMillis() + ");";
-                    Log.e(pkgName, ""+runningTime / 100);
+                //    Log.e(pkgName, ""+runningTime / 100);
                     MainActivity.appDatabase.execSQL(SQLcommand);
                     Cursor cursor = MainActivity.appDatabase.rawQuery("select * from appinfo where " +
                             "pkgname = \"hult.netlab.pku.apmpowermanager\" order by timestamp desc limit 0, 1;", null);
@@ -74,21 +77,22 @@ public class MyService extends Service {
                     e.printStackTrace();
                 }
             }
+            Log.e("total running time: ", totalRunningTime + "");
             for (ActivityManager.RunningAppProcessInfo processInfo: mRunningProcess){
                 PackageManager pm = getPackageManager();
                 try {
                     PackageInfo packageInfo = pm.getPackageInfo(processInfo.pkgList[0], 0);
-                    long appProcTime = getAppProcessTime(processInfo.pid);
                     String pkgName = processInfo.pkgList[0];
+                    float runningtime = Float.parseFloat(tempItem.get(pkgName).toString());
+          //          Log.e(pkgName, runningtime / totalRunningTime * 100 + "%");
+
                     String insertCMD = "insert into apphistory (pkgname, ratio, timestamp) values" +
-                            " (\"" + pkgName + "\", " + appProcTime / totalProcTime + ", "
+                            " (\"" + pkgName + "\", " + runningtime / totalRunningTime + ", "
                     + System.currentTimeMillis() + ");";
           //          Log.e(pkgName, insertCMD);
                     MainActivity.appDatabase.execSQL(insertCMD, new Object[]{});
                 }catch (Exception e){};
             }
-            Cursor cursor = MainActivity.appDatabase.rawQuery("select * from apphistory", null);
-            Log.e("num", cursor.getCount() + "");
         }
     }
 
@@ -109,7 +113,13 @@ public class MyService extends Service {
             Long result = (getAppProcessTime(pid) - cursor.getLong(1));
             return result;
         }else {
-            return getAppProcessTime(pid);
+
+            if(getAppProcessTime(pid) > 500){
+                Long result = (getAppProcessTime(pid) - cursor.getLong(1));
+                return result;
+            }
+            else
+                return getAppProcessTime(pid);
         }
     }
         /*
