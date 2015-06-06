@@ -85,6 +85,7 @@ public class MyService extends Service {
                     String pkgName = processInfo.pkgList[0];
                     float runningtime = Float.parseFloat(tempItem.get(pkgName).toString());
           //          Log.e(pkgName, runningtime / totalRunningTime * 100 + "%");
+                    Log.e(pkgName, runningtime + ", " + totalRunningTime);
 
                     String insertCMD = "insert into apphistory (pkgname, ratio, timestamp) values" +
                             " (\"" + pkgName + "\", " + runningtime / totalRunningTime + ", "
