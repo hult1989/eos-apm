@@ -46,9 +46,7 @@ public class LineChart {
             x.add(timeline);
         }
         List<double[]> values = new ArrayList<double[]>();
-        for(int i = 0; i < 24; i++){
-            Log.e(i + ":", appConsume[i] + "");
-        }
+
         values.add(appConsume);
         //int[] colors = new int[] { Color.rgb(113, 195, 222)  };
         //int[] colors = new int[] {  Color.RED};
@@ -61,7 +59,15 @@ public class LineChart {
         for (int i = 0; i < length; i++) {
             ((XYSeriesRenderer) renderer.getSeriesRendererAt(i)).setFillPoints(true);
         }
-        setChartSettings(renderer, "", "Last 24 hour", "", -24, 0, 0, 60, Color.LTGRAY, Color.LTGRAY);
+        double ymax = 0;
+        double ymin = 0;
+        for(int i = 0; i < 24; i++){
+            if(appConsume[i] > ymax)
+                ymax = appConsume[i];
+            if(appConsume[i] < ymin)
+                ymin = appConsume[i];
+        }
+        setChartSettings(renderer, "", "Last 24 hour", "", -24, 0, 0, 100, Color.LTGRAY, Color.LTGRAY);
         renderer.setXLabels(12);
         renderer.setYLabels(10);
         renderer.setShowGrid(true);
@@ -72,8 +78,8 @@ public class LineChart {
         renderer.setYLabelsAlign(Align.RIGHT);
         renderer.setInScroll(false);
         renderer.setZoomButtonsVisible(false);
-        renderer.setPanLimits(new double[] { -24, 0, 0, 60 });
-        renderer.setZoomLimits(new double[] { -24, 0, 0, 60 });
+        renderer.setPanLimits(new double[] { -24, 0, 0, 100 });
+        renderer.setZoomLimits(new double[] { -24, 0,0, 100 });
         View view = ChartFactory.getLineChartView(context, buildDataset(titles, x, values), renderer);
         return view;
     }

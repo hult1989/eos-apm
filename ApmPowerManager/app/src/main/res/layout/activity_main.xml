@@ -49,6 +49,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginTop="5dp"
                 android:text="INFO"
+                android:textColor="@color/google_teal"
                 android:textSize="14sp"
                  />
         </RelativeLayout>
@@ -65,6 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:textColor="@color/google_teal"
                 android:layout_marginTop="5dp"
                 android:text="RANK"
                 android:textSize="14sp"
@@ -80,6 +82,7 @@
             android:orientation="vertical">
             <TextView
                 android:id="@+id/tab_mode_text"
+                android:textColor="@color/google_teal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

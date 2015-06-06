@@ -38,68 +38,90 @@ public class MyService extends Service {
     public void onCreate(){
         Log.d("in thread service", "create");
         mActivityManager = (ActivityManager)this.getSystemService(ACTIVITY_SERVICE);
-        mRunningProcess = mActivityManager.getRunningAppProcesses();
-        new Thread(new sqlOpRunnable()).start();
+            PackageManager pm = getPackageManager();
+            List<PackageInfo> packageInfos = pm.getInstalledPackages(0);
+            for (PackageInfo packageInfo : packageInfos) {
+                String pkgName = packageInfo.packageName.toString();
+                String insertCMD = "insert into apphistory (pkgname, ratio, timestamp) values("
+                        + "\"" + pkgName + "\", " + 0.05 + ", " + System.currentTimeMillis() + ");";
+                MainActivity.appDatabase.execSQL(insertCMD, new Object[]{});
+                Log.e("selectcmd", insertCMD);
+            }
     }
 
-    class sqlOpRunnable implements Runnable {
-        public void run(){
-            try{
-                refreshAppList();
-                getAppComsumption();
-            }catch (Exception e){
-//                MainActivity.appDatabase.execSQL("drop table appinfo");
-                e.printStackTrace();
-            }finally {
-//                MainActivity.appDatabase.execSQL("drop table appinfo");
-            }
-            Collections.sort(MainActivity.appConsumptionArrayList, new SortByConsume());
-            /*
-            for(Map<String, Object> app: MainActivity.appConsumptionArrayList){
-                Log.d(app.get("pkgName").toString(), app.get("consume").toString());
-            }
-             */
-        }
-    }
 
     class fakeConsumption implements Runnable{
         public void run(){
+            double totalProcTime = 0;
+            mRunningProcess = mActivityManager.getRunningAppProcesses();
             for (ActivityManager.RunningAppProcessInfo amProcess: mRunningProcess) {
                 try {
                     PackageManager pm = getPackageManager();
                     PackageInfo packageInfo = pm.getPackageInfo(amProcess.pkgList[0], 0);
-                    String SQLcommand = "insert into appinfo (pkgname, quantity, time) values (\"" + amProcess.pkgList[0] + "\", "
-                                        + (int)(Math.random() * 50 % 60) + ", " + System.currentTimeMillis() + ");";
+                    long appProcTime = getAppProcessTime(amProcess.pid);
+                    totalProcTime += appProcTime;
+                    String pkgName = amProcess.pkgList[0];
+                    Long timestamp = System.currentTimeMillis();
+                    Long runningTime = calcRunningTime(pkgName, amProcess.pid);
+                    String SQLcommand = "insert into appinfo (pkgname, pid, proctime, runningtime, timestamp) "
+                            + "values ( \"" + pkgName + "\", " + amProcess.pid + ", "
+                            + appProcTime + ", " + runningTime + ", " + System.currentTimeMillis() + ");";
+                    Log.e(pkgName, ""+runningTime / 100);
                     MainActivity.appDatabase.execSQL(SQLcommand);
-               //     Log.d("runnable in service", SQLcommand);
+                    Cursor cursor = MainActivity.appDatabase.rawQuery("select * from appinfo where " +
+                            "pkgname = \"hult.netlab.pku.apmpowermanager\" order by timestamp desc limit 0, 1;", null);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
             }
-        }
-    }
-
-    class SortByConsume implements Comparator{
-        public int compare(Object o1, Object o2) {
-            Map<String, Object> s1 = ( Map<String, Object>) o1;
-            Map<String, Object> s2 = ( Map<String, Object>) o2;
-            if (Integer.parseInt(s1.get("consume").toString()) > Integer.parseInt(s2.get("consume").toString()))
-                return -1;
-            else if (Integer.parseInt(s1.get("consume").toString()) == Integer.parseInt(s2.get("consume").toString())) {
-                return 0;
+            for (ActivityManager.RunningAppProcessInfo processInfo: mRunningProcess){
+                PackageManager pm = getPackageManager();
+                try {
+                    PackageInfo packageInfo = pm.getPackageInfo(processInfo.pkgList[0], 0);
+                    long appProcTime = getAppProcessTime(processInfo.pid);
+                    String pkgName = processInfo.pkgList[0];
+                    String insertCMD = "insert into apphistory (pkgname, ratio, timestamp) values" +
+                            " (\"" + pkgName + "\", " + appProcTime / totalProcTime + ", "
+                    + System.currentTimeMillis() + ");";
+          //          Log.e(pkgName, insertCMD);
+                    MainActivity.appDatabase.execSQL(insertCMD, new Object[]{});
+                }catch (Exception e){};
             }
-            return 1;
+            Cursor cursor = MainActivity.appDatabase.rawQuery("select * from apphistory", null);
+            Log.e("num", cursor.getCount() + "");
         }
     }
 
     public int onStartCommand(Intent intent, int flags, int startID){
         new Thread(new fakeConsumption()).start();
-        Log.d("time: ", System.currentTimeMillis() + " ");
+       // Log.e("refresh", "refresh app sql");
         return START_STICKY;
 
     }
 
+    public long calcRunningTime (String pkgName, int pid) {
+        String cmd = "select pid, proctime from appinfo where pkgname = \"" + pkgName + "\" order by timestamp desc limit 0, 1";
+        Cursor cursor = MainActivity.appDatabase.rawQuery(cmd, null);
+        cursor.moveToNext();
+        if (cursor.getCount() == 0)
+            return getAppProcessTime(pid);
+        else if(pid == cursor.getLong(0)) {
+            Long result = (getAppProcessTime(pid) - cursor.getLong(1));
+            return result;
+        }else {
+            return getAppProcessTime(pid);
+        }
+    }
+        /*
+        else{
+            Log.e(pkgName, "NOT EQUAL: "  + getAppProcessTime());
+            return getAppProcessTime(pid);
+        } else if (pid == cursor.getLong(0)) {
+        }
+         */
 
+
+/*
     public void getAppComsumption(){
         Iterator iterator = MainActivity.appList.entrySet().iterator();
         String pkgName = "";
@@ -112,6 +134,7 @@ public class MyService extends Service {
             app.put("label", appConsumption.getLabel());
             app.put("consume", appConsumption.getCpuConsumption().get(23));
             MainActivity.appConsumptionArrayList.add(app);
+
                 String SQLcommand = "insert into appinfo (pkgname, quantity, time) values (\"" + pkgName + "\", "
                         + appConsumption.getCpuConsumption().get(23) + ", " + System.currentTimeMillis() + ");";
 //            String SQLcommand = "insert into appinfo (pkgname, quantity, time) values (\"" + pkgName + "\", "
@@ -123,7 +146,7 @@ public class MyService extends Service {
             }
         }
     }
-
+*/
     String second2hour(long second){
         long min = second / 60;
         long h = second / 3600;
@@ -138,27 +161,6 @@ public class MyService extends Service {
             result += min + " min";
         result += sec + "sec";
         return result;
-    }
-
-    public void refreshAppList(){
-        PackageManager pm = getPackageManager();
-        for (ActivityManager.RunningAppProcessInfo amProcess: mRunningProcess) {
-            try {
-                PackageInfo packageInfo = pm.getPackageInfo(amProcess.pkgList[0], 0);
-           //     if(isSystemApp(packageInfo))
-           //         continue;
-           //     for(int i = 0; i < amProcess.pkgList.length; i++) {
-                    String pkgName = amProcess.pkgList[0];
-                    MainActivity.appList.put(pkgName, new AppConsumption());
-                    MainActivity.appList.get(pkgName).addCpuComsumption(getAppProcessTime(amProcess.pid));
-                    String label = pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)).toString();
-
-                    MainActivity.appList.get(pkgName).addLabel(label);
-            //    }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
     }
 
     public boolean isSystemApp(PackageInfo pInfo) {

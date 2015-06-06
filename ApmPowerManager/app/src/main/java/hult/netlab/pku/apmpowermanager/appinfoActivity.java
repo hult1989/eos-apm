@@ -37,14 +37,20 @@ public class appinfoActivity extends Activity {
     private PackageManager pm;
 
     public double[] readSql(String pkgName){
-        String sqlCmd = "select quantity from appinfo where pkgname = \""
-                + pkgName + "\" order by time desc limit 0, 24";
+//        String sqlCmd = "select * from appratio where pkgname = \""
+//                + pkgName + "\" order by timestamp desc limit 0, 24;";
+        String sqlCmd = "select ratio from apphistory where pkgname = \""
+                + pkgName + "\" order by timestamp desc limit 0, 24;";
+        Log.e("appinfo", sqlCmd);
+
         Cursor cursor = MainActivity.appDatabase.rawQuery(sqlCmd, null);
+        Log.e("length", cursor.getCount() + "");
         int index = 23;
-        Log.e("readsql", cursor.getCount() + "");
         double[] result = new double[24];
         while(cursor.moveToNext() != false){
-            result[index] = cursor.getDouble(0) % 60;
+            Log.e(pkgName, cursor.getDouble(0) * 100 + "");
+            Log.e(pkgName, cursor.getDouble(0)*100 + "");
+            result[index] = cursor.getDouble(0) * 100  ;
             index--;
         }
         while(index >= 0){
@@ -69,7 +75,7 @@ public class appinfoActivity extends Activity {
         uploadText = (TextView)findViewById(R.id.upload);
         downloadText = (TextView)findViewById(R.id.download);
         String pkgName = (String)intent.getExtras().get("pkgName");
-        String appConsume = (String)intent.getExtras().get("consume");
+        String appConsume = (String)intent.getExtras().get("ratio");
         iconView = (ImageView)findViewById(R.id.image);
         double[] num = readSql(pkgName);
         frameView.addView(new LineChart(num).execute(appinfoActivity.this));
@@ -79,6 +85,7 @@ public class appinfoActivity extends Activity {
             iconView.setImageDrawable(pm.getApplicationIcon(pkgName));
             textView.setText(pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
             int uid = pm.getPackageInfo(pkgName, 0).applicationInfo.uid;
+            consumeText.setText(appConsume);
             long cellularDownload = TrafficStats.getUidRxBytes(uid) / 1024;
             long cellularUpload = TrafficStats.getUidTxBytes(uid) / 1024;
             String upload = "";

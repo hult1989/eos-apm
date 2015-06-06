@@ -6,6 +6,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
@@ -48,28 +50,32 @@ public class MainActivity extends FragmentActivity {
     private TextView rank_tab;
     private TextView mode_tab;
     public static SQLiteDatabase appDatabase;
-    public static ArrayList<Map<String, Object>> appConsumptionArrayList;
-    public static HashMap<String, AppConsumption> appList;
 
     public void sqliteInit(){
-        String createAppDatabase = "create table appinfo (id integer primary key autoincrement, pkgname text, quantity integer, time integer);";
-        String createBatteryDatabase = "create table batteryinfo (id integer primary key autoincrement, quantity integer, time integer);";
+        String createAppDatabase = "create table appinfo (id integer primary key autoincrement, " +
+                "pkgname text, pid integer, proctime integer, runningtime integer, timestamp integer);";
+        String createBatteryDatabase = "create table batteryinfo (id integer primary key autoincrement, quantity integer, timestamp integer);";
+        String createAppRatioHistory = "create table appratio (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
+        String createAppRatioCMD = "create table apphistory (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
+
         try {
             appDatabase = SQLiteDatabase.openOrCreateDatabase(getFilesDir().toString()+"/appdb.db3", null);
             Log.e("file location", getFilesDir().toString());
             appDatabase.execSQL(createAppDatabase);
             appDatabase.execSQL(createBatteryDatabase);
+            appDatabase.execSQL(createAppRatioCMD);
         }catch (Exception e){
+            e.printStackTrace();
             appDatabase.execSQL("drop table appinfo");
             appDatabase.execSQL("drop table batteryinfo");
+            appDatabase.execSQL("drop table apphistory");
             appDatabase.execSQL(createAppDatabase);
             appDatabase.execSQL(createBatteryDatabase);
+            appDatabase.execSQL(createAppRatioCMD);
         }
     }
 
     public void startMyService(){
-        appConsumptionArrayList = new ArrayList<Map<String, Object>>();
-        appList = new HashMap<>();
        /*
         Intent intent = new Intent();
         intent.setAction("MyService");
@@ -79,8 +85,10 @@ public class MainActivity extends FragmentActivity {
         AlarmManager alarmManager = (AlarmManager)getSystemService(Service.ALARM_SERVICE);
         Intent intent = new Intent(MainActivity.this, MyService.class);
         final PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, 10000, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, 5000, pendingIntent);
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -30,9 +30,9 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add_white_36dp"
-        fab:fab_colorNormal="@color/google_teal"
+        fab:fab_colorNormal="@color/icon_teal"
         fab:fab_colorPressed="@color/google_teal"
-        fab:fab_colorRipple="@color/google_teal" />
+        fab:fab_colorRipple="@color/down_teal" />
 
 
 </RelativeLayout>
