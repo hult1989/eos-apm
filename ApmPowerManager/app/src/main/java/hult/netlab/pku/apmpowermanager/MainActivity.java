@@ -61,9 +61,9 @@ public class MainActivity extends FragmentActivity {
         try {
             appDatabase = SQLiteDatabase.openOrCreateDatabase(getFilesDir().toString()+"/appdb.db3", null);
             Log.e("file location", getFilesDir().toString());
-            appDatabase.execSQL(createAppDatabase);
-            appDatabase.execSQL(createBatteryDatabase);
-            appDatabase.execSQL(createAppRatioCMD);
+      //      appDatabase.execSQL(createAppDatabase);
+      //      appDatabase.execSQL(createBatteryDatabase);
+      //      appDatabase.execSQL(createAppRatioCMD);
         }catch (Exception e){
             e.printStackTrace();
             appDatabase.execSQL("drop table appinfo");
@@ -94,9 +94,14 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         getActionBar().setElevation(0);
         getActionBar().hide();
-        sqliteInit();
-        startMyService();
      //   getActionBar().setElevation(0);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                sqliteInit();
+                startMyService();
+            }
+        }).start();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -109,7 +114,6 @@ public class MainActivity extends FragmentActivity {
         drain_tab = (TextView) findViewById(R.id.tab_drain_text);
         rank_tab = (TextView) findViewById(R.id.tab_rank_text);
         mode_tab = (TextView) findViewById(R.id.tab_mode_text);
-
         mPager = (ViewPager) findViewById(R.id.main_pager);
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mainPagerAdapter);
