@@ -94,11 +94,10 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         getActionBar().setElevation(0);
         getActionBar().hide();
-        sqliteInit();
-        startMyService();
-     //   getActionBar().setElevation(0);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+     //   getActionBar().setElevation(0);
 
         bottom_tab1 = (RelativeLayout) findViewById(R.id.bottom_tab1);
         bottom_tab2 = (RelativeLayout) findViewById(R.id.bottom_tab2);
@@ -171,7 +170,8 @@ public class MainActivity extends FragmentActivity {
                 mPager.setCurrentItem(2);
             }
         });
-
+        sqliteInit();
+        startMyService();
     }
 
     private class MainPagerAdapter extends FragmentStatePagerAdapter {
