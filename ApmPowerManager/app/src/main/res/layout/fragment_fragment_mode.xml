@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hult.netlab.pku.apmpowermanager.FragmentMode">
+    tools:context="hult.netlab.pku.apmpowermanager.SubFragmentMode | hult.netlab.pku.apmpowermanager.FragmentMode_tab4">
 
     <LinearLayout
         android:id="@+id/list_layout"
@@ -18,14 +18,19 @@
         </ListView>
     </LinearLayout>
 
-    <ImageView
+    <ImageButton
         android:id="@+id/add_mode"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginRight="8dp"
+        android:padding="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/ff"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="20dp"
-        android:src="@drawable/ic_add_circle_white_48dp"/>
+        android:elevation="4dp"
+        android:layout_alignParentBottom="true">
+    </ImageButton>
 
 </RelativeLayout>

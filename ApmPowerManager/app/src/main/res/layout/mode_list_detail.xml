@@ -19,7 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:id="@+id/modecheckbutton"
-        android:checked="true"
         android:layout_toLeftOf="@id/modename"
         android:layout_alignParentRight="true"
         />

@@ -105,15 +105,15 @@ public class BatteryChartFragment extends Fragment {
 
     private ArrayList<Item> getData() {
         ArrayList<Item> list = new ArrayList<Item>();
-        Item item1 = new Item(R.drawable.ic_picture_as_pdf_white_48dp, "Reading", "10h23m");
+        Item item1 = new Item(R.drawable.ic_book_open_grey600_48dp, "Reading", "10h23m");
         list.add(item1);
-        Item item2 = new Item(R.drawable.ic_local_movies_white_48dp, "Watching movies", "5h29m");
+        Item item2 = new Item(R.drawable.ic_movie_grey600_48dp, "Watching movies", "5h29m");
         list.add(item2);
-        Item item3 = new Item(R.drawable.ic_local_phone_white_48dp, "Phoneing", "5h24m");
+        Item item3 = new Item(R.drawable.ic_phone_grey600_48dp, "Phoneing", "5h24m");
         list.add(item3);
-        Item item4 = new Item(R.drawable.ic_photo_camera_white_72dp, "Taking pictures", "6h23m");
+        Item item4 = new Item(R.drawable.ic_camera_grey600_48dp, "Taking pictures", "6h23m");
         list.add(item4);
-        Item item5 = new Item(R.drawable.ic_wifi_white_48dp, "Wifi", "8h12m");
+        Item item5 = new Item(R.drawable.ic_wifi_grey600_48dp, "Wifi", "8h12m");
         list.add(item5);
         return list;
     }
@@ -190,6 +190,7 @@ public class BatteryChartFragment extends Fragment {
 
 
         public Fragment getItem(int position) {
+
             return BatterySlidePageFragment.create(position);
         }
 

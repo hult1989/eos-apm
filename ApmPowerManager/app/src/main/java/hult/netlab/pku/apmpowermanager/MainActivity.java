@@ -1,8 +1,6 @@
 package hult.netlab.pku.apmpowermanager;
 
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.Context;
+
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,30 +9,28 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
+
 import android.widget.RelativeLayout;
-import android.widget.Button;
+
 import android.widget.TextView;
 
-import java.util.List;
+
 
 public class MainActivity extends FragmentActivity {
 
-    private static final int PAGENUM = 3;
+    private static final int PAGENUM = 4;
     private ViewPager mPager;
     private PagerAdapter mainPagerAdapter;
-    private LinearLayout bottom_tab1;
-    private LinearLayout bottom_tab2;
-    private LinearLayout bottom_tab3;
-    private LinearLayout bottom_tab4;
+    private RelativeLayout bottom_tab1;
+    private RelativeLayout bottom_tab2;
+    private RelativeLayout bottom_tab3;
+    private RelativeLayout bottom_tab4;
     private TextView save_tab;
     private TextView drain_tab;
     private TextView rank_tab;
@@ -57,19 +53,24 @@ public class MainActivity extends FragmentActivity {
 
         }
         */
-        bottom_tab1 = (LinearLayout) findViewById(R.id.bottom_tab1);
-        bottom_tab2 = (LinearLayout) findViewById(R.id.bottom_tab2);
-        bottom_tab3 = (LinearLayout) findViewById(R.id.bottom_tab3);
-        bottom_tab4 = (LinearLayout) findViewById(R.id.bottom_tab4);
+        bottom_tab1 = (RelativeLayout) findViewById(R.id.bottom_tab1);
+        bottom_tab2 = (RelativeLayout) findViewById(R.id.bottom_tab2);
+        bottom_tab3 = (RelativeLayout) findViewById(R.id.bottom_tab3);
+        bottom_tab4 = (RelativeLayout) findViewById(R.id.bottom_tab4);
         save_tab = (TextView) findViewById(R.id.tab_save_text);
         drain_tab = (TextView) findViewById(R.id.tab_drain_text);
         rank_tab = (TextView) findViewById(R.id.tab_rank_text);
         mode_tab = (TextView) findViewById(R.id.tab_mode_text);
 
         mPager = (ViewPager) findViewById(R.id.main_pager);
+
+        mPager.setOffscreenPageLimit(3);
+
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mainPagerAdapter);
         mPager.setCurrentItem(0);
+      // actually no need to initialize save_tab's textcolor as we set it in xml.
+      //  save_tab.setTextColor(Color.WHITE);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -91,6 +92,12 @@ public class MainActivity extends FragmentActivity {
                         drain_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         rank_tab.setTextColor(Color.WHITE);
                         mode_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        break;
+                    case 3:
+                        save_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        drain_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        rank_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        mode_tab.setTextColor(Color.WHITE);
                         break;
                     default:
                         save_tab.setTextColor(Color.WHITE);
@@ -119,7 +126,12 @@ public class MainActivity extends FragmentActivity {
                 mPager.setCurrentItem(2);
             }
         });
-
+        bottom_tab4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPager.setCurrentItem(3);
+            }
+        });
     }
 
     private class MainPagerAdapter extends FragmentStatePagerAdapter {
@@ -137,6 +149,8 @@ public class MainActivity extends FragmentActivity {
                     return new BatteryChartFragment();
                 case 2:
                     return new FragmentRank();
+                case 3:
+                    return new FragmentMode_tab4();
                 default:
                     return new BatteryRateFragment();
             }
@@ -163,14 +177,9 @@ public class MainActivity extends FragmentActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.about) {
             startActivity(new Intent(MainActivity.this, aboutActivity.class));
             return true;
-        }
-        if (id == R.id.installedapp) {
-            startActivity(new Intent(MainActivity.this, InstalledAppList.class));
-
         }
 
         return super.onOptionsItemSelected(item);

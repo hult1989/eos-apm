@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+ <!--
+    <RelativeLayout
+        android:id="@+id/mode_name_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/icon_teal"
+        android:orientation="horizontal" >
+        <TextView
+            android:id="@+id/text_mode_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="10dp"
+            android:text="mode"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+   -->
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="40dp"
+      android:orientation="horizontal" >
+
+      <TextView
+          android:id="@+id/name_brightness"
+          android:layout_width="80dp"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="20dp"
+          android:layout_alignParentLeft="true"
+          android:layout_centerInParent="true"
+          android:text="Brightness"
+          android:textSize="16sp"/>
+
+      <SeekBar
+          android:id="@+id/brightness_seekbar"
+          android:layout_centerInParent="true"
+          android:layout_toRightOf="@+id/name_brightness"
+          android:layout_toLeftOf="@id/text_brightness"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:max = "100"/>
+
+      <TextView
+          android:id="@+id/text_brightness"
+          android:layout_width="40dp"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="20dp"
+          android:layout_alignParentRight="true"
+          android:layout_centerInParent="true"
+          android:gravity="center_vertical"
+          android:text="auto"
+          android:textSize="16sp"/>
+
+  </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal" >
+
+      <TextView
+          android:id="@+id/name_timeout"
+          android:layout_width="80dp"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="20dp"
+          android:layout_alignParentLeft="true"
+          android:layout_centerInParent="true"
+          android:text="Timeout"
+          android:textSize="16sp"/>
+
+        <SeekBar
+            android:id="@+id/timeout_seekbar"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@+id/name_timeout"
+            android:layout_toLeftOf="@id/text_timeout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:max = "100"/>
+
+      <TextView
+          android:id="@+id/text_timeout"
+          android:layout_width="40dp"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="20dp"
+          android:layout_alignParentRight="true"
+          android:layout_centerInParent="true"
+          android:gravity="center_vertical"
+          android:text="10s"
+          android:textSize="16sp"/>
+  </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/text_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:text="Data"
+            android:textSize="16sp"/>
+
+        <Switch
+            android:id="@+id/button_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:checked="false" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal" >
+
+       <TextView
+           android:id="@+id/text_wifi"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginLeft="20dp"
+           android:layout_alignParentLeft="true"
+           android:layout_centerInParent="true"
+           android:text="wifi"
+           android:textSize="16sp"/>
+
+       <Switch
+           android:id="@+id/button_wifi"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginRight="30dp"
+           android:layout_alignParentRight="true"
+           android:layout_centerInParent="true"
+           android:checked="false" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/text_bluetooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:text="bluetooth"
+            android:textSize="16sp"/>
+
+        <Switch
+            android:id="@+id/button_bluetooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:checked="false" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/text_silence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:text="silence"
+            android:textSize="16sp"/>
+
+        <Switch
+            android:id="@+id/button_silence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:checked="false" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/text_vibrate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:text="vibrate"
+            android:textSize="16sp"/>
+
+        <Switch
+            android:id="@+id/button_vibrate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:checked="false" />
+    </RelativeLayout>
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_alignParentEnd="true"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="64dp"
+        android:padding="8dp"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="8dp"
+            android:clickable="false"
+            android:layout_weight="2"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:textColor="@color/google_teal"
+            android:paddingRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="4dp"
+            android:text="save"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/button_save"/>
+
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_marginLeft="4dp"
+            android:text="cancel"
+            android:textColor="@color/google_teal"
+            android:layout_weight="1"
+            android:focusable="true"
+            android:id="@+id/button_exit"/>
+    </LinearLayout>
+
+</RelativeLayout>
+

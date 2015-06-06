@@ -18,8 +18,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:background="@color/icon_teal"
-        android:layout_height="45dp">
-        <LinearLayout
+        android:layout_height="24dp">
+        <RelativeLayout
             android:id="@+id/bottom_tab1"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -29,14 +29,14 @@
                 android:id="@+id/tab_save_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_centerInParent="true"
                 android:layout_marginTop="5dp"
                 android:text="save"
-                android:textSize="25sp"
+                android:textSize="14sp"
                 android:textColor="@android:color/white"/>
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/bottom_tab2"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -46,14 +46,15 @@
                 android:id="@+id/tab_drain_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_centerInParent="true"
                 android:layout_marginTop="5dp"
                 android:text="drain"
-                android:textSize="25sp"
+                android:textSize="14sp"
                 android:textColor="@color/google_teal"/>
-        </LinearLayout>
+            <!--initial color is needed, the textcolor will be changed only page changed -->
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/bottom_tab3"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -63,14 +64,14 @@
                 android:id="@+id/tab_rank_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_centerInParent="true"
                 android:layout_marginTop="5dp"
                 android:text="rank"
-                android:textSize="25sp"
+                android:textSize="14sp"
                 android:textColor="@color/google_teal" />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/bottom_tab4"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -80,12 +81,11 @@
                 android:id="@+id/tab_mode_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_centerInParent="true"
                 android:text="mode"
-                android:textSize="25sp"
+                android:textSize="14sp"
                 android:textColor="@color/google_teal"/>
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 

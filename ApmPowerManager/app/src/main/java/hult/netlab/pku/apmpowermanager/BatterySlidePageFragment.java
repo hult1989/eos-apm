@@ -18,8 +18,10 @@ package hult.netlab.pku.apmpowermanager;
  */
 
 
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +64,7 @@ public class BatterySlidePageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPageNumber = getArguments().getInt(ARG_PAGE);
+
     }
 
     @Override
@@ -70,10 +73,14 @@ public class BatterySlidePageFragment extends Fragment {
         // Inflate the layout containing a title and body text.
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.abttery_slide_page, container, false);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            CardView chartLayout = (CardView)rootView.findViewById(R.id.chartview);
+            chartLayout.setElevation(4);
+        }
         LinearLayout chartLayout = (LinearLayout)rootView.findViewById(R.id.chartview);
 
         View view = new LineChart().execute(container.getContext());
+
         chartLayout.addView(view);
 
         return rootView;

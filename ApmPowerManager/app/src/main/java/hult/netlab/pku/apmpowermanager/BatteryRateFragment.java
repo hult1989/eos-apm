@@ -90,7 +90,7 @@ public class BatteryRateFragment extends Fragment {
                 case 0:
                     return new FragmentBatteryInfo();
                 case 1:
-                    return new FragmentMode();
+                    return new SubFragmentMode();
                 default: return new FragmentMode();
             }
         }

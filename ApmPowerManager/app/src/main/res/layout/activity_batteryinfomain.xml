@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_default_background"
     tools:context="hult.netlab.pku.apmpowermanager.batteryinfomain">
 
 
@@ -12,8 +11,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/icon_teal"
-        android:padding="10dp"
-        android:elevation="4dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="20dp"
         android:layout_centerHorizontal="true">
 
         <hult.netlab.pku.apmpowermanager.DonutProgress
@@ -21,7 +20,7 @@
             custom:donut_background_color="@color/icon_teal"
             custom:donut_unfinished_color="@color/google_teal"
             custom:donut_finished_color="@android:color/white"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:layout_width="200dp"
             android:layout_height="200dp"
 
@@ -37,46 +36,14 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/remaintime"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/process"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
-        android:background="@color/backgroundGREY"
-        android:layout_centerHorizontal="true">
 
-        <TextView
-            android:layout_marginBottom="8dp"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="BatteryLife: 16h 34m"
-            android:id="@+id/batterylife"
-            android:textColor="@android:color/white"
-            android:textSize="20dp" />
-        <ImageButton
-            android:layout_centerVertical="true"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/ff"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true">
-        </ImageButton>
 
-    </RelativeLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/sub_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/remaintime">
+        android:layout_below="@+id/process">
 
     </android.support.v4.view.ViewPager>
 
