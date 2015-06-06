@@ -7,13 +7,16 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.provider.Settings.SettingNotFoundException;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +46,7 @@ public class FragmentMode_tab4 extends Fragment {
     private EditText dialog_mode_name;
     ViewGroup contain;
     LayoutInflater inflaters;
+    static final String ACTION_UPDATE = "hult.netlab.pku.apmpowermanager.UPDATE";
 
     public FragmentMode_tab4() {
         // Required empty public constructor
@@ -55,6 +59,21 @@ public class FragmentMode_tab4 extends Fragment {
 
     public View onCreateView(final LayoutInflater inflater,  final ViewGroup container,
                              Bundle savedInstanceState) {
+
+        LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(container.getContext());
+        BroadcastReceiver mReceiver;
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_UPDATE);
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if(intent.getAction().equals(ACTION_UPDATE)){
+                    refresh();
+                }
+            }
+        };
+        mBroadcastManager.registerReceiver(mReceiver, filter);
+
 
         final View view = inflater.inflate(R.layout.fragment_fragment_mode, container, false);
         contain = container;
@@ -134,7 +153,7 @@ public class FragmentMode_tab4 extends Fragment {
                         editor.commit();
                         Intent wordIntent = new Intent(getActivity(), ModeEdit.class);
                         wordIntent.putExtra("mode_add",true);
-                        startActivityForResult(wordIntent, 1);
+                        getActivity().startActivityForResult(wordIntent, 1);
                         addDialog.dismiss();
                     }
                 });
@@ -158,6 +177,7 @@ public class FragmentMode_tab4 extends Fragment {
 
         return view;
     }
+
 
 
     //刷新
@@ -223,6 +243,7 @@ public class FragmentMode_tab4 extends Fragment {
             }
             holder.radiobutton_mode_name.setId(position);
             holder.text_edit_mode.setText((String) listItems.get(position).get("mode_name"));
+
             holder.radiobutton_mode_name.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -251,6 +272,7 @@ public class FragmentMode_tab4 extends Fragment {
                 }
             });
 
+
             editDialog = new Dialog(getActivity());
 
             holder.text_edit_mode.setOnClickListener(new View.OnClickListener() {
@@ -266,7 +288,7 @@ public class FragmentMode_tab4 extends Fragment {
                             editor.putString("OperatingMode", str[position1]);
                             editor.commit();
                             Intent wordIntent = new Intent(getActivity(), ModeEdit.class);
-                            startActivityForResult(wordIntent, 1);
+                            getActivity().startActivityForResult(wordIntent, 1);
                             editDialog.dismiss();
                         }
                     });
@@ -289,7 +311,9 @@ public class FragmentMode_tab4 extends Fragment {
                             }
                             editor.putInt("mode_num", mode_num-1);
                             editor.commit();
-                            refresh();
+                            LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
+                            Intent intent = new Intent(ACTION_UPDATE);
+                            mBroadcastManager.sendBroadcast(intent);
                             editDialog.dismiss();
                         }
                     });
@@ -305,13 +329,13 @@ public class FragmentMode_tab4 extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // 当otherActivity中返回数据的时候，会响应此方法
-        // requestCode和resultCode必须与请求startActivityForResult()和返回setResult()的时候传入的值一致。
-        if (requestCode == 1 && (resultCode == ModeEdit.RESULT_OK)) {
-            refresh();
-        }
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.d("hide",""+hidden);
+        refresh();
     }
+
+
 }
 
 

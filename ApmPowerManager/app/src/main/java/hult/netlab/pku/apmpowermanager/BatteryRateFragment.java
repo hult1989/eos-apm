@@ -9,8 +9,10 @@ import android.support.v4.app.Fragment;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +29,7 @@ public class BatteryRateFragment extends Fragment {
     private DonutProgress donutProgress;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
-
+    static final String ACTION_UPDATE = "hult.netlab.pku.apmpowermanager.UPDATE";
 
     public BatteryRateFragment() {
         // Required empty public constructor
@@ -98,6 +100,20 @@ public class BatteryRateFragment extends Fragment {
 
         public int getCount() {
             return NUM_PAGES;
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 当otherActivity中返回数据的时候，会响应此方法
+        // requestCode和resultCode必须与请求startActivityForResult()和返回setResult()的时候传入的值一致。
+
+        if (requestCode == 1 && (resultCode == ModeEdit.RESULT_OK)) {
+            LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
+            Intent intent = new Intent(ACTION_UPDATE);
+            mBroadcastManager.sendBroadcast(intent);
+
         }
     }
 }

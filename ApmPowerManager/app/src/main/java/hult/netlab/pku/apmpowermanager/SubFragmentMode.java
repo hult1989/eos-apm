@@ -7,13 +7,16 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.provider.Settings.SettingNotFoundException;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +47,8 @@ public class SubFragmentMode extends Fragment {
     ViewGroup contain;
     LayoutInflater inflaters;
 
+    static final String ACTION_UPDATE = "hult.netlab.pku.apmpowermanager.UPDATE";
+
     public SubFragmentMode() {
         // Required empty public constructor
     }
@@ -53,11 +58,26 @@ public class SubFragmentMode extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    public View onCreateView(final LayoutInflater inflater,  final ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final ViewGroup view = (ViewGroup)inflater.inflate(R.layout.fragment_fragment_mode, container, false);
 
+        LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(container.getContext());
+        BroadcastReceiver mReceiver;
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_UPDATE);
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(ACTION_UPDATE)) {
+                    refresh();
+                }
+            }
+        };
+        mBroadcastManager.registerReceiver(mReceiver, filter);
+
+
+        final ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_fragment_mode, container, false);
         contain = container;
         inflaters = inflater;
         list = (ListView) view.findViewById(R.id.mode_list);
@@ -123,20 +143,18 @@ public class SubFragmentMode extends Fragment {
                 View layout = inflater.inflate(R.layout.dialog_add, container, false);
                 dialog_mode_name = (EditText) layout.findViewById(R.id.dialog_mode_name);
 
-                Log.d("name",dialog_mode_name.getText().toString());
-                TextView dialog_mode_next = (TextView)layout.findViewById(R.id.dialog_mode_next);
+                Log.d("name", dialog_mode_name.getText().toString());
+                TextView dialog_mode_next = (TextView) layout.findViewById(R.id.dialog_mode_next);
                 dialog_mode_next.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View arg0) {
                         String add_mode_name = dialog_mode_name.getText().toString();
                         editor.putString("OperatingMode", add_mode_name);
-                        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(container.getWindowToken(), 0);
-                        Log.d("name",add_mode_name);
+                        Log.d("name", add_mode_name);
                         editor.commit();
                         Intent wordIntent = new Intent(getActivity(), ModeEdit.class);
-                        wordIntent.putExtra("mode_add",true);
-                        startActivityForResult(wordIntent, 1);
+                        wordIntent.putExtra("mode_add", true);
+                        getActivity().startActivityForResult(wordIntent, 1);
                         addDialog.dismiss();
                     }
                 });
@@ -152,8 +170,6 @@ public class SubFragmentMode extends Fragment {
                 addDialog.setContentView(layout);
                 addDialog.setTitle("Add Mode");
                 addDialog.show();
-                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInputFromInputMethod(dialog_mode_name.getWindowToken(),0);
             }
         });
 
@@ -252,7 +268,7 @@ public class SubFragmentMode extends Fragment {
                     }
                 }
             });
-
+/*
             editDialog = new Dialog(getActivity());
 
             holder.text_edit_mode.setOnClickListener(new View.OnClickListener() {
@@ -281,17 +297,19 @@ public class SubFragmentMode extends Fragment {
                             int mode_num = preferences.getInt("mode_num", 0);
                             String strtemp;
                             int position = 0;
-                            for(position = 0; position < mode_num; position++){
-                                if(str[position1] == preferences.getString("mode"+String.valueOf(position), null))
+                            for (position = 0; position < mode_num; position++) {
+                                if (str[position1] == preferences.getString("mode" + String.valueOf(position), null))
                                     break;
                             }
-                            for(int i = position; i < mode_num-1; i++){
-                                strtemp = preferences.getString("mode"+String.valueOf(i+1), null);
-                                editor.putString("mode"+String.valueOf(i), strtemp);
+                            for (int i = position; i < mode_num - 1; i++) {
+                                strtemp = preferences.getString("mode" + String.valueOf(i + 1), null);
+                                editor.putString("mode" + String.valueOf(i), strtemp);
                             }
-                            editor.putInt("mode_num", mode_num-1);
+                            editor.putInt("mode_num", mode_num - 1);
                             editor.commit();
-                            refresh();
+                            LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
+                            Intent intent = new Intent(ACTION_UPDATE);
+                            mBroadcastManager.sendBroadcast(intent);
                             editDialog.dismiss();
                         }
                     });
@@ -301,20 +319,12 @@ public class SubFragmentMode extends Fragment {
                     editDialog.show();
                 }
             });
+*/
 
             return convertView;
         }
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // 当otherActivity中返回数据的时候，会响应此方法
-        // requestCode和resultCode必须与请求startActivityForResult()和返回setResult()的时候传入的值一致。
-        if (requestCode == 1 && (resultCode == ModeEdit.RESULT_OK)) {
-            refresh();
-        }
-    }
-}
+ }
 
 
 

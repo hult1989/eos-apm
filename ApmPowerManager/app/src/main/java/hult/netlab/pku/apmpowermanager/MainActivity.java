@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.content.Intent;
@@ -35,6 +36,7 @@ public class MainActivity extends FragmentActivity {
     private TextView drain_tab;
     private TextView rank_tab;
     private TextView mode_tab;
+    static final String ACTION_UPDATE = "hult.netlab.pku.apmpowermanager.UPDATE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class MainActivity extends FragmentActivity {
         //setTheme(R.style.LowBatteryRed);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
        /*
         ActivityManager am = (ActivityManager) getApplication().getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
@@ -183,5 +186,16 @@ public class MainActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 当otherActivity中返回数据的时候，会响应此方法
+        // requestCode和resultCode必须与请求startActivityForResult()和返回setResult()的时候传入的值一致。
+        if (requestCode == 1 && (resultCode == ModeEdit.RESULT_OK)) {
+            LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(this);
+            Intent intent = new Intent(ACTION_UPDATE);
+            mBroadcastManager.sendBroadcast(intent);
+        }
     }
 }

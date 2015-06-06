@@ -47,7 +47,7 @@
           android:id="@+id/brightness_seekbar"
           android:layout_centerInParent="true"
           android:layout_toRightOf="@+id/name_brightness"
-          android:layout_toLeftOf="@id/text_brightness"
+          android:layout_toLeftOf="@+id/text_brightness"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
           android:max = "100"/>
@@ -84,7 +84,7 @@
             android:id="@+id/timeout_seekbar"
             android:layout_centerInParent="true"
             android:layout_toRightOf="@+id/name_timeout"
-            android:layout_toLeftOf="@id/text_timeout"
+            android:layout_toLeftOf="@+id/text_timeout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:max = "100"/>

@@ -1,5 +1,6 @@
 package hult.netlab.pku.apmpowermanager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -12,19 +13,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by kingway on 15-6-3.
- */
+
 public class FragmentRank extends Fragment {
     private ListView applistview;
     private ArrayList<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
@@ -55,6 +59,7 @@ public class FragmentRank extends Fragment {
                     item.put("pkgName",applicationInfo.packageName);
                     item.put("image", pm.getApplicationIcon(applicationInfo));
                     item.put("name", pm.getApplicationLabel(applicationInfo));
+                    item.put("progress",(int)(Math.random()*100));
                     mData.add(item);
                 }
                 applistview = (ListView) rootview.findViewById(R.id.applistview);
@@ -73,6 +78,10 @@ public class FragmentRank extends Fragment {
             }
         });
 
+        appinfoAdapter adapter = new appinfoAdapter(container.getContext());
+        applistview.setAdapter(adapter);
+
+     /*
         SimpleAdapter adapter = new SimpleAdapter(container.getContext(), mData, R.layout.listlayout, new String[]{"image", "name"},
                 new int[]{R.id.image, R.id.title});
         applistview.setAdapter(adapter);
@@ -90,10 +99,68 @@ public class FragmentRank extends Fragment {
             }
 
         });
+       */
+
 
         return rootview;
     }
 
+
+    public class appinfoAdapter extends BaseAdapter {
+
+        private LayoutInflater layoutInflater;
+
+        public appinfoAdapter(Context context) {
+            this.layoutInflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public int getCount() {
+            return mData.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mData.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHloder holder = null;
+            if (convertView == null) {
+                holder = new ViewHloder();
+                convertView = layoutInflater.inflate(R.layout.listlayout, null);
+                holder.icon = (ImageView) convertView.findViewById(R.id.image);
+                holder.rate = (TextView) convertView.findViewById(R.id.batteryconsumption);
+                holder.label = (TextView)convertView.findViewById(R.id.title);
+                holder.bar = (ProgressBar) convertView.findViewById(R.id.bar);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHloder) convertView.getTag();
+            }
+            holder.icon.setImageDrawable((Drawable) mData.get(position).get("image"));
+            holder.label.setText((String)mData.get(position).get("name"));
+            holder.rate.setText(mData.get(position).get("progress")+"%");
+            holder.bar.setProgress((int)mData.get(position).get("progress"));
+
+            return convertView;
+        }
+
+    }
+
+
+    class ViewHloder {
+        public ImageView icon;
+        public TextView label;
+        public TextView rate;
+        public ProgressBar bar;
+
+    }
 
 }
 
