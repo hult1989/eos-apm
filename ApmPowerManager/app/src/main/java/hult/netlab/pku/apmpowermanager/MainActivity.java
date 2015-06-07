@@ -14,12 +14,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.util.Log;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,9 +28,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Button;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +36,7 @@ import java.util.Map;
 
 public class MainActivity extends FragmentActivity {
 
-    private static final int PAGENUM = 3;
+    private static final int PAGENUM = 4;
     private ViewPager mPager;
     private PagerAdapter mainPagerAdapter;
     private RelativeLayout bottom_tab1;
@@ -50,6 +48,7 @@ public class MainActivity extends FragmentActivity {
     private TextView rank_tab;
     private TextView mode_tab;
     public static SQLiteDatabase appDatabase;
+    public static long SERVICE_INTERVAL_IN_SECONDS;
 
     public void sqliteInit(){
         String createAppDatabase = "create table appinfo (id integer primary key autoincrement, " +
@@ -61,9 +60,9 @@ public class MainActivity extends FragmentActivity {
         try {
             appDatabase = SQLiteDatabase.openOrCreateDatabase(getFilesDir().toString()+"/appdb.db3", null);
             Log.e("file location", getFilesDir().toString());
-      //      appDatabase.execSQL(createAppDatabase);
-      //      appDatabase.execSQL(createBatteryDatabase);
-      //      appDatabase.execSQL(createAppRatioCMD);
+        //    appDatabase.execSQL(createAppDatabase);
+        //    appDatabase.execSQL(createBatteryDatabase);
+        //    appDatabase.execSQL(createAppRatioCMD);
         }catch (Exception e){
             e.printStackTrace();
             appDatabase.execSQL("drop table appinfo");
@@ -85,23 +84,19 @@ public class MainActivity extends FragmentActivity {
         AlarmManager alarmManager = (AlarmManager)getSystemService(Service.ALARM_SERVICE);
         Intent intent = new Intent(MainActivity.this, MyService.class);
         final PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, 5000, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, 600000, pendingIntent);
     }
 
 
+    static final String ACTION_UPDATE = "hult.netlab.pku.apmpowermanager.UPDATE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getActionBar().setElevation(0);
         getActionBar().hide();
      //   getActionBar().setElevation(0);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                sqliteInit();
-                startMyService();
-            }
-        }).start();
+        sqliteInit();
+        startMyService();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -109,16 +104,17 @@ public class MainActivity extends FragmentActivity {
         bottom_tab2 = (RelativeLayout) findViewById(R.id.bottom_tab2);
         bottom_tab3 = (RelativeLayout) findViewById(R.id.bottom_tab3);
         bottom_tab4 = (RelativeLayout) findViewById(R.id.bottom_tab4);
-
         save_tab = (TextView) findViewById(R.id.tab_save_text);
         drain_tab = (TextView) findViewById(R.id.tab_drain_text);
         rank_tab = (TextView) findViewById(R.id.tab_rank_text);
         mode_tab = (TextView) findViewById(R.id.tab_mode_text);
+
         mPager = (ViewPager) findViewById(R.id.main_pager);
+        mPager.setOffscreenPageLimit(3);
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mainPagerAdapter);
         mPager.setCurrentItem(0);
-        save_tab.setTextColor(Color.WHITE);
+
 
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -175,7 +171,12 @@ public class MainActivity extends FragmentActivity {
                 mPager.setCurrentItem(2);
             }
         });
-
+        bottom_tab4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPager.setCurrentItem(3);
+            }
+        });
     }
 
     private class MainPagerAdapter extends FragmentStatePagerAdapter {
@@ -193,6 +194,8 @@ public class MainActivity extends FragmentActivity {
                     return new BatteryChartFragment();
                 case 2:
                     return new FragmentRank();
+                case 3:
+                    return new FragmentMode_tab4();
                 default:
                     return new BatteryRateFragment();
             }
@@ -225,5 +228,16 @@ public class MainActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 当otherActivity中返回数据的时候，会响应此方法
+        // requestCode和resultCode必须与请求startActivityForResult()和返回setResult()的时候传入的值一致。
+        if (requestCode == 1 && (resultCode == ModeEdit.RESULT_OK)) {
+            LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(this);
+            Intent intent = new Intent(ACTION_UPDATE);
+            mBroadcastManager.sendBroadcast(intent);
+        }
     }
 }

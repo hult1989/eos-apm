@@ -49,11 +49,10 @@
                 android:layout_centerInParent="true"
                 android:layout_marginTop="5dp"
                 android:text="INFO"
-                android:textColor="@color/google_teal"
                 android:textSize="14sp"
-                 />
+                android:textColor="@color/google_teal"/>
+            <!--initial color is needed, the textcolor will be changed only page changed -->
         </RelativeLayout>
-
 
         <RelativeLayout
             android:id="@+id/bottom_tab3"
@@ -66,13 +65,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@color/google_teal"
                 android:layout_marginTop="5dp"
                 android:text="RANK"
                 android:textSize="14sp"
-                 />
+                android:textColor="@color/google_teal" />
         </RelativeLayout>
-
 
         <RelativeLayout
             android:id="@+id/bottom_tab4"
@@ -82,13 +79,12 @@
             android:orientation="vertical">
             <TextView
                 android:id="@+id/tab_mode_text"
-                android:textColor="@color/google_teal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="MODE"
                 android:textSize="14sp"
-                />
+                android:textColor="@color/google_teal"/>
         </RelativeLayout>
 
     </LinearLayout>

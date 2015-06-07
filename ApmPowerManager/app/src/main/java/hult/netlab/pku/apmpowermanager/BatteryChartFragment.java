@@ -181,6 +181,7 @@ public class BatteryChartFragment extends Fragment {
 
 
         public Fragment getItem(int position) {
+
             return BatterySlidePageFragment.create(position);
         }
 

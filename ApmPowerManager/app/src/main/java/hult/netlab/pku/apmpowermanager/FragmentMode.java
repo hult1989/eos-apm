@@ -43,9 +43,8 @@ public class FragmentMode extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragmen
+        // Inflate the layout for this fragment
         ViewGroup rootview = (ViewGroup)inflater.inflate(R.layout.fragment_fragment_mode,container,false);
-
         listView = (ListView)rootview.findViewById(R.id.mode_list);
         modeList = getData();
         final modeAdapter adapter =new modeAdapter(container.getContext());

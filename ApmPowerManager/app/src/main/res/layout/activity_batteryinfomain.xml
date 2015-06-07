@@ -26,7 +26,7 @@
             custom:donut_text_color="@android:color/white"
             custom:donut_unfinished_stroke_width="5dp"
             custom:donut_finished_stroke_width="5dp"
-            custom:donut_progress="10" />
+            custom:donut_progress="0" />
 
     </RelativeLayout>
 
