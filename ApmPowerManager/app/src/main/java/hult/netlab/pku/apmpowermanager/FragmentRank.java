@@ -71,6 +71,7 @@ public class FragmentRank extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.e("rangment rank ", "created!");
         // Inflate the layout for this fragment
         final ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.activity_installed_app_list, container, false);
         applistview = (ListView) rootview.findViewById(R.id.applistview);
@@ -84,6 +85,8 @@ public class FragmentRank extends Fragment {
             sumCpuTime += cursor.getLong(1);
         }
         cursor.moveToFirst();
+        Log.e("rangment rank ", cursor.getCount()+"!");
+
         while (cursor.moveToNext()) {
             try {
                 HashMap<String, Object> item = new HashMap<>();
