@@ -13,15 +13,15 @@
         android:id="@+id/modename"
         android:layout_centerVertical="true"
         android:text="mode"
+        android:textColor="@color/secondary_text_default_material_light"
         android:textSize="16sp"/>
     <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:id="@+id/modecheckbutton"
-        android:checked="true"
         android:layout_toLeftOf="@id/modename"
         android:layout_alignParentRight="true"
-        />
+        android:buttonTint="@color/secondary_text_default_material_light" />
 
 </RelativeLayout>

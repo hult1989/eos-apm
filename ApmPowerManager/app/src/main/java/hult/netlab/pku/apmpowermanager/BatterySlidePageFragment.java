@@ -57,6 +57,7 @@ public class BatterySlidePageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPageNumber = getArguments().getInt(ARG_PAGE);
+
     }
 
     @Override
@@ -65,14 +66,17 @@ public class BatterySlidePageFragment extends Fragment {
         // Inflate the layout containing a title and body text.
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.abttery_slide_page, container, false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            CardView chartLayout = (CardView)rootView.findViewById(R.id.chartview);
+            chartLayout.setElevation(4);
+        }
+     //   LinearLayout chartLayout = (LinearLayout)rootView.findViewById(R.id.chartview);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        CardView chartLayout = (CardView)rootView.findViewById(R.id.chartview);
-            // Running on something older than API level 11, so disable
-        chartLayout.setElevation(4);
-            // the drag/drop features that use ClipboardManager APIs
-        View view = new LineChart().execute(container.getContext());
-        chartLayout.addView(view);
+            CardView chartLayout = (CardView)rootView.findViewById(R.id.chartview);
+            chartLayout.setElevation(4);
+            View view = new LineChart().execute(container.getContext());
+            chartLayout.addView(view);
         }else{
             LinearLayout chartLayout = (LinearLayout)rootView.findViewById(R.id.chartview);
             View view = new LineChart().execute(container.getContext());

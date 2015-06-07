@@ -1,5 +1,6 @@
 package hult.netlab.pku.apmpowermanager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -16,13 +17,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import java.text.DecimalFormat;
+import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,12 +34,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Created by kingway on 15-6-3.
- */
+
 public class FragmentRank extends Fragment {
     private ListView applistview;
-    private ArrayList<Map<String, Object>> mData ;
+    private ArrayList<HashMap<String, Object>> mData ;
     private PackageManager pm ;
     private List<ApplicationInfo> appInfoList = null;
     public static long allAppTotalRunningTime;
@@ -69,11 +70,12 @@ public class FragmentRank extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final ViewGroup rootview = (ViewGroup)inflater.inflate(R.layout.activity_installed_app_list, container, false);
+        applistview = (ListView) rootview.findViewById(R.id.applistview);
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 pm = getActivity().getPackageManager();
-                mData = new ArrayList<Map<String, Object>>();
+                mData = new ArrayList<HashMap<String, Object>>();
 
                 String selectSqlCmd = "select pkgname, proctime from appinfo group by pkgname order by proctime desc";
                 Cursor cursor = MainActivity.appDatabase.rawQuery(selectSqlCmd, null);
@@ -84,19 +86,18 @@ public class FragmentRank extends Fragment {
                 cursor.moveToFirst();
                 while(cursor.moveToNext()){
                     try {
-                        Map<String, Object>item = new HashMap<>();
+                        HashMap<String, Object>item = new HashMap<>();
                         String pkgName = cursor.getString(0);
-                        item.put("image", pm.getApplicationIcon(pkgName));
                         long proctime = cursor.getLong(1);
                         float ratio = (float)proctime / sumCpuTime;
+                        item.put("image", pm.getApplicationIcon(pkgName));
                         item.put("ratiotext", new DecimalFormat("0.0%").format(ratio));
-                        item.put("ratio", ratio);
+                        item.put("ratio", ratio * 100);
                         item.put("pkgname", pkgName);
                         item.put("label", pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
                         mData.add(item);
                     }catch (Exception e){};
                 }
-
 /*
                 allAppTotalRunningTime = 0;
                 List<PackageInfo> packageInfos = pm.getInstalledPackages(pm.GET_UNINSTALLED_PACKAGES);
@@ -111,6 +112,7 @@ public class FragmentRank extends Fragment {
                     }
                     allAppTotalRunningTime += appTotalTime;
                     Map<String, Object> item = new HashMap<String, Object>();
+<<<<<<< HEAD
                     try{
                         item.put("label", pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
                         item.put("runningtime", appTotalTime);
@@ -118,6 +120,13 @@ public class FragmentRank extends Fragment {
                         item.put("image", pm.getApplicationIcon(pkgName));
                         mData.add(item);
                     }catch (Exception e){};
+=======
+                    item.put("pkgName",applicationInfo.packageName);
+                    item.put("image", pm.getApplicationIcon(applicationInfo));
+                    item.put("name", pm.getApplicationLabel(applicationInfo));
+                    item.put("progress",(int)(Math.random()*100));
+                    mData.add(item);
+>>>>>>> de0d4c7abfa4d4c9f6957ef87da7d9c0004e28e0
                 }
                 Collections.sort(mData, new sortMap());
                 for(Map<String, Object> data: mData) {
@@ -126,7 +135,6 @@ public class FragmentRank extends Fragment {
                     data.put("ratio", ratio);
                 }
  */
-                applistview = (ListView) rootview.findViewById(R.id.applistview);
             }
         });
 
@@ -149,8 +157,6 @@ public class FragmentRank extends Fragment {
 
         SimpleAdapter adapter = new SimpleAdapter(container.getContext(), mData, R.layout.listlayout, new String[]{"image", "label", "ratiotext"},
                 new int[]{R.id.image, R.id.title, R.id.appconsume});
-        applistview.setAdapter(adapter);
-
         adapter.setViewBinder(new SimpleAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Object data, String textRepresentation) {
@@ -164,10 +170,66 @@ public class FragmentRank extends Fragment {
             }
 
         });
-
+        applistview.setAdapter(adapter);
         return rootview;
+     //   appinfoAdapter adapter = new appinfoAdapter(container.getContext());
     }
 
+
+    public class appinfoAdapter extends BaseAdapter {
+
+        private LayoutInflater layoutInflater;
+
+        public appinfoAdapter(Context context) {
+            this.layoutInflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public int getCount() {
+            return mData.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mData.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHloder holder = null;
+            if (convertView == null) {
+                holder = new ViewHloder();
+                convertView = layoutInflater.inflate(R.layout.listlayout, null);
+                holder.icon = (ImageView) convertView.findViewById(R.id.image);
+                holder.rate = (TextView) convertView.findViewById(R.id.batteryconsumption);
+                holder.label = (TextView)convertView.findViewById(R.id.title);
+                holder.bar = (ProgressBar) convertView.findViewById(R.id.bar);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHloder) convertView.getTag();
+            }
+
+            //为什么mdata放在这里？mdata不是全局变量
+            holder.icon.setImageDrawable((Drawable) mData.get(position).get("image"));
+            holder.label.setText((String)mData.get(position).get("label"));
+            holder.rate.setText(mData.get(position).get("ratiotext").toString());
+            holder.bar.setProgress((int)mData.get(position).get("ratio"));
+            return convertView;
+        }
+    }
+
+    class ViewHloder {
+        public ImageView icon;
+        public TextView label;
+        public TextView rate;
+        public ProgressBar bar;
+
+    }
 
 }
 

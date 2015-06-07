@@ -46,7 +46,7 @@ public class MyService extends Service {
                 String insertCMD = "insert into apphistory (pkgname, ratio, timestamp) values("
                         + "\"" + pkgName + "\", " + 0.05 + ", " + System.currentTimeMillis() + ");";
                 MainActivity.appDatabase.execSQL(insertCMD, new Object[]{});
-                Log.e("selectcmd", insertCMD);
+            //    Log.e("selectcmd", insertCMD);
             }
     }
 
@@ -70,7 +70,7 @@ public class MyService extends Service {
                             + "values ( \"" + pkgName + "\", " + amProcess.pid + ", "
                             + appProcTime + ", " + runningTime + ", " + System.currentTimeMillis() + ");";
                 //    Log.e(pkgName, ""+runningTime / 100);
-                    MainActivity.appDatabase.execSQL(SQLcommand);
+                    MainActivity.appDatabase.execSQL(SQLcommand, new Object[]{});
                     Cursor cursor = MainActivity.appDatabase.rawQuery("select * from appinfo where " +
                             "pkgname = \"hult.netlab.pku.apmpowermanager\" order by timestamp desc limit 0, 1;", null);
                 }catch (Exception e){
@@ -85,7 +85,7 @@ public class MyService extends Service {
                     String pkgName = processInfo.pkgList[0];
                     float runningtime = Float.parseFloat(tempItem.get(pkgName).toString());
           //          Log.e(pkgName, runningtime / totalRunningTime * 100 + "%");
-                    Log.e(pkgName, runningtime + ", " + totalRunningTime);
+        //            Log.e(pkgName, runningtime + ", " + totalRunningTime);
 
                     String insertCMD = "insert into apphistory (pkgname, ratio, timestamp) values" +
                             " (\"" + pkgName + "\", " + runningtime / totalRunningTime + ", "
@@ -99,7 +99,6 @@ public class MyService extends Service {
 
     public int onStartCommand(Intent intent, int flags, int startID){
         new Thread(new fakeConsumption()).start();
-       // Log.e("refresh", "refresh app sql");
         return START_STICKY;
 
     }
@@ -108,19 +107,29 @@ public class MyService extends Service {
         String cmd = "select pid, proctime from appinfo where pkgname = \"" + pkgName + "\" order by timestamp desc limit 0, 1";
         Cursor cursor = MainActivity.appDatabase.rawQuery(cmd, null);
         cursor.moveToNext();
-        if (cursor.getCount() == 0)
-            return getAppProcessTime(pid);
-        else if(pid == cursor.getLong(0)) {
-            Long result = (getAppProcessTime(pid) - cursor.getLong(1));
-            return result;
+        int count = cursor.getCount();
+        long pidInSql = cursor.getLong(0);
+        long runningTimeInSql = cursor.getLong(1);
+        Long appConsumptionTime = getAppProcessTime(pid);
+        if (count == 0)
+            return appConsumptionTime;
+        else if(pid == pidInSql) {
+            Long result = appConsumptionTime - runningTimeInSql;
+            if(result > 0) {
+                return result;
+            }else
+                return appConsumptionTime;
         }else {
 
-            if(getAppProcessTime(pid) > 500){
-                Long result = (getAppProcessTime(pid) - cursor.getLong(1));
-                return result;
+            if(getAppProcessTime(pid) > MainActivity.SERVICE_INTERVAL_IN_SECONDS * 100){
+                Long result = appConsumptionTime - runningTimeInSql;
+                if(result > 0) {
+                    return result;
+                }else
+                    return appConsumptionTime;
             }
             else
-                return getAppProcessTime(pid);
+                return appConsumptionTime;
         }
     }
         /*

@@ -3,14 +3,17 @@ package hult.netlab.pku.apmpowermanager;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +30,7 @@ public class BatteryRateFragment extends Fragment {
     private DonutProgress donutProgress;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
-
+    static final String ACTION_UPDATE = "hult.netlab.pku.apmpowermanager.UPDATE";
 
     public BatteryRateFragment() {
         // Required empty public constructor
@@ -45,6 +48,11 @@ public class BatteryRateFragment extends Fragment {
         ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.activity_batteryinfomain,container,false);
 
         donutProgress = (DonutProgress)rootview.findViewById(R.id.donut_progress);
+        donutProgress.setText("80");
+        donutProgress.setTextSize(100);
+        donutProgress.setInnerBottomText("time left");
+        donutProgress.setInnerBottomTextColor(Color.WHITE);
+        donutProgress.setInnerBottomTextSize(60);
         timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
@@ -89,7 +97,7 @@ public class BatteryRateFragment extends Fragment {
                 case 0:
                     return new FragmentBatteryInfo();
                 case 1:
-                    return new FragmentMode();
+                    return new SubFragmentMode();
                 default: return new FragmentMode();
             }
         }
@@ -97,6 +105,20 @@ public class BatteryRateFragment extends Fragment {
 
         public int getCount() {
             return NUM_PAGES;
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 当otherActivity中返回数据的时候，会响应此方法
+        // requestCode和resultCode必须与请求startActivityForResult()和返回setResult()的时候传入的值一致。
+
+        if (requestCode == 1 && (resultCode == ModeEdit.RESULT_OK)) {
+            LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
+            Intent intent = new Intent(ACTION_UPDATE);
+            mBroadcastManager.sendBroadcast(intent);
+
         }
     }
 }
