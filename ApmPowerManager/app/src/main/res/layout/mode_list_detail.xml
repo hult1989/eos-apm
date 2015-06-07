@@ -6,22 +6,23 @@
     android:paddingRight="16dp"
     android:orientation="horizontal">
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
         android:id="@+id/modename"
         android:layout_centerVertical="true"
         android:text="mode"
+        android:layout_alignParentLeft="true"
         android:textColor="@color/secondary_text_default_material_light"
         android:textSize="16sp"/>
+
     <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:id="@+id/modecheckbutton"
-        android:layout_toLeftOf="@id/modename"
         android:layout_alignParentRight="true"
-        android:buttonTint="@color/secondary_text_default_material_light" />
+        android:buttonTint="@color/google_teal" />
 
 </RelativeLayout>

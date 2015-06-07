@@ -49,10 +49,10 @@ public class BatteryRateFragment extends Fragment {
 
         donutProgress = (DonutProgress)rootview.findViewById(R.id.donut_progress);
         donutProgress.setText("80");
-        donutProgress.setTextSize(100);
-        donutProgress.setInnerBottomText("time left");
+        donutProgress.setTextSize(160);
+        donutProgress.setInnerBottomText("Percent Battery");
         donutProgress.setInnerBottomTextColor(Color.WHITE);
-        donutProgress.setInnerBottomTextSize(60);
+        donutProgress.setInnerBottomTextSize(30);
         timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {

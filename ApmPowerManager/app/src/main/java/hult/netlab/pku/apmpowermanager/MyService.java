@@ -64,7 +64,6 @@ public class MyService extends Service {
                 }
             }
         Cursor cursor = MainActivity.appDatabase.rawQuery("select * from apphistory;", null);
-        Log.e("init", cursor.getCount() + "");
     }
 
 
@@ -82,16 +81,13 @@ public class MyService extends Service {
                     Long timestamp = System.currentTimeMillis();
                     //这里会被执行但calcrunningtime会出问题，
                     Long runningTime = calcRunningTime(pkgName, amProcess.pid);
-                    Log.e("will this", "be executed?");
                     totalRunningTime += runningTime;
                     tempItem.put(pkgName, runningTime);
-                    Log.e("sql cmd", pkgName);
                     String SQLcommand = "insert into appinfo (pkgname, pid, proctime, runningtime, timestamp) "
                             + "values ( \"" + pkgName + "\", " + amProcess.pid + ", "
                             + appProcTime + ", " + runningTime + ", " + System.currentTimeMillis() + ");";
                     MainActivity.appDatabase.execSQL(SQLcommand, new Object[]{});
                     Cursor cursor = MainActivity.appDatabase.rawQuery("select * from appinfo", null);
-                //    Log.e("read /proc/", cursor.getCount() + "");
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -102,13 +98,9 @@ public class MyService extends Service {
                     PackageInfo packageInfo = pm.getPackageInfo(processInfo.pkgList[0], 0);
                     String pkgName = processInfo.pkgList[0];
                     float runningtime = Float.parseFloat(tempItem.get(pkgName).toString());
-          //          Log.e(pkgName, runningtime / totalRunningTime * 100 + "%");
-        //            Log.e(pkgName, runningtime + ", " + totalRunningTime);
-
                     String insertCMD = "insert into apphistory (pkgname, ratio, timestamp) values" +
                             " (\"" + pkgName + "\", " + runningtime / totalRunningTime + ", "
                     + System.currentTimeMillis() + ");";
-          //          Log.e(pkgName, insertCMD);
                     MainActivity.appDatabase.execSQL(insertCMD, new Object[]{});
                 }catch (Exception e){};
             }
@@ -117,7 +109,6 @@ public class MyService extends Service {
 
     public int onStartCommand(Intent intent, int flags, int startID){
         new Thread(new fakeConsumption()).start();
-        Log.e("start reading", "in new thread");
         return START_STICKY;
 
     }
@@ -134,8 +125,6 @@ public class MyService extends Service {
         long runningTimeInSql = cursor.getLong(1);
 
         Long appConsumptionTime = getAppProcessTime(pid);
-        Log.e("will this be executed?", appConsumptionTime + "");
-
         if (count == 0)
             return appConsumptionTime;
         else if(pid == pidInSql) {
@@ -156,41 +145,8 @@ public class MyService extends Service {
                 return appConsumptionTime;
         }
     }
-        /*
-        else{
-            Log.e(pkgName, "NOT EQUAL: "  + getAppProcessTime());
-            return getAppProcessTime(pid);
-        } else if (pid == cursor.getLong(0)) {
-        }
-         */
 
 
-/*
-    public void getAppComsumption(){
-        Iterator iterator = MainActivity.appList.entrySet().iterator();
-        String pkgName = "";
-        while(iterator.hasNext()) {
-            Map.Entry entry = (Map.Entry) iterator.next();
-            pkgName = (String) entry.getKey();
-            AppConsumption appConsumption = (AppConsumption) entry.getValue();
-            Map<String, Object> app = new HashMap<String, Object>();
-            app.put("pkgName", pkgName);
-            app.put("label", appConsumption.getLabel());
-            app.put("consume", appConsumption.getCpuConsumption().get(23));
-            MainActivity.appConsumptionArrayList.add(app);
-
-                String SQLcommand = "insert into appinfo (pkgname, quantity, time) values (\"" + pkgName + "\", "
-                        + appConsumption.getCpuConsumption().get(23) + ", " + System.currentTimeMillis() + ");";
-//            String SQLcommand = "insert into appinfo (pkgname, quantity, time) values (\"" + pkgName + "\", "
-//                    + (int)(Math.random() * 60) + ", " + System.currentTimeMillis() + ");";
-            try {
-                MainActivity.appDatabase.execSQL(SQLcommand);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-*/
     String second2hour(long second){
         long min = second / 60;
         long h = second / 3600;

@@ -167,7 +167,7 @@ public class FragmentMode_tab4 extends Fragment {
                 });
 
                 addDialog.setContentView(layout);
-                addDialog.setTitle("Add Mode");
+                addDialog.setTitle("New Mode");
                 addDialog.show();
                 InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInputFromInputMethod(dialog_mode_name.getWindowToken(),0);

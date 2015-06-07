@@ -123,11 +123,10 @@
                     android:id="@+id/upload"
                     android:text="Upload: "/>
             </RelativeLayout>
-            <LinearLayout
+            <View
                 android:layout_width="fill_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/ltgry">
-            </LinearLayout>
+                android:layout_height="1dp"
+                android:background="@color/divider"/>
             <RelativeLayout
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
@@ -177,7 +176,7 @@
                 android:layout_height="48dp"
                 android:layout_weight="1.2"
                 android:paddingLeft="8dp"
-                android:textColor="@color/google_teal"
+                android:textColor="@android:color/holo_blue_dark"
                 android:paddingRight="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="4dp"
@@ -194,7 +193,7 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_marginLeft="4dp"
                 android:text="close"
-                android:textColor="@color/google_teal"
+                android:textColor="@android:color/holo_blue_dark"
                 android:layout_weight="0.8"
                 android:focusable="true"
                 android:id="@+id/close"/>

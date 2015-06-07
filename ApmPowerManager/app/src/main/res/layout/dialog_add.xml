@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
-
+    android:layout_height="wrap_content">
 
     <EditText
         android:id="@+id/dialog_mode_name"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center|center_horizontal|center_vertical"
-        android:padding="10dp"
-        android:textSize="14sp"
-        android:hint="Mode Name"/>
+        android:paddingTop="20dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingBottom="24dp"
+        android:textSize="15sp"
+        android:textColorHint="@color/secondary_text_disabled_material_light"
+        android:hint="Please Input a Mode Name"/>
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center|center_horizontal|center_vertical"
+        android:layout_below="@id/dialog_mode_name"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_gravity="right"
         android:orientation="horizontal" >
-        <TextView
-            android:id="@+id/dialog_mode_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="NEXT"
-            android:textColor="@color/icon_teal"
-            android:textSize="16sp"/>
 
-        <TextView
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"/>
-
-        <TextView
+        <Button
             android:id="@+id/dialog_mode_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:text="CANCEL"
+            style="?android:attr/borderlessButtonStyle"
             android:textSize="16sp"
-            android:textColor="@color/icon_teal"/>
+            android:layout_gravity="center"
+            android:textColor="@color/google_teal"/>
+
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/dialog_mode_next"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:text="NEXT"
+            android:textColor="@color/google_teal"
+            android:textSize="16sp"/>
     </LinearLayout>
 </LinearLayout>
     
