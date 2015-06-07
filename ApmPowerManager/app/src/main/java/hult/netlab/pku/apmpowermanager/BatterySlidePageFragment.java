@@ -79,6 +79,7 @@ public class BatterySlidePageFragment extends Fragment {
             chartLayout.addView(view);
         }else{
             LinearLayout chartLayout = (LinearLayout)rootView.findViewById(R.id.chartview);
+
             View view = new LineChart().execute(container.getContext());
             chartLayout.addView(view);
 

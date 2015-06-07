@@ -24,8 +24,11 @@ import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.text.DecimalFormat;
+
 import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -37,8 +40,8 @@ import java.util.Objects;
 
 public class FragmentRank extends Fragment {
     private ListView applistview;
-    private ArrayList<HashMap<String, Object>> mData ;
-    private PackageManager pm ;
+    private ArrayList<HashMap<String, Object>> mData;
+    private PackageManager pm;
     private List<ApplicationInfo> appInfoList = null;
     public static long allAppTotalRunningTime;
     private ProgressBar progressBar;
@@ -56,9 +59,9 @@ public class FragmentRank extends Fragment {
         public int compare(Object o1, Object o2) {
             Map<String, Object> s1 = (Map<String, Object>) o1;
             Map<String, Object> s2 = (Map<String, Object>) o2;
-            if(Long.parseLong(s1.get("runningtime").toString()) > Long.parseLong(s2.get("runningtime").toString()))
+            if (Long.parseLong(s1.get("runningtime").toString()) > Long.parseLong(s2.get("runningtime").toString()))
                 return -1;
-            else if(Long.parseLong(s1.get("runningtime").toString()) == Long.parseLong(s2.get("runningtime").toString()))
+            else if (Long.parseLong(s1.get("runningtime").toString()) == Long.parseLong(s2.get("runningtime").toString()))
                 return 0;
             else
                 return 1;
@@ -69,35 +72,34 @@ public class FragmentRank extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final ViewGroup rootview = (ViewGroup)inflater.inflate(R.layout.activity_installed_app_list, container, false);
+        final ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.activity_installed_app_list, container, false);
         applistview = (ListView) rootview.findViewById(R.id.applistview);
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                pm = getActivity().getPackageManager();
-                mData = new ArrayList<HashMap<String, Object>>();
+        pm = getActivity().getPackageManager();
+        mData = new ArrayList<HashMap<String, Object>>();
 
-                String selectSqlCmd = "select pkgname, proctime from appinfo group by pkgname order by proctime desc";
-                Cursor cursor = MainActivity.appDatabase.rawQuery(selectSqlCmd, null);
-                long sumCpuTime = 0;
-                while(cursor.moveToNext()){
-                    sumCpuTime += cursor.getLong(1);
-                }
-                cursor.moveToFirst();
-                while(cursor.moveToNext()){
-                    try {
-                        HashMap<String, Object>item = new HashMap<>();
-                        String pkgName = cursor.getString(0);
-                        long proctime = cursor.getLong(1);
-                        float ratio = (float)proctime / sumCpuTime;
-                        item.put("image", pm.getApplicationIcon(pkgName));
-                        item.put("ratiotext", new DecimalFormat("0.0%").format(ratio));
-                        item.put("ratio", ratio * 100);
-                        item.put("pkgname", pkgName);
-                        item.put("label", pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
-                        mData.add(item);
-                    }catch (Exception e){};
-                }
+        String selectSqlCmd = "select pkgname, proctime from appinfo group by pkgname order by proctime desc";
+        Cursor cursor = MainActivity.appDatabase.rawQuery(selectSqlCmd, null);
+        long sumCpuTime = 0;
+        while (cursor.moveToNext()) {
+            sumCpuTime += cursor.getLong(1);
+        }
+        cursor.moveToFirst();
+        while (cursor.moveToNext()) {
+            try {
+                HashMap<String, Object> item = new HashMap<>();
+                String pkgName = cursor.getString(0);
+                long proctime = cursor.getLong(1);
+                float ratio = (float) proctime / sumCpuTime;
+                item.put("image", pm.getApplicationIcon(pkgName));
+                item.put("ratiotext", new DecimalFormat("0.0%").format(ratio));
+                item.put("ratio", (int)(ratio * 100));
+                item.put("pkgname", pkgName);
+                item.put("label", pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
+                mData.add(item);
+            } catch (Exception e) {
+            }
+            ;
+        }
 /*
                 allAppTotalRunningTime = 0;
                 List<PackageInfo> packageInfos = pm.getInstalledPackages(pm.GET_UNINSTALLED_PACKAGES);
@@ -135,14 +137,9 @@ public class FragmentRank extends Fragment {
                     data.put("ratio", ratio);
                 }
  */
-            }
-        });
-
-
 
 
         applistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 String pkgName = (String) mData.get(position).get("pkgname");
                 String appConsume = mData.get(position).get("ratiotext").toString();
@@ -160,76 +157,78 @@ public class FragmentRank extends Fragment {
         adapter.setViewBinder(new SimpleAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Object data, String textRepresentation) {
-                if(view instanceof ImageView && data instanceof Drawable){
-                    ImageView iv = (ImageView)view;
-                    iv.setImageDrawable((Drawable)data);
+                if (view instanceof ImageView && data instanceof Drawable) {
+                    ImageView iv = (ImageView) view;
+                    iv.setImageDrawable((Drawable) data);
                     return true;
-                }else{
+                } else {
                     return false;
                 }
             }
 
         });
-        applistview.setAdapter(adapter);
+        applistview.setAdapter(new appinfoAdapter(container.getContext(), mData));
         return rootview;
-     //   appinfoAdapter adapter = new appinfoAdapter(container.getContext());
+    }
+    //   appinfoAdapter adapter = new appinfoAdapter(container.getContext());
+}
+
+
+ class appinfoAdapter extends BaseAdapter {
+
+    private LayoutInflater layoutInflater;
+    private ArrayList<HashMap<String, Object>> mData;
+
+    public appinfoAdapter(Context context, ArrayList<HashMap<String, Object>> mData) {
+        this.layoutInflater = LayoutInflater.from(context);
+        this.mData = mData;
     }
 
-
-    public class appinfoAdapter extends BaseAdapter {
-
-        private LayoutInflater layoutInflater;
-
-        public appinfoAdapter(Context context) {
-            this.layoutInflater = LayoutInflater.from(context);
-        }
-
-        @Override
-        public int getCount() {
-            return mData.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mData.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHloder holder = null;
-            if (convertView == null) {
-                holder = new ViewHloder();
-                convertView = layoutInflater.inflate(R.layout.listlayout, null);
-                holder.icon = (ImageView) convertView.findViewById(R.id.image);
-                holder.rate = (TextView) convertView.findViewById(R.id.batteryconsumption);
-                holder.label = (TextView)convertView.findViewById(R.id.title);
-                holder.bar = (ProgressBar) convertView.findViewById(R.id.bar);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHloder) convertView.getTag();
-            }
-
-            //为什么mdata放在这里？mdata不是全局变量
-            holder.icon.setImageDrawable((Drawable) mData.get(position).get("image"));
-            holder.label.setText((String)mData.get(position).get("label"));
-            holder.rate.setText(mData.get(position).get("ratiotext").toString());
-            holder.bar.setProgress((int)mData.get(position).get("ratio"));
-            return convertView;
-        }
+    @Override
+    public int getCount() {
+        return mData.size();
     }
 
-    class ViewHloder {
-        public ImageView icon;
-        public TextView label;
-        public TextView rate;
-        public ProgressBar bar;
-
+    @Override
+    public Object getItem(int position) {
+        return mData.get(position);
     }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHloder holder = null;
+        if (convertView == null) {
+            holder = new ViewHloder();
+            convertView = layoutInflater.inflate(R.layout.listlayout, null);
+            holder.icon = (ImageView) convertView.findViewById(R.id.image);
+            holder.rate = (TextView) convertView.findViewById(R.id.appconsume);
+            holder.label = (TextView) convertView.findViewById(R.id.title);
+            Log.e("label textview", holder.label.toString());
+            holder.bar = (ProgressBar) convertView.findViewById(R.id.bar);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHloder) convertView.getTag();
+        }
+
+        holder.icon.setImageDrawable((Drawable) mData.get(position).get("image"));
+        holder.label.setText((String) mData.get(position).get("label").toString());
+        holder.rate.setText(mData.get(position).get("ratiotext").toString());
+        holder.bar.setProgress((int)(mData.get(position).get("ratio")));
+        return convertView;
+    }
+}
+
+class ViewHloder {
+    public ImageView icon;
+    public TextView label;
+    public TextView rate;
+    public ProgressBar bar;
 
 }
+
 
