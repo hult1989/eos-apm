@@ -80,6 +80,8 @@ public class FragmentRank extends Fragment {
         String selectSqlCmd = "select pkgname, proctime from appinfo group by pkgname order by proctime desc";
         Cursor cursor = MainActivity.appDatabase.rawQuery(selectSqlCmd, null);
         long sumCpuTime = 0;
+        Log.d("curso",cursor.getCount()+"");
+
         while (cursor.moveToNext()) {
             sumCpuTime += cursor.getLong(1);
         }

@@ -10,6 +10,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +19,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.Menu;
@@ -48,7 +50,7 @@ public class MainActivity extends FragmentActivity {
     private TextView rank_tab;
     private TextView mode_tab;
     public static SQLiteDatabase appDatabase;
-    public static long SERVICE_INTERVAL_IN_SECONDS;
+    public static long SERVICE_INTERVAL_IN_SECONDS = 5;
 
     public void sqliteInit(){
         String createAppDatabase = "create table appinfo (id integer primary key autoincrement, " +
@@ -60,9 +62,9 @@ public class MainActivity extends FragmentActivity {
         try {
             appDatabase = SQLiteDatabase.openOrCreateDatabase(getFilesDir().toString()+"/appdb.db3", null);
             Log.e("file location", getFilesDir().toString());
-        //    appDatabase.execSQL(createAppDatabase);
-        //    appDatabase.execSQL(createBatteryDatabase);
-        //    appDatabase.execSQL(createAppRatioCMD);
+            appDatabase.execSQL(createAppDatabase);
+            appDatabase.execSQL(createBatteryDatabase);
+            appDatabase.execSQL(createAppRatioCMD);
         }catch (Exception e){
             e.printStackTrace();
             appDatabase.execSQL("drop table appinfo");
@@ -84,7 +86,7 @@ public class MainActivity extends FragmentActivity {
         AlarmManager alarmManager = (AlarmManager)getSystemService(Service.ALARM_SERVICE);
         Intent intent = new Intent(MainActivity.this, MyService.class);
         final PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, 600000, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, SERVICE_INTERVAL_IN_SECONDS*1000, pendingIntent);
     }
 
 
@@ -92,7 +94,12 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getActionBar().setElevation(0);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActionBar().setElevation(0);
+        }
+
+
         getActionBar().hide();
      //   getActionBar().setElevation(0);
         sqliteInit();

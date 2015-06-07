@@ -211,6 +211,7 @@ public class ModeEdit extends Activity {
                     int temp = preferences.getInt("mode_num", 0);
                     editor.putString("mode" + String.valueOf(temp), str);
                     editor.putInt("mode_num", temp + 1);
+                    editor.putBoolean(str+"check",false);
                 }
                 editor.commit();
                 setResult(RESULT_OK, getIntent());
