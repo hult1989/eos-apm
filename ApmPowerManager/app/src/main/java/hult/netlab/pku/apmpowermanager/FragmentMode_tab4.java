@@ -166,7 +166,7 @@ public class FragmentMode_tab4 extends Fragment {
                 });
 
                 addDialog.setContentView(layout);
-                addDialog.setTitle("Add Mode");
+                addDialog.setTitle("New Mode");
                 addDialog.show();
             }
         });

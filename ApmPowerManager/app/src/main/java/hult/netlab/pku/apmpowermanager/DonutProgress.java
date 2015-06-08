@@ -348,7 +348,7 @@ public class DonutProgress extends View {
       //  String text = this.text != null ? this.text : prefixText + getText() + suffixText;
         if (!TextUtils.isEmpty(getText())) {
        //     float textHeight = textPaint.descent() + textPaint.ascent();
-            canvas.drawText(getText()+"%", (getWidth() - textPaint.measureText(getText()+"%")) / 2.0f, getHeight()/2, textPaint);
+            canvas.drawText(getText()+"", (getWidth() - textPaint.measureText(getText()+"")) / 2.0f, getHeight() * 12 /20 , textPaint);
         //试着删除百分号
         //    canvas.drawText(getText(), (getWidth() - textPaint.measureText(getText()+"%")) / 2.0f, getHeight()/2, textPaint);
         }
@@ -356,7 +356,7 @@ public class DonutProgress extends View {
         if (!TextUtils.isEmpty(getInnerBottomText())) {
             float bottomTextHeight = innerBottomTextPaint.descent()-innerBottomTextPaint.ascent();
             float bottomTextBaseline = getHeight()/2f + getHeight()/10f + bottomTextHeight ;
-            canvas.drawText(getInnerBottomText(), (getWidth() - innerBottomTextPaint.measureText(getInnerBottomText())) / 2.0f, bottomTextBaseline , innerBottomTextPaint);
+            canvas.drawText(getInnerBottomText(), (getWidth() - innerBottomTextPaint.measureText(getInnerBottomText())) / 2.0f, bottomTextBaseline + getHeight() /20, innerBottomTextPaint);
         }
 
     }

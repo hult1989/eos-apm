@@ -5,10 +5,13 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.BatteryManager;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
@@ -24,9 +27,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends FragmentActivity {
-
     private static final int PAGENUM = 4;
     private ViewPager mPager;
     private PagerAdapter mainPagerAdapter;
@@ -39,62 +48,39 @@ public class MainActivity extends FragmentActivity {
     private TextView rank_tab;
     private TextView mode_tab;
     public static SQLiteDatabase appDatabase;
-    public static final long SERVICE_INTERVAL_IN_SECONDS = 5;
 
-    public void sqliteInit(){
-        String createAppDatabase = "create table appinfo (id integer primary key autoincrement, " +
-                "pkgname text, pid integer, proctime integer, runningtime integer, timestamp integer);";
-        String createBatteryDatabase = "create table batteryinfo (id integer primary key autoincrement, quantity integer, timestamp integer);";
-        String createAppRatioHistory = "create table appratio (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
-        String createAppRatioCMD = "create table apphistory (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
-
-        try {
-            appDatabase = SQLiteDatabase.openOrCreateDatabase(getFilesDir().toString()+"/appdb.db3", null);
-            Log.e("file location", getFilesDir().toString());
-            appDatabase.execSQL(createAppDatabase);
-            appDatabase.execSQL(createBatteryDatabase);
-            appDatabase.execSQL(createAppRatioCMD);
-        }catch (Exception e){
-            e.printStackTrace();
-            appDatabase.execSQL("drop table appinfo");
-            appDatabase.execSQL("drop table batteryinfo");
-            appDatabase.execSQL("drop table apphistory");
-            appDatabase.execSQL(createAppDatabase);
-            appDatabase.execSQL(createBatteryDatabase);
-            appDatabase.execSQL(createAppRatioCMD);
-        }
-    }
-
-    public void startMyService(){
-       /*
-        Intent intent = new Intent();
-        intent.setAction("MyService");
-        intent.setPackage(getPackageName());
-        startService(intent);
-        */
-        AlarmManager alarmManager = (AlarmManager)getSystemService(Service.ALARM_SERVICE);
-        Intent intent = new Intent(MainActivity.this, MyService.class);
-        final PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, SERVICE_INTERVAL_IN_SECONDS * 1000, pendingIntent);
-    }
-
+    public static final long SERVICE_INTERVAL_IN_SECONDS = 3600;
+    public static SharedPreferences batteryPreference;
+    public static Handler freshBatteryInfoHandler;
 
     static final String ACTION_UPDATE = "hult.netlab.pku.apmpowermanager.UPDATE";
+    public static  BroadcastReceiver mBatteryBroadcastReciver;
+    public static int REFRESH = 0;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        batteryPreference = getSharedPreferences("batteryinfo", MODE_PRIVATE);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getActionBar().setElevation(0);
         }
         getActionBar().hide();
-
-
-        sqliteInit();
-
-        startMyService();
-        super.onCreate(savedInstanceState);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                sqliteInit();
+                startMyService();
+            }
+        }).start();
         setContentView(R.layout.activity_main);
+        layoutInit();
+        mBatteryBroadcastReciver = getBatteryBroadcastReceiver();
+        registerReceiver(mBatteryBroadcastReciver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
+    }
+
+
+    void layoutInit(){
         bottom_tab1 = (RelativeLayout) findViewById(R.id.bottom_tab1);
         bottom_tab2 = (RelativeLayout) findViewById(R.id.bottom_tab2);
         bottom_tab3 = (RelativeLayout) findViewById(R.id.bottom_tab3);
@@ -174,56 +160,96 @@ public class MainActivity extends FragmentActivity {
         });
 
 
+    }
 
-        BroadcastReceiver myBroadcastReciver = new BroadcastReceiver() {
-            @Override
+    public void sqliteInit(){
+        String createAppDatabase = "create table appinfo (id integer primary key autoincrement, " +
+                "pkgname text, pid integer, proctime integer, runningtime integer, timestamp integer);";
+        String createBatteryDatabase = "create table batteryinfo (id integer primary key autoincrement, quantity integer, timestamp integer);";
+        String createAppRatioHistory = "create table appratio (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
+        String createAppRatioCMD = "create table apphistory (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
+
+        try {
+            appDatabase = SQLiteDatabase.openOrCreateDatabase(getFilesDir().toString()+"/appdb.db3", null);
+            Log.e("file location", getFilesDir().toString());
+            //    appDatabase.execSQL(createAppDatabase);
+            //    appDatabase.execSQL(createBatteryDatabase);
+            //    appDatabase.execSQL(createAppRatioCMD);
+        }catch (Exception e){
+            e.printStackTrace();
+            appDatabase.execSQL("drop table appinfo");
+            appDatabase.execSQL("drop table batteryinfo");
+            appDatabase.execSQL("drop table apphistory");
+            appDatabase.execSQL(createAppDatabase);
+            appDatabase.execSQL(createBatteryDatabase);
+            appDatabase.execSQL(createAppRatioCMD);
+        }
+    }
+
+    public void startMyService(){
+       /*
+        Intent intent = new Intent();
+        intent.setAction("MyService");
+        intent.setPackage(getPackageName());
+        startService(intent);
+        */
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Service.ALARM_SERVICE);
+        Intent intent = new Intent(MainActivity.this, MyService.class);
+        final PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, SERVICE_INTERVAL_IN_SECONDS * 1000, pendingIntent);
+    }
+
+
+    public BroadcastReceiver getBatteryBroadcastReceiver(){
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            SharedPreferences.Editor editor = MainActivity.batteryPreference.edit();
             public void onReceive(Context context, Intent intent) {
                 int level = (int) (intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
                         / (float) intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100) * 100);
-                Log.e("battery level", level + "");
-
+                editor.putInt("batterylevel", level);
+                Log.e("batterylevel", level + "%");
                 switch (intent.getIntExtra(BatteryManager.EXTRA_STATUS, 1)) {
                     case BatteryManager.BATTERY_STATUS_CHARGING:
                         if (intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 1) == BatteryManager.BATTERY_PLUGGED_AC)
-                            Log.e("battery ", "on ac");
+                            editor.putString("isPlugged", "Charging");
                         else
-                            Log.e("battery ", "on battery");
+                            editor.putString("isPlugged", "Not Plugged");
                         break;
                     case BatteryManager.BATTERY_STATUS_DISCHARGING:
-                            Log.e("battery ", "dis discharging");
+                        //         Log.e("battery ", "dis discharging");
                         break;
                     case BatteryManager.BATTERY_STATUS_FULL:
-                        Log.e("battery ", "full");
+                        //          Log.e("battery ", "full");
                         break;
                     case BatteryManager.BATTERY_STATUS_NOT_CHARGING:
-                        Log.e("battery ", "not charging");
+                        //        Log.e("battery ", "not charging");
                         break;
                 }
                 switch (intent.getIntExtra(BatteryManager.EXTRA_HEALTH, 1)) {
                     case BatteryManager.BATTERY_HEALTH_DEAD:
-                        Log.e("battery ", "not charging");
+                        editor.putString("health", "DEAD");
                         break;
                     case BatteryManager.BATTERY_HEALTH_GOOD:
-                        Log.e("battery ", "health good");
+                        editor.putString("health", "GOOD");
                         break;
                     case BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE:
-                        Log.e("battery ", "over voltage");
+                        editor.putString("health", "OVER VOLTAGE");
                         break;
                     case BatteryManager.BATTERY_HEALTH_OVERHEAT:
-                        Log.e("battery ", "over heat");
+                        editor.putString("health", "OVER HEAD");
                         break;
                     case BatteryManager.BATTERY_HEALTH_UNKNOWN:
-                        Log.e("battery ", "unknown");
-                        break;
-                    case BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE:
-                        Log.e("battery ", "specified failer");
+                        //        Log.e("battery ", "UNKNOWN");
                         break;
                 }
-                Log.e("voltage ", intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 1) + "mv");
-                Log.e("temperature", intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 1)/10.0 + "°C");
-                Log.e("technology", intent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY));
+                editor.putString("temperature", intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 1)/10.0 + "°C");
+                editor.putString("technology", intent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY));
+                editor.putString("voltage",  intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 1)  + "mv");
+                editor.commit();
+                //    freshBatteryInfoHandler.sendEmptyMessage(REFRESH);
             }
         };
+        return broadcastReceiver;
     }
 
     private class MainPagerAdapter extends FragmentStatePagerAdapter {
