@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "hult.netlab.pku.apmpowermanager"
-        minSdkVersion 19
+        minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -20,9 +20,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.1.1'
     compile files('src/main/achartengine-1.1.0.jar')
-	compile 'com.android.support:cardview-v7:21.0.2'
+    compile 'com.android.support:cardview-v7:21.0.2'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
 }
