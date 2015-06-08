@@ -82,18 +82,26 @@ public class FragmentRank extends Fragment {
         long sumCpuTime = 0;
         int index = 0;
         while (cursor.moveToNext()) {
-            if(index < 20)
+            if(index < 20) {
+         //       Log.e(cursor.getString(0), index + ": " + cursor.getLong(1));
                 sumCpuTime += cursor.getLong(1);
+                index++;
+            }
+
         }
-        cursor.moveToFirst();
+     //   Log.e("total cpu time",sumCpuTime + " ");
+        cursor.moveToPosition(-1);
         index = 0;
         while (cursor.moveToNext()) {
             if(index < 20) {
+                index++;
+        //        Log.e(cursor.getString(0), index + ": " + cursor.getLong(1));
                 try {
                     HashMap<String, Object> item = new HashMap<>();
                     String pkgName = cursor.getString(0);
                     long proctime = cursor.getLong(1);
                     float ratio = (float) proctime / sumCpuTime;
+                    Log.e(pkgName, ratio + "");
                     item.put("image", pm.getApplicationIcon(pkgName));
                     item.put("ratiotext", new DecimalFormat("0.0%").format(ratio));
                     item.put("ratio", (int) (ratio * 100));

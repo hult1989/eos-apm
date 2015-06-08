@@ -141,7 +141,7 @@ public class FragmentMode_tab4 extends Fragment {
                 View layout = inflater.inflate(R.layout.dialog_add, container, false);
                 dialog_mode_name = (EditText) layout.findViewById(R.id.dialog_mode_name);
 
-                Log.d("name",dialog_mode_name.getText().toString());
+    //            Log.d("name",dialog_mode_name.getText().toString());
                 TextView dialog_mode_next = (TextView)layout.findViewById(R.id.dialog_mode_next);
                 dialog_mode_next.setOnClickListener(new OnClickListener() {
                     @Override
@@ -255,15 +255,15 @@ public class FragmentMode_tab4 extends Fragment {
                         int bright = preferences.getInt(s+"brightness", 0);
                         int time = preferences.getInt(s+"timeout", 0);
                         boolean data = preferences.getBoolean(s+"data", true);
-                        Log.d("data", String.valueOf(data));
+                    //    Log.d("data", String.valueOf(data));
                         boolean wifi = preferences.getBoolean(s+"wifi", false);
-                        Log.d("wifi", String.valueOf(wifi));
+                   //     Log.d("wifi", String.valueOf(wifi));
                         boolean blue = preferences.getBoolean(s+"bluetooth", false);
-                        Log.d("data", String.valueOf(data));
+                 //       Log.d("data", String.valueOf(data));
                         boolean silence = preferences.getBoolean(s+"silence", false);
-                        Log.d("silence", String.valueOf(silence));
+                //        Log.d("silence", String.valueOf(silence));
                         boolean vibrate = preferences.getBoolean(s+"vibrate", false);
-                        Log.d("vibrate", String.valueOf(vibrate));
+              //          Log.d("vibrate", String.valueOf(vibrate));
                         mm.setAll(bright, time, data, wifi, blue, silence, vibrate);
                     }
                 }
@@ -330,7 +330,7 @@ public class FragmentMode_tab4 extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.d("hide",""+hidden);
+    //    Log.d("hide",""+hidden);
         refresh();
     }
 

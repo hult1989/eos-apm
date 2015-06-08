@@ -72,7 +72,9 @@ public class MyService extends Service {
             for (ActivityManager.RunningAppProcessInfo amProcess: mRunningProcess) {
                 try {
                     PackageManager pm = getPackageManager();
-                    PackageInfo packageInfo = pm.getPackageInfo(amProcess.pkgList[0], 0);
+                    int num = amProcess.pkgList.length;
+                    for(int i = 0;i < num; i++){
+                        PackageInfo packageInfo = pm.getPackageInfo(amProcess.pkgList[i], 0);
                     long appProcTime = getAppProcessTime(amProcess.pid);
                     String pkgName = amProcess.pkgList[0];
                     Long timestamp = System.currentTimeMillis();
@@ -84,6 +86,7 @@ public class MyService extends Service {
                             + "values ( \"" + pkgName + "\", " + amProcess.pid + ", "
                             + appProcTime + ", " + runningTime + ", " + System.currentTimeMillis() + ");";
                     MainActivity.appDatabase.execSQL(SQLcommand, new Object[]{});
+                    }
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -91,13 +94,16 @@ public class MyService extends Service {
             for (ActivityManager.RunningAppProcessInfo processInfo: mRunningProcess){
                 PackageManager pm = getPackageManager();
                 try {
-                    PackageInfo packageInfo = pm.getPackageInfo(processInfo.pkgList[0], 0);
-                    String pkgName = processInfo.pkgList[0];
-                    float runningtime = Float.parseFloat(tempItem.get(pkgName).toString());
-                    String insertCMD = "insert into apphistory (pkgname, ratio, timestamp) values" +
-                            " (\"" + pkgName + "\", " + runningtime / totalRunningTime + ", "
-                    + System.currentTimeMillis() + ");";
-                    MainActivity.appDatabase.execSQL(insertCMD, new Object[]{});
+                    int num = processInfo.pkgList.length;
+                    for(int i = 0;i < num; i++) {
+                        PackageInfo packageInfo = pm.getPackageInfo(processInfo.pkgList[i], 0);
+                        String pkgName = processInfo.pkgList[0];
+                        float runningtime = Float.parseFloat(tempItem.get(pkgName).toString());
+                        String insertCMD = "insert into apphistory (pkgname, ratio, timestamp) values" +
+                                " (\"" + pkgName + "\", " + runningtime / totalRunningTime + ", "
+                                + System.currentTimeMillis() + ");";
+                        MainActivity.appDatabase.execSQL(insertCMD, new Object[]{});
+                    }
                 }catch (Exception e){};
             }
         }
