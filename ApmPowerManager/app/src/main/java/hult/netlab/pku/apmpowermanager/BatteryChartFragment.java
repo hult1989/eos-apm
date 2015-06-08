@@ -193,8 +193,4 @@ public class BatteryChartFragment extends Fragment {
         }
     }
 
-
-
-
-
 }

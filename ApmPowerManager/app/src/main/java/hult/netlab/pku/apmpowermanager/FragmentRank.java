@@ -120,43 +120,6 @@ public class FragmentRank extends Fragment {
         }
 
 
-/*
-                allAppTotalRunningTime = 0;
-                List<PackageInfo> packageInfos = pm.getInstalledPackages(pm.GET_UNINSTALLED_PACKAGES);
-                for(PackageInfo packageInfo: packageInfos){
-                    String pkgName = packageInfo.packageName;
-                    String selectCMD = "select pid, runningtime from appinfo where pkgname = \"" +
-                            pkgName + "\" order by timestamp desc limit 0, 24 ;";
-                    Cursor cursor = MainActivity.appDatabase.rawQuery(selectCMD, null);
-                    long appTotalTime = 0;
-                    while(cursor.moveToNext()){
-                        appTotalTime += cursor.getLong(1);
-                    }
-                    allAppTotalRunningTime += appTotalTime;
-                    Map<String, Object> item = new HashMap<String, Object>();
-<<<<<<< HEAD
-                    try{
-                        item.put("label", pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
-                        item.put("runningtime", appTotalTime);
-                        item.put("pkgname", pkgName);
-                        item.put("image", pm.getApplicationIcon(pkgName));
-                        mData.add(item);
-                    }catch (Exception e){};
-=======
-                    item.put("pkgName",applicationInfo.packageName);
-                    item.put("image", pm.getApplicationIcon(applicationInfo));
-                    item.put("name", pm.getApplicationLabel(applicationInfo));
-                    item.put("progress",(int)(Math.random()*100));
-                    mData.add(item);
->>>>>>> de0d4c7abfa4d4c9f6957ef87da7d9c0004e28e0
-                }
-                Collections.sort(mData, new sortMap());
-                for(Map<String, Object> data: mData) {
-                    String ratio =  new DecimalFormat("0.0%").format(Float.parseFloat(data.get("runningtime").toString()) / allAppTotalRunningTime);
-            //        Log.e("ratio", ratio);
-                    data.put("ratio", ratio);
-                }
- */
 
         applistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -171,29 +134,14 @@ public class FragmentRank extends Fragment {
             }
         });
 
-        SimpleAdapter adapter = new SimpleAdapter(container.getContext(), mData, R.layout.listlayout, new String[]{"image", "label", "ratiotext"},
-                new int[]{R.id.image, R.id.title, R.id.appconsume});
-        adapter.setViewBinder(new SimpleAdapter.ViewBinder() {
-            @Override
-            public boolean setViewValue(View view, Object data, String textRepresentation) {
-                if (view instanceof ImageView && data instanceof Drawable) {
-                    ImageView iv = (ImageView) view;
-                    iv.setImageDrawable((Drawable) data);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
 
-        });
         applistview.setAdapter(new appinfoAdapter(container.getContext(), mData));
         return rootview;
     }
-    //   appinfoAdapter adapter = new appinfoAdapter(container.getContext());
 }
 
 
- class appinfoAdapter extends BaseAdapter {
+class appinfoAdapter extends BaseAdapter {
 
     private LayoutInflater layoutInflater;
     private ArrayList<HashMap<String, Object>> mData;
@@ -248,5 +196,3 @@ class ViewHloder {
     public ProgressBar bar;
 
 }
-
-
