@@ -25,6 +25,7 @@ public class ModeEdit extends Activity {
     private Switch button_bluetooth;
     private Switch button_silence;
     private Switch button_vibrate;
+    private modemanager mm = new modemanager(this);
 
     SeekBar brightness_seekbar;
     SeekBar timeout_seekbar;
@@ -71,7 +72,7 @@ public class ModeEdit extends Activity {
         brightness_seekbar = (SeekBar)findViewById(R.id.brightness_seekbar);
         timeout_seekbar = (SeekBar)findViewById(R.id.timeout_seekbar);
 
-        brightness = preferences.getInt(str + "brightness", -1);
+        brightness = preferences.getInt(str + "brightness", 0);
         if (brightness == -1) {
             text_brightness.setText("Auto");
          //   brightness_seekbar.setProgress(-1);
@@ -127,6 +128,7 @@ public class ModeEdit extends Activity {
             public void onProgressChanged(SeekBar seekBark, int progress, boolean fromUser) {
                 brightness = (progress * 255) / 100;
                 text_brightness.setText(String.valueOf(progress) + "%");
+                mm.setBrightness(brightness);
             }
         });
 

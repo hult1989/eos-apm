@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -61,7 +62,9 @@ public class appinfoActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getActionBar().setElevation(0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActionBar().setElevation(0);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appinfo);
         pm = getPackageManager();

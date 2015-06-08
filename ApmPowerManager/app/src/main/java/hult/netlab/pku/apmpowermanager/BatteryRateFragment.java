@@ -89,9 +89,6 @@ public class BatteryRateFragment extends Fragment {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
-
-
-
         public Fragment getItem(int position) {
             switch(position) {
                 case 0:

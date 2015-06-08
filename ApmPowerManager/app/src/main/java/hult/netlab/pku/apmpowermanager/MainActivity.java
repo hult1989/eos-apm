@@ -1,15 +1,13 @@
 package hult.netlab.pku.apmpowermanager;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,22 +17,13 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends FragmentActivity {
 
@@ -50,7 +39,7 @@ public class MainActivity extends FragmentActivity {
     private TextView rank_tab;
     private TextView mode_tab;
     public static SQLiteDatabase appDatabase;
-    public static long SERVICE_INTERVAL_IN_SECONDS = 5;
+    public static final long SERVICE_INTERVAL_IN_SECONDS = 5;
 
     public void sqliteInit(){
         String createAppDatabase = "create table appinfo (id integer primary key autoincrement, " +
@@ -86,7 +75,7 @@ public class MainActivity extends FragmentActivity {
         AlarmManager alarmManager = (AlarmManager)getSystemService(Service.ALARM_SERVICE);
         Intent intent = new Intent(MainActivity.this, MyService.class);
         final PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this, 0, intent, 0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, SERVICE_INTERVAL_IN_SECONDS*1000, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, SERVICE_INTERVAL_IN_SECONDS * 1000, pendingIntent);
     }
 
 
@@ -94,15 +83,14 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getActionBar().setElevation(0);
         }
-
-
         getActionBar().hide();
-     //   getActionBar().setElevation(0);
+
+
         sqliteInit();
+
         startMyService();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -184,6 +172,58 @@ public class MainActivity extends FragmentActivity {
                 mPager.setCurrentItem(3);
             }
         });
+
+
+
+        BroadcastReceiver myBroadcastReciver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int level = (int) (intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
+                        / (float) intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100) * 100);
+                Log.e("battery level", level + "");
+
+                switch (intent.getIntExtra(BatteryManager.EXTRA_STATUS, 1)) {
+                    case BatteryManager.BATTERY_STATUS_CHARGING:
+                        if (intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 1) == BatteryManager.BATTERY_PLUGGED_AC)
+                            Log.e("battery ", "on ac");
+                        else
+                            Log.e("battery ", "on battery");
+                        break;
+                    case BatteryManager.BATTERY_STATUS_DISCHARGING:
+                            Log.e("battery ", "dis discharging");
+                        break;
+                    case BatteryManager.BATTERY_STATUS_FULL:
+                        Log.e("battery ", "full");
+                        break;
+                    case BatteryManager.BATTERY_STATUS_NOT_CHARGING:
+                        Log.e("battery ", "not charging");
+                        break;
+                }
+                switch (intent.getIntExtra(BatteryManager.EXTRA_HEALTH, 1)) {
+                    case BatteryManager.BATTERY_HEALTH_DEAD:
+                        Log.e("battery ", "not charging");
+                        break;
+                    case BatteryManager.BATTERY_HEALTH_GOOD:
+                        Log.e("battery ", "health good");
+                        break;
+                    case BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE:
+                        Log.e("battery ", "over voltage");
+                        break;
+                    case BatteryManager.BATTERY_HEALTH_OVERHEAT:
+                        Log.e("battery ", "over heat");
+                        break;
+                    case BatteryManager.BATTERY_HEALTH_UNKNOWN:
+                        Log.e("battery ", "unknown");
+                        break;
+                    case BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE:
+                        Log.e("battery ", "specified failer");
+                        break;
+                }
+                Log.e("voltage ", intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 1) + "mv");
+                Log.e("temperature", intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 1)/10.0 + "°C");
+                Log.e("technology", intent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY));
+            }
+        };
     }
 
     private class MainPagerAdapter extends FragmentStatePagerAdapter {
@@ -212,8 +252,8 @@ public class MainActivity extends FragmentActivity {
         public int getCount() {
             return PAGENUM;
         }
-    }
 
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

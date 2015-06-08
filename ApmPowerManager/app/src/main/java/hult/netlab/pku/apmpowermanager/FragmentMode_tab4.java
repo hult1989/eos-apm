@@ -268,41 +268,7 @@ public class FragmentMode_tab4 extends Fragment {
                     }
                 }
             });
-/*
-            holder.radiobutton_mode_name.setChecked(preferences.getBoolean((String) listItems.get(position).get("mode_name")+"check",false));
-            final ViewHolder finalHolder = holder;
-            holder.radiobutton_mode_name.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!finalHolder.radiobutton_mode_name.isChecked()) {
-                        String s = preferences.getString("mode" + String.valueOf(position1), null);
-                        int bright = preferences.getInt(s + "brightness", 0);
-                        int time = preferences.getInt(s + "timeout", 0);
-                        boolean data = preferences.getBoolean(s + "data", true);
-                        Log.d("data", String.valueOf(data));
-                        boolean wifi = preferences.getBoolean(s + "wifi", false);
-                        Log.d("wifi", String.valueOf(wifi));
-                        boolean blue = preferences.getBoolean(s + "bluetooth", false);
-                        Log.d("data", String.valueOf(data));
-                        boolean silence = preferences.getBoolean(s + "silence", false);
-                        Log.d("silence", String.valueOf(silence));
-                        boolean vibrate = preferences.getBoolean(s + "vibrate", false);
-                        Log.d("vibrate", String.valueOf(vibrate));
-                        mm.setAll(bright, time, data, wifi, blue, silence, vibrate);
-                        for(int i =0; i<listItems.size();i++) {
-                            if (i == position1) {
-                                editor.putBoolean(s + "check", true);
-                            } else {
-                                editor.putBoolean(preferences.getString("mode" + String.valueOf(i), null) + "check", false);
-                            }
-                        }
-                        LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
-                        Intent intent = new Intent(ACTION_UPDATE);
-                        mBroadcastManager.sendBroadcast(intent);
-                    }
-                }
-            });
-*/
+
             editDialog = new Dialog(getActivity());
 
             holder.text_edit_mode.setOnClickListener(new View.OnClickListener() {
