@@ -80,54 +80,32 @@ public class FragmentRank extends Fragment {
         String selectSqlCmd = "select pkgname, proctime from appinfo group by pkgname order by proctime desc";
         Cursor cursor = MainActivity.appDatabase.rawQuery(selectSqlCmd, null);
         long sumCpuTime = 0;
-        int index = 0;
         while (cursor.moveToNext()) {
-            if(index < 20) {
-         //       Log.e(cursor.getString(0), index + ": " + cursor.getLong(1));
-                sumCpuTime += cursor.getLong(1);
-                index++;
+            //       Log.e(cursor.getString(0), index + ": " + cursor.getLong(1));
+            sumCpuTime += cursor.getLong(1);
+        }
+
+        //   Log.e("total cpu time",sumCpuTime + " ");
+        cursor.moveToPosition(-1);
+        while (cursor.moveToNext()) {
+            //        Log.e(cursor.getString(0), index + ": " + cursor.getLong(1));
+            try {
+                HashMap<String, Object> item = new HashMap<>();
+                String pkgName = cursor.getString(0);
+                long proctime = cursor.getLong(1);
+                float ratio = (float) proctime / sumCpuTime;
+                Log.e(pkgName, ratio + "");
+                item.put("image", pm.getApplicationIcon(pkgName));
+                item.put("ratiotext", new DecimalFormat("0.0%").format(ratio));
+                item.put("ratio", (int) (ratio * 100));
+                item.put("pkgname", pkgName);
+                item.put("label", pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
+                mData.add(item);
+            } catch (Exception e) {
             }
 
-        }
-     //   Log.e("total cpu time",sumCpuTime + " ");
-        cursor.moveToPosition(-1);
-        index = 0;
-        while (cursor.moveToNext()) {
-            if(index < 20) {
-                index++;
-        //        Log.e(cursor.getString(0), index + ": " + cursor.getLong(1));
-                try {
-                    HashMap<String, Object> item = new HashMap<>();
-                    String pkgName = cursor.getString(0);
-                    long proctime = cursor.getLong(1);
-                    float ratio = (float) proctime / sumCpuTime;
-                    Log.e(pkgName, ratio + "");
-                    item.put("image", pm.getApplicationIcon(pkgName));
-                    item.put("ratiotext", new DecimalFormat("0.0%").format(ratio));
-                    item.put("ratio", (int) (ratio * 100));
-                    item.put("pkgname", pkgName);
-                    item.put("label", pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
-                    mData.add(item);
-                } catch (Exception e) {
-                }
-            }else{
-                try {
-                    HashMap<String, Object> item = new HashMap<>();
-                    String pkgName = cursor.getString(0);
-                    long proctime = cursor.getLong(1);
-                    float ratio = (float) proctime / sumCpuTime;
-                    item.put("image", pm.getApplicationIcon(pkgName));
-                    item.put("ratiotext", new DecimalFormat("0.0%").format(ratio));
-                    item.put("ratio", (int) (ratio * 100));
-                    item.put("pkgname", pkgName);
-                    item.put("label", pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
-                    mData.add(item);
-                } catch (Exception e) {
-                }
-            }
         }
         cursor.close();
-
 
 
         applistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -193,7 +171,7 @@ class appinfoAdapter extends BaseAdapter {
         holder.icon.setImageDrawable((Drawable) mData.get(position).get("image"));
         holder.label.setText((String) mData.get(position).get("label").toString());
         holder.rate.setText(mData.get(position).get("ratiotext").toString());
-        holder.bar.setProgress((int)(mData.get(position).get("ratio")));
+        holder.bar.setProgress((int) (mData.get(position).get("ratio")));
         return convertView;
     }
 }
