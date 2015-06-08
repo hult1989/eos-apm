@@ -53,13 +53,13 @@ public class FragmentBatteryInfo extends Fragment {
 
     private ArrayList<Item> getData() {
         ArrayList<Item> list = new ArrayList<Item>();
-        Item item1 = new Item(R.drawable.ic_battery_plus_grey600_48dp, "Health status", "Good");
+        Item item1 = new Item(R.drawable.ic_battery_plus_grey600_48dp, "Health status", MainActivity.batteryPreference.getString("health","GOOD"));
         list.add(item1);
-        Item item3 = new Item(R.drawable.ic_battery_alert_grey600_48dp, "Battery temperature", "40`C");
+        Item item3 = new Item(R.drawable.ic_battery_alert_grey600_48dp, "Battery temperature", MainActivity.batteryPreference.getString("temperature","°C"));
         list.add(item3);
-        Item item5 = new Item(R.drawable.ic_battery_unknown_grey600_48dp, "Battery type", "Li-poly");
+        Item item5 = new Item(R.drawable.ic_battery_unknown_grey600_48dp, "Battery type", MainActivity.batteryPreference.getString("technology","Li-poly"));
         list.add(item5);
-        Item item4 = new Item(R.drawable.ic_battery_charging_80_grey600_48dp, "Battery voltage", "4.1V");
+        Item item4 = new Item(R.drawable.ic_battery_charging_80_grey600_48dp, "Battery voltage", MainActivity.batteryPreference.getString("voltage","mv"));
         list.add(item4);
         return list;
     }

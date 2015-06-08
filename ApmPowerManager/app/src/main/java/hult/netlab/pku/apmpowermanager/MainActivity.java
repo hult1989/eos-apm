@@ -51,7 +51,6 @@ public class MainActivity extends FragmentActivity {
 
     public static final long SERVICE_INTERVAL_IN_SECONDS = 3600;
     public static SharedPreferences batteryPreference;
-    public static Handler freshBatteryInfoHandler;
 
     static final String ACTION_UPDATE = "hult.netlab.pku.apmpowermanager.UPDATE";
     public static  BroadcastReceiver mBatteryBroadcastReciver;
@@ -76,7 +75,6 @@ public class MainActivity extends FragmentActivity {
         layoutInit();
         mBatteryBroadcastReciver = getBatteryBroadcastReceiver();
         registerReceiver(mBatteryBroadcastReciver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-
     }
 
 
@@ -313,4 +311,6 @@ public class MainActivity extends FragmentActivity {
             mBroadcastManager.sendBroadcast(intent);
         }
     }
+
+
 }

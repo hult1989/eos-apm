@@ -36,20 +36,8 @@ public class BatteryRateFragment extends Fragment {
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
     static final String ACTION_UPDATE = "hult.netlab.pku.apmpowermanager.UPDATE";
+    int level;
 
-    private static class freshThread extends Thread {
-        public void run() {
-            Looper.prepare();
-            MainActivity.freshBatteryInfoHandler = new Handler() {
-                public void handleMessage(Message msg){
-                    if(msg.what == MainActivity.REFRESH){
-                        Log.e("new thread", "works!");
-                    }
-                }
-            };
-            Looper.loop();
-        }
-    }
 
     public BatteryRateFragment() {
         // Required empty public constructor
@@ -58,46 +46,31 @@ public class BatteryRateFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        level = MainActivity.batteryPreference.getInt("batterylevel",0);
+     }
 
-        MainActivity.mBatteryBroadcastReciver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.e("got broadcast", "!@!");
-                int level = (int) (intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
-                        / (float) intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100) * 100);
-                switch (intent.getIntExtra(BatteryManager.EXTRA_STATUS, 1)) {
-                    case BatteryManager.BATTERY_STATUS_CHARGING:
-                        if (intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 1) == BatteryManager.BATTERY_PLUGGED_AC)
-                        break;
-                    case BatteryManager.BATTERY_STATUS_DISCHARGING:
-                        //         Log.e("battery ", "dis discharging");
-                        break;
-                    case BatteryManager.BATTERY_STATUS_FULL:
-                        //          Log.e("battery ", "full");
-                        break;
-                    case BatteryManager.BATTERY_STATUS_NOT_CHARGING:
-                        //        Log.e("battery ", "not charging");
-                        break;
-                }
-                switch (intent.getIntExtra(BatteryManager.EXTRA_HEALTH, 1)) {
-                    case BatteryManager.BATTERY_HEALTH_DEAD:
-                        break;
-                    case BatteryManager.BATTERY_HEALTH_GOOD:
-                        break;
-                    case BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE:
-                        break;
-                    case BatteryManager.BATTERY_HEALTH_OVERHEAT:
-                        break;
-                    case BatteryManager.BATTERY_HEALTH_UNKNOWN:
-                        //        Log.e("battery ", "UNKNOWN");
-                        break;
-                }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        level = MainActivity.batteryPreference.getInt("batterylevel",0);
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(donutProgress.getProgress()>level){
+                            donutProgress.setProgress(0);
+                        }
+                        donutProgress.setProgress(donutProgress.getProgress() + 1);
+                        if (donutProgress.getProgress() == level) {
+                            timer.cancel();
+                        }
+                    }
+                });
             }
-        };
-        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-
+        }, 1, 30);
     }
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,8 +79,9 @@ public class BatteryRateFragment extends Fragment {
         ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.activity_batteryinfomain,container,false);
 
         donutProgress = (DonutProgress)rootview.findViewById(R.id.donut_progress);
-        donutProgress.setText(MainActivity.batteryPreference.getString("level", "1024"));
-        donutProgress.setTextSize(160);
+        donutProgress.setText(MainActivity.batteryPreference.getInt("batterylevel",0)+"");
+        donutProgress.setTextSize(140);
+        donutProgress.setSuffixTextSize(60);
         donutProgress.setInnerBottomText("Percent Battery");
         donutProgress.setInnerBottomTextColor(Color.WHITE);
         donutProgress.setInnerBottomTextSize(30);
@@ -117,11 +91,11 @@ public class BatteryRateFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(donutProgress.getProgress()>80){
+                        if(donutProgress.getProgress()>level){
                             donutProgress.setProgress(0);
                         }
                         donutProgress.setProgress(donutProgress.getProgress() + 1);
-                        if (donutProgress.getProgress() == 80) {
+                        if (donutProgress.getProgress() == level) {
                             timer.cancel();
                         }
                     }
@@ -173,7 +147,8 @@ public class BatteryRateFragment extends Fragment {
             LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
             Intent intent = new Intent(ACTION_UPDATE);
             mBroadcastManager.sendBroadcast(intent);
-
         }
     }
+
+
 }

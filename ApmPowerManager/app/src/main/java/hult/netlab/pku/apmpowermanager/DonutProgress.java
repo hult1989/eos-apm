@@ -27,6 +27,7 @@ public class DonutProgress extends View {
     private RectF unfinishedOuterRect = new RectF();
 
     private float textSize;
+    private float suffixTextSize;
     private int textColor;
     private int innerBottomTextColor;
     private int progress = 0;
@@ -39,6 +40,7 @@ public class DonutProgress extends View {
     private String prefixText = "  ";
     private String suffixText = "%";
     private String text = null;
+
     private float innerBottomTextSize;
     private String innerBottomText;
     private float innerBottomTextHeight;
@@ -51,6 +53,7 @@ public class DonutProgress extends View {
     private final int default_inner_background_color = Color.TRANSPARENT;
     private final int default_max = 100;
     private final float default_text_size;
+    private final float default_suffix_text_size;
     private final float default_inner_bottom_text_size;
     private final int min_size;
 
@@ -58,6 +61,7 @@ public class DonutProgress extends View {
     private static final String INSTANCE_STATE = "saved_instance";
     private static final String INSTANCE_TEXT_COLOR = "text_color";
     private static final String INSTANCE_TEXT_SIZE = "text_size";
+    private static final String INSTANCE_SUFFIX_TEXT_SIZE = "suffix_text_size";
     private static final String INSTANCE_TEXT = "text";
     private static final String INSTANCE_INNER_BOTTOM_TEXT_SIZE = "inner_bottom_text_size";
     private static final String INSTANCE_INNER_BOTTOM_TEXT = "inner_bottom_text";
@@ -84,6 +88,7 @@ public class DonutProgress extends View {
         super(context, attrs, defStyleAttr);
 
         default_text_size = Utils.sp2px(getResources(), 18);
+        default_suffix_text_size = Utils.sp2px(getResources(),5);
         min_size = (int) Utils.dp2px(getResources(), 100);
         default_stroke_width = Utils.dp2px(getResources(), 10);
         default_inner_bottom_text_size = Utils.sp2px(getResources(), 18);
@@ -128,6 +133,7 @@ public class DonutProgress extends View {
         unfinishedStrokeColor = attributes.getColor(R.styleable.DonutProgress_donut_unfinished_color, default_unfinished_color);
         textColor = attributes.getColor(R.styleable.DonutProgress_donut_text_color, default_text_color);
         textSize = attributes.getDimension(R.styleable.DonutProgress_donut_text_size, default_text_size);
+        suffixTextSize = attributes.getDimension(R.styleable.DonutProgress_donut_suffix_text_size, default_suffix_text_size);
 
         setMax(attributes.getInt(R.styleable.DonutProgress_donut_max, default_max));
         setProgress(attributes.getInt(R.styleable.DonutProgress_donut_progress, 0));
@@ -206,6 +212,13 @@ public class DonutProgress extends View {
 
     public void setTextSize(float textSize) {
         this.textSize = textSize;
+        this.invalidate();
+    }
+    public float getSuffixTextSize(){
+        return suffixTextSize;
+    }
+    public void setSuffixTextSize(float suffixTextSize) {
+        this.suffixTextSize = suffixTextSize;
         this.invalidate();
     }
 
@@ -347,8 +360,16 @@ public class DonutProgress extends View {
 
       //  String text = this.text != null ? this.text : prefixText + getText() + suffixText;
         if (!TextUtils.isEmpty(getText())) {
-       //     float textHeight = textPaint.descent() + textPaint.ascent();
-            canvas.drawText(getText()+"", (getWidth() - textPaint.measureText(getText()+"")) / 2.0f, getHeight() * 12 /20 , textPaint);
+            float textHeight = textPaint.descent() + textPaint.ascent();
+            float textBaseline = getHeight() * 12 /20;
+            textPaint.setTextSize(textSize);
+            float textwith = textPaint.measureText(getText());
+            canvas.drawText(getText()+"", (getWidth() - textPaint.measureText(getText())) / 2.0f, textBaseline , textPaint);
+
+            textPaint.setTextSize(suffixTextSize);
+            float suffixHeight = textPaint.descent() + textPaint.ascent();
+            canvas.drawText(suffixText, getWidth() / 2.0f  + textwith/2, textBaseline + textHeight - suffixHeight, textPaint);
+
         //试着删除百分号
         //    canvas.drawText(getText(), (getWidth() - textPaint.measureText(getText()+"%")) / 2.0f, getHeight()/2, textPaint);
         }
@@ -367,6 +388,7 @@ public class DonutProgress extends View {
         bundle.putParcelable(INSTANCE_STATE, super.onSaveInstanceState());
         bundle.putInt(INSTANCE_TEXT_COLOR, getTextColor());
         bundle.putFloat(INSTANCE_TEXT_SIZE, getTextSize());
+        bundle.putFloat(INSTANCE_SUFFIX_TEXT_SIZE, getSuffixTextSize());
         bundle.putFloat(INSTANCE_INNER_BOTTOM_TEXT_SIZE, getInnerBottomTextSize());
         bundle.putFloat(INSTANCE_INNER_BOTTOM_TEXT_COLOR, getInnerBottomTextColor());
         bundle.putString(INSTANCE_INNER_BOTTOM_TEXT, getInnerBottomText());
