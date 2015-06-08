@@ -44,7 +44,7 @@ public class MyService extends Service {
             for (PackageInfo packageInfo : packageInfos) {
                 String pkgName = packageInfo.packageName.toString();
                 String initAppHistory = "insert into apphistory (pkgname, ratio, timestamp) values("
-                        + "\"" + pkgName + "\", " + 0.05 + ", " + System.currentTimeMillis() + ");";
+                        + "\"" + pkgName + "\", " + 0.01 + ", " + System.currentTimeMillis() + ");";
                 String initAppInfo = "insert into appinfo (pkgname , pid , proctime, runningtime, timestamp) "
                         + "values ( \"" + pkgName + "\", 1024, 10, 10, " + System.currentTimeMillis() + ");";
                 try {

@@ -399,8 +399,9 @@ public class MainActivity extends FragmentActivity {
             public void onReceive(Context context, Intent intent) {
                 int level = (int) (intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
                         / (float) intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100) * 100);
-                if((System.currentTimeMillis() - lastStamp) / 1000 > 600 ) {
+                if((System.currentTimeMillis() - lastStamp) / 1000 > 60 ) {
                     String sqlCmd = "insert into batteryinfo (level, timestamp) values (" + level + ", " + System.currentTimeMillis() + ");";
+                    Log.e("sqlcmd", sqlCmd);
                     try {
                         Log.e("itme", sqlCmd);
                         appDatabase.execSQL(sqlCmd, new Object[]{});

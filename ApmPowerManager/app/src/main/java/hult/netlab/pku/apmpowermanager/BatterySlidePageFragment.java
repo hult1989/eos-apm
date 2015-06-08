@@ -18,6 +18,7 @@ package hult.netlab.pku.apmpowermanager;
  */
 
 
+import android.database.Cursor;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -39,6 +40,9 @@ public class BatterySlidePageFragment extends Fragment {
      */
     private int mPageNumber;
 
+    public BatterySlidePageFragment() {
+    }
+
     /**
      * Factory method for this fragment class. Constructs a new fragment for the given page number.
      */
@@ -48,9 +52,6 @@ public class BatterySlidePageFragment extends Fragment {
         args.putInt(ARG_PAGE, pageNumber);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public BatterySlidePageFragment () {
     }
 
     @Override
@@ -66,19 +67,46 @@ public class BatterySlidePageFragment extends Fragment {
         // Inflate the layout containing a title and body text.
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.abttery_slide_page, container, false);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            CardView chartLayout = (CardView)rootView.findViewById(R.id.chartview);
-            chartLayout.setElevation(4);
+        String sqlCmd = "select level from batteryinfo limit 0, 72;";
+        Cursor cursor = MainActivity.appDatabase.rawQuery(sqlCmd, null);
+        double[] history = new double[72];
+        int index = 0;
+        if(cursor.getCount() < 72){
+            for(index = 0; index < 72 - cursor.getCount(); index++)
+                history[index] = 0;
         }
-     //   LinearLayout chartLayout = (LinearLayout)rootView.findViewById(R.id.chartview);
+        while(cursor.moveToNext()){
+            history[index++] = cursor.getInt(0);
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            CardView chartLayout = (CardView)rootView.findViewById(R.id.chartview);
-            chartLayout.setElevation(4);
-            View view = new LineChart().execute(container.getContext());
-            chartLayout.addView(view);
-        }else{
-            LinearLayout chartLayout = (LinearLayout)rootView.findViewById(R.id.chartview);
+            CardView chartLayout = (CardView) rootView.findViewById(R.id.chartview);
+            chartLayout.setElevation(6);
+            if (mPageNumber == 0) {
+                double[] dayBeforeYesterday = new double[24];
+                for (int i = 0; i < 24; i++) {
+                    dayBeforeYesterday[i] = history[i];
+                }
+                View view = new LineChart(dayBeforeYesterday).execute(container.getContext());
+                chartLayout.addView(view);
+            } else if (mPageNumber == 1) {
+                double[] yesterday = new double[24];
+                for (int i = 0; i < 24; i++) {
+                    yesterday[i] = history[i+24];
+                }
+                View view = new LineChart(yesterday).execute(container.getContext());
+                chartLayout.addView(view);
+            } else {
+                double[] today = new double[24];
+                for (int i = 0; i < 24; i++) {
+                    today[i] = history[i+48];
+                }
+                View view = new LineChart(today).execute(container.getContext());
+                chartLayout.addView(view);
+            }
+
+        } else {
+            LinearLayout chartLayout = (LinearLayout) rootView.findViewById(R.id.chartview);
 
             View view = new LineChart().execute(container.getContext());
             chartLayout.addView(view);
