@@ -52,7 +52,7 @@ public class MainActivity extends FragmentActivity {
     private TextView rank_tab;
     private TextView mode_tab;
     public static SQLiteDatabase appDatabase;
-    public static final long SERVICE_INTERVAL_IN_SECONDS = 600;
+    public static final long SERVICE_INTERVAL_IN_SECONDS = 3600;
 
     public void sqliteInit(){
         String createAppDatabase = "create table appinfo (id integer primary key autoincrement, " +

@@ -80,27 +80,46 @@ public class FragmentRank extends Fragment {
         String selectSqlCmd = "select pkgname, proctime from appinfo group by pkgname order by proctime desc";
         Cursor cursor = MainActivity.appDatabase.rawQuery(selectSqlCmd, null);
         long sumCpuTime = 0;
+        int index = 0;
         while (cursor.moveToNext()) {
-            sumCpuTime += cursor.getLong(1);
+            if(index < 20)
+                sumCpuTime += cursor.getLong(1);
         }
         cursor.moveToFirst();
-
+        index = 0;
         while (cursor.moveToNext()) {
-            try {
-                HashMap<String, Object> item = new HashMap<>();
-                String pkgName = cursor.getString(0);
-                long proctime = cursor.getLong(1);
-                float ratio = (float) proctime / sumCpuTime;
-                item.put("image", pm.getApplicationIcon(pkgName));
-                item.put("ratiotext", new DecimalFormat("0.0%").format(ratio));
-                item.put("ratio", (int)(ratio * 100));
-                item.put("pkgname", pkgName);
-                item.put("label", pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
-                mData.add(item);
-            } catch (Exception e) {
+            if(index < 20) {
+                try {
+                    HashMap<String, Object> item = new HashMap<>();
+                    String pkgName = cursor.getString(0);
+                    long proctime = cursor.getLong(1);
+                    float ratio = (float) proctime / sumCpuTime;
+                    item.put("image", pm.getApplicationIcon(pkgName));
+                    item.put("ratiotext", new DecimalFormat("0.0%").format(ratio));
+                    item.put("ratio", (int) (ratio * 100));
+                    item.put("pkgname", pkgName);
+                    item.put("label", pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
+                    mData.add(item);
+                } catch (Exception e) {
+                }
+            }else{
+                try {
+                    HashMap<String, Object> item = new HashMap<>();
+                    String pkgName = cursor.getString(0);
+                    long proctime = cursor.getLong(1);
+                    float ratio = (float) proctime / sumCpuTime;
+                    item.put("image", pm.getApplicationIcon(pkgName));
+                    item.put("ratiotext", new DecimalFormat("0.0%").format(ratio));
+                    item.put("ratio", (int) (ratio * 100));
+                    item.put("pkgname", pkgName);
+                    item.put("label", pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
+                    mData.add(item);
+                } catch (Exception e) {
+                }
             }
-            ;
         }
+
+
 /*
                 allAppTotalRunningTime = 0;
                 List<PackageInfo> packageInfos = pm.getInstalledPackages(pm.GET_UNINSTALLED_PACKAGES);
@@ -138,7 +157,6 @@ public class FragmentRank extends Fragment {
                     data.put("ratio", ratio);
                 }
  */
-
 
         applistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {

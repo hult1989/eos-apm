@@ -54,7 +54,7 @@ public class modemanager{
     	return Settings.System.getInt(context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT);
     }
     public void setTimeout(int time){
-        Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, time*1000);
+        Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, time);
         return;
     }
     //Data-3g
