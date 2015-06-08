@@ -1,10 +1,14 @@
 package hult.netlab.pku.apmpowermanager;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +49,23 @@ public class FragmentBatteryInfo extends Fragment {
         ViewGroup rootview = (ViewGroup)inflater.inflate(R.layout.fragment_fragment_battery_info,container,false);
         listView = (ListView)rootview.findViewById(R.id.battery_info_list);
         items = getData();
-        itemAdapter adapter = new itemAdapter(container.getContext());
+        final itemAdapter adapter = new itemAdapter(container.getContext());
         listView.setAdapter(adapter);
+
+        LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(container.getContext());
+        BroadcastReceiver mReceiver;
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MainActivity.ACTION_BATTERYINFO_CHANGE);
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if(intent.getAction().equals(MainActivity.ACTION_BATTERYINFO_CHANGE)){
+                    getData();
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        };
+        mBroadcastManager.registerReceiver(mReceiver, filter);
 
         return rootview;
     }

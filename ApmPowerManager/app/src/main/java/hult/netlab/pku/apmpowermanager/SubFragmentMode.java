@@ -267,9 +267,14 @@ public class SubFragmentMode extends Fragment {
                         boolean vibrate = preferences.getBoolean(s+"vibrate", false);
                         Log.d("vibrate", String.valueOf(vibrate));
                         mm.setAll(bright, time, data, wifi, blue, silence, vibrate);
+                        LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
+                        Intent intent = new Intent(MainActivity.ACTION_BATTERYINFO_CHANGE);
+                        mBroadcastManager.sendBroadcast(intent);
                     }
                 }
             });
+
+
 
 /*
             holder.radiobutton_mode_name.setChecked(preferences.getBoolean(listItems.get(position).get("mode_name")+"check",false));
