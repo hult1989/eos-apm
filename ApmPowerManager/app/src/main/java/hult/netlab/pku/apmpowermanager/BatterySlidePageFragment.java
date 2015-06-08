@@ -78,6 +78,7 @@ public class BatterySlidePageFragment extends Fragment {
         while(cursor.moveToNext()){
             history[index++] = cursor.getInt(0);
         }
+        cursor.close();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             CardView chartLayout = (CardView) rootView.findViewById(R.id.chartview);

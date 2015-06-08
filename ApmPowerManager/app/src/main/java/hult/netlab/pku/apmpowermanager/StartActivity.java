@@ -14,8 +14,6 @@ public class StartActivity extends Activity {
         setContentView(R.layout.activity_start);
         getActionBar().hide();
 
-
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -23,7 +21,9 @@ public class StartActivity extends Activity {
                 startActivity(intent);
                 StartActivity.this.finish();
             }
-        }, 3000);
+        }, 1000);
+
+
     }
 
 }

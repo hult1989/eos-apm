@@ -49,6 +49,7 @@ public class appinfoActivity extends Activity {
             result[index] = cursor.getDouble(0) * 100  ;
             index--;
         }
+        cursor.close();
         while(index >= 0){
             result[index] = 0;
             index--;

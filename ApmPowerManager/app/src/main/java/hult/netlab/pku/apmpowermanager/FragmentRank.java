@@ -118,6 +118,7 @@ public class FragmentRank extends Fragment {
                 }
             }
         }
+        cursor.close();
 
 
 

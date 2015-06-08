@@ -84,7 +84,6 @@ public class MyService extends Service {
                             + "values ( \"" + pkgName + "\", " + amProcess.pid + ", "
                             + appProcTime + ", " + runningTime + ", " + System.currentTimeMillis() + ");";
                     MainActivity.appDatabase.execSQL(SQLcommand, new Object[]{});
-                    Cursor cursor = MainActivity.appDatabase.rawQuery("select * from appinfo", null);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -120,7 +119,7 @@ public class MyService extends Service {
         long pidInSql = cursor.getLong(0);
 
         long runningTimeInSql = cursor.getLong(1);
-
+        cursor.close();
         Long appConsumptionTime = getAppProcessTime(pid);
         if (count == 0)
             return appConsumptionTime;
