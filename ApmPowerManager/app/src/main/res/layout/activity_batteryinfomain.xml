@@ -23,6 +23,7 @@
             android:layout_width="220dp"
             android:layout_height="220dp"
             custom:donut_text_size="70dp"
+            custom:donut_suffix_text_size="20dp"
             custom:donut_text_color="@android:color/white"
             custom:donut_unfinished_stroke_width="5dp"
             custom:donut_finished_stroke_width="5dp"

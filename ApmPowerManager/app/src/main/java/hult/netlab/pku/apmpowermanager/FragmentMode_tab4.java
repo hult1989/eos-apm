@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -100,6 +99,7 @@ public class FragmentMode_tab4 extends Fragment {
             editor.putBoolean("initialbluetooth", mm.isBluetoothEnabled());
             editor.putBoolean("initialsilence", mm.isSilence());
             editor.putBoolean("initialvibrate", mm.isVibrate());
+            editor.putBoolean("initialcheck",true);
 
             editor.putString("mode1", "Super Saving");
 
@@ -110,6 +110,7 @@ public class FragmentMode_tab4 extends Fragment {
             editor.putBoolean("Super Savingbluetooth", false);
             editor.putBoolean("Super Savingsilence", true);
             editor.putBoolean("Super Savingvibrate", false);
+            editor.putBoolean("Super Savingcheck",false);
             editor.putInt("mode_num", 2);
             editor.commit();
             mode_num = 2;
@@ -147,8 +148,6 @@ public class FragmentMode_tab4 extends Fragment {
                     public void onClick(View arg0) {
                         String add_mode_name = dialog_mode_name.getText().toString();
                         editor.putString("OperatingMode", add_mode_name);
-                        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(container.getWindowToken(), 0);
                         Log.d("name",add_mode_name);
                         editor.commit();
                         Intent wordIntent = new Intent(getActivity(), ModeEdit.class);
@@ -169,8 +168,6 @@ public class FragmentMode_tab4 extends Fragment {
                 addDialog.setContentView(layout);
                 addDialog.setTitle("New Mode");
                 addDialog.show();
-                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInputFromInputMethod(dialog_mode_name.getWindowToken(),0);
             }
         });
 
@@ -247,31 +244,30 @@ public class FragmentMode_tab4 extends Fragment {
             holder.radiobutton_mode_name.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        if (temp != -1) {
-                            RadioButton tempButton = (RadioButton) getActivity().findViewById(temp);
-                            if (tempButton != null)
+                    if(isChecked){
+                        if(temp != -1){
+                            RadioButton tempButton = (RadioButton) parent.findViewById(temp);
+                            if(tempButton != null)
                                 tempButton.setChecked(false);
                         }
                         temp = buttonView.getId();
-                        String s = preferences.getString("mode" + String.valueOf(position1), null);
-                        int bright = preferences.getInt(s + "brightness", 0);
-                        int time = preferences.getInt(s + "timeout", 0);
-                        boolean data = preferences.getBoolean(s + "data", true);
+                        String s = preferences.getString("mode"+String.valueOf(position1), null);
+                        int bright = preferences.getInt(s+"brightness", 0);
+                        int time = preferences.getInt(s+"timeout", 0);
+                        boolean data = preferences.getBoolean(s+"data", true);
                         Log.d("data", String.valueOf(data));
-                        boolean wifi = preferences.getBoolean(s + "wifi", false);
+                        boolean wifi = preferences.getBoolean(s+"wifi", false);
                         Log.d("wifi", String.valueOf(wifi));
-                        boolean blue = preferences.getBoolean(s + "bluetooth", false);
+                        boolean blue = preferences.getBoolean(s+"bluetooth", false);
                         Log.d("data", String.valueOf(data));
-                        boolean silence = preferences.getBoolean(s + "silence", false);
+                        boolean silence = preferences.getBoolean(s+"silence", false);
                         Log.d("silence", String.valueOf(silence));
-                        boolean vibrate = preferences.getBoolean(s + "vibrate", false);
+                        boolean vibrate = preferences.getBoolean(s+"vibrate", false);
                         Log.d("vibrate", String.valueOf(vibrate));
                         mm.setAll(bright, time, data, wifi, blue, silence, vibrate);
                     }
                 }
             });
-
 
             editDialog = new Dialog(getActivity());
 
@@ -304,6 +300,9 @@ public class FragmentMode_tab4 extends Fragment {
                             for(position = 0; position < mode_num; position++){
                                 if(str[position1] == preferences.getString("mode"+String.valueOf(position), null))
                                     break;
+                            }
+                            if(preferences.getBoolean(str[position1]+"check",false)==true){
+                                editor.putBoolean("initialcheck",true);
                             }
                             for(int i = position; i < mode_num-1; i++){
                                 strtemp = preferences.getString("mode"+String.valueOf(i+1), null);

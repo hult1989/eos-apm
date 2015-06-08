@@ -60,6 +60,7 @@ public class FragmentBatteryInfo extends Fragment {
         Item item1 = new Item(R.drawable.ic_calendar_plus_grey600_48dp, "Health status", MainActivity.batteryPreference.getString("health", null));
         list.add(item1);
         Item item4 = new Item(R.drawable.ic_flash_grey600_48dp, "Battery voltage", MainActivity.batteryPreference.getString("voltage", null));
+
         list.add(item4);
         Item item3 = new Item(R.drawable.ic_thermometer_grey600_48dp, "Battery temperature", MainActivity.batteryPreference.getString("temperature", null));
         list.add(item3);

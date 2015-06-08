@@ -1,7 +1,5 @@
 package hult.netlab.pku.apmpowermanager;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -9,8 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.BatteryManager;
@@ -29,10 +25,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -59,9 +51,10 @@ public class MainActivity extends FragmentActivity {
     private TextView rank_tab;
     private TextView mode_tab;
     public static SQLiteDatabase appDatabase;
+
     public static final long SERVICE_INTERVAL_IN_SECONDS = 3600;
     public static SharedPreferences batteryPreference;
-    public static Handler freshBatteryInfoHandler;
+
     static final String ACTION_UPDATE = "hult.netlab.pku.apmpowermanager.UPDATE";
     public static  BroadcastReceiver mBatteryBroadcastReciver;
     public static int REFRESH = 0;
@@ -254,8 +247,6 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-
-
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -277,13 +268,9 @@ public class MainActivity extends FragmentActivity {
         mBatteryBroadcastReciver = getBatteryBroadcastReceiver();
         registerReceiver(mBatteryBroadcastReciver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         tc = new timeCalculator(this);
-
-
     }
 
-    void calcLeftTime(){
 
-    }
 
 
     void layoutInit(){
@@ -509,10 +496,7 @@ public class MainActivity extends FragmentActivity {
             return PAGENUM;
         }
 
-
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -546,4 +530,6 @@ public class MainActivity extends FragmentActivity {
             mBroadcastManager.sendBroadcast(intent);
         }
     }
+
+
 }

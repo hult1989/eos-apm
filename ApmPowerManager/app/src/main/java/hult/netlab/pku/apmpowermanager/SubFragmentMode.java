@@ -41,7 +41,6 @@ public class SubFragmentMode extends Fragment {
     private modemanager mm;
     private MyAdapter simpleAdapter;
     private List<Map<String, Object>> listItems;
-    private Dialog editDialog;
     private Dialog addDialog;
     private EditText dialog_mode_name;
     ViewGroup contain;
@@ -104,6 +103,7 @@ public class SubFragmentMode extends Fragment {
             editor.putBoolean("initialbluetooth", mm.isBluetoothEnabled());
             editor.putBoolean("initialsilence", mm.isSilence());
             editor.putBoolean("initialvibrate", mm.isVibrate());
+            editor.putBoolean("initialcheck",true);
 
             editor.putString("mode1", "Super Saving");
 
@@ -114,6 +114,7 @@ public class SubFragmentMode extends Fragment {
             editor.putBoolean("Super Savingbluetooth", false);
             editor.putBoolean("Super Savingsilence", true);
             editor.putBoolean("Super Savingvibrate", false);
+            editor.putBoolean("Super Savingcheck",false);
             editor.putInt("mode_num", 2);
             editor.commit();
             mode_num = 2;
@@ -241,16 +242,42 @@ public class SubFragmentMode extends Fragment {
             }
             holder.radiobutton_mode_name.setId(position);
             holder.text_edit_mode.setText((String) listItems.get(position).get("mode_name"));
+
             holder.radiobutton_mode_name.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        if (temp != -1) {
-                            RadioButton tempButton = (RadioButton) getActivity().findViewById(temp);
-                            if (tempButton != null)
+                    if(isChecked){
+                        if(temp != -1){
+                            RadioButton tempButton = (RadioButton) parent.findViewById(temp);
+                            if(tempButton != null)
                                 tempButton.setChecked(false);
                         }
                         temp = buttonView.getId();
+                        String s = preferences.getString("mode"+String.valueOf(position1), null);
+                        int bright = preferences.getInt(s+"brightness", 0);
+                        int time = preferences.getInt(s+"timeout", 0);
+                        boolean data = preferences.getBoolean(s+"data", true);
+                        Log.d("data", String.valueOf(data));
+                        boolean wifi = preferences.getBoolean(s+"wifi", false);
+                        Log.d("wifi", String.valueOf(wifi));
+                        boolean blue = preferences.getBoolean(s+"bluetooth", false);
+                        Log.d("data", String.valueOf(data));
+                        boolean silence = preferences.getBoolean(s+"silence", false);
+                        Log.d("silence", String.valueOf(silence));
+                        boolean vibrate = preferences.getBoolean(s+"vibrate", false);
+                        Log.d("vibrate", String.valueOf(vibrate));
+                        mm.setAll(bright, time, data, wifi, blue, silence, vibrate);
+                    }
+                }
+            });
+
+/*
+            holder.radiobutton_mode_name.setChecked(preferences.getBoolean(listItems.get(position).get("mode_name")+"check",false));
+            final ViewHolder finalHolder = holder;
+            holder.radiobutton_mode_name.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!finalHolder.radiobutton_mode_name.isChecked()) {
                         String s = preferences.getString("mode" + String.valueOf(position1), null);
                         int bright = preferences.getInt(s + "brightness", 0);
                         int time = preferences.getInt(s + "timeout", 0);
@@ -265,9 +292,20 @@ public class SubFragmentMode extends Fragment {
                         boolean vibrate = preferences.getBoolean(s + "vibrate", false);
                         Log.d("vibrate", String.valueOf(vibrate));
                         mm.setAll(bright, time, data, wifi, blue, silence, vibrate);
+                        for(int i =0; i<listItems.size();i++) {
+                            if (i == position1) {
+                                editor.putBoolean(s + "check", true);
+                            } else {
+                                editor.putBoolean(preferences.getString("mode" + String.valueOf(i), null) + "check", false);
+                            }
+                        }
+                        LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
+                        Intent intent = new Intent(ACTION_UPDATE);
+                        mBroadcastManager.sendBroadcast(intent);
                     }
                 }
             });
+ */
 /*
             editDialog = new Dialog(getActivity());
 
