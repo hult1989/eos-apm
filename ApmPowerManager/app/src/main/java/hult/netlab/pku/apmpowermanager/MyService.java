@@ -53,17 +53,14 @@ public class MyService extends Service {
                 }catch (Exception e){
                     String createAppDatabase = "create table appinfo (id integer primary key autoincrement, " +
                             "pkgname text, pid integer, proctime integer, runningtime integer, timestamp integer);";
-                    String createBatteryDatabase = "create table batteryinfo (id integer primary key autoincrement, quantity integer, timestamp integer);";
                     String createAppRatioCMD = "create table apphistory (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
-                    MainActivity.appDatabase.execSQL(createAppDatabase);
-                    MainActivity.appDatabase.execSQL(createBatteryDatabase);
-                    MainActivity.appDatabase.execSQL(createAppRatioCMD);
+                    MainActivity.appDatabase.execSQL(createAppDatabase, new Object[]{});
+                    MainActivity.appDatabase.execSQL(createAppRatioCMD, new Object[]{});
 
                     MainActivity.appDatabase.execSQL(initAppHistory, new Object[]{});
                     MainActivity.appDatabase.execSQL(initAppInfo, new Object[]{});
                 }
             }
-        Cursor cursor = MainActivity.appDatabase.rawQuery("select * from apphistory;", null);
     }
 
 

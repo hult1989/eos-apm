@@ -53,14 +53,16 @@ public class FragmentBatteryInfo extends Fragment {
 
     private ArrayList<Item> getData() {
         ArrayList<Item> list = new ArrayList<Item>();
-        Item item1 = new Item(R.drawable.ic_battery_plus_grey600_48dp, "Health status", "Good");
-        list.add(item1);
-        Item item3 = new Item(R.drawable.ic_battery_alert_grey600_48dp, "Battery temperature", "40`C");
-        list.add(item3);
-        Item item5 = new Item(R.drawable.ic_battery_unknown_grey600_48dp, "Battery type", "Li-poly");
+        Item item0 = new Item(R.drawable.ic_cellphone_android_grey600_48dp, "Standby Time", MainActivity.tc.getStandByTime());
+        list.add(item0);
+        Item item5 = new Item(R.drawable.ic_settings_grey600_48dp, "Battery type", MainActivity.batteryPreference.getString("technology", null));
         list.add(item5);
-        Item item4 = new Item(R.drawable.ic_battery_charging_80_grey600_48dp, "Battery voltage", "4.1V");
+        Item item1 = new Item(R.drawable.ic_calendar_plus_grey600_48dp, "Health status", MainActivity.batteryPreference.getString("health", null));
+        list.add(item1);
+        Item item4 = new Item(R.drawable.ic_flash_grey600_48dp, "Battery voltage", MainActivity.batteryPreference.getString("voltage", null));
         list.add(item4);
+        Item item3 = new Item(R.drawable.ic_thermometer_grey600_48dp, "Battery temperature", MainActivity.batteryPreference.getString("temperature", null));
+        list.add(item3);
         return list;
     }
 

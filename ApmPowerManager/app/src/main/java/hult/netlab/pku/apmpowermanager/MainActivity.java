@@ -35,7 +35,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,10 +65,199 @@ public class MainActivity extends FragmentActivity {
     static final String ACTION_UPDATE = "hult.netlab.pku.apmpowermanager.UPDATE";
     public static  BroadcastReceiver mBatteryBroadcastReciver;
     public static int REFRESH = 0;
+    public static modemanager mmanager;
+    public static timeCalculator tc;
+
+    class timeCalculator {
+        double screenOnCurrent;
+        double screenFullCurrent;
+        double wifiOnCurrent ;
+        double wifiActiveCurrent ;
+        double audioCurrent ;
+        double videoCurrent ;
+        double radioOnCurrent ;
+        double radioActiveCurrent ;
+        double cpuAwakeCurrent ;
+        double cpuIdleCurrent ;
+        double cpuActiveCurrent;
+        double bluetoothCurrent;
+        double leftBattery;
+        double batteryCapacity;
+        int cpuSteps;
+
+        public timeCalculator(Context context){
+            mmanager = new modemanager(context);
+            try {
+                Class clazz = null;
+                Constructor con = null;
+                clazz = Class.forName("com.android.internal.os.PowerProfile");
+                con = clazz.getConstructor(Context.class);
+                Object instance = con.newInstance(getApplicationContext());
+                Method methodAVG = clazz.getDeclaredMethod("getAveragePower", String.class);
+                Method methodNUM = clazz.getDeclaredMethod("getNumSpeedSteps");
+                this.cpuSteps = (Integer)methodNUM.invoke(instance);
+                this.batteryCapacity = (Double) methodAVG.invoke(instance, "battery.capacity");
+                this.screenOnCurrent = (Double) methodAVG.invoke(instance, "screen.on");
+                this.screenFullCurrent = (Double) methodAVG.invoke(instance, "screen.full");
+                this.wifiOnCurrent = (Double) methodAVG.invoke(instance, "wifi.on");
+                this.wifiActiveCurrent = (Double) methodAVG.invoke(instance, "wifi.active");
+                this.audioCurrent = (Double) methodAVG.invoke(instance, "dsp.audio");
+                this.videoCurrent = (Double) methodAVG.invoke(instance, "video.audio");
+                this.radioOnCurrent = (Double) methodAVG.invoke(instance, "radio.on");
+                this.radioActiveCurrent = (Double) methodAVG.invoke(instance, "radio.active");
+                this.cpuAwakeCurrent = (Double) methodAVG.invoke(instance, "cpu.awake");
+                this.cpuIdleCurrent = (Double) methodAVG.invoke(instance, "cpu.idle");
+                this.cpuActiveCurrent = (Double) methodAVG.invoke(instance, "cpu.active");
+                this.bluetoothCurrent = (Double) methodAVG.invoke(instance, "bluetooth.on");
+                this.leftBattery = MainActivity.batteryPreference.getInt("batterylevel", 1024) * batteryCapacity / 100;
+                Log.e("leftBattery", this.batteryCapacity + "mah");
+                Log.e("cpusteps", this.cpuSteps + ", " + this.cpuAwakeCurrent);
+            } catch (Exception ex) {
+                Log.e("test", ex.toString());
+            }
+        }
+        public String getStandByTime(){
+            int lifeInMinute = 0;
+            try {
+                double totalCurrent = this.cpuActiveCurrent/ 3;
+                if(mmanager.isBluetoothEnabled())
+                    totalCurrent += this.bluetoothCurrent;
+                if(mmanager.isDataEnabled())
+                    totalCurrent += this.radioOnCurrent;
+                if(mmanager.isWifiEnabled())
+                    totalCurrent += this.wifiOnCurrent;
+                lifeInMinute = (int)(this.leftBattery / totalCurrent * 60);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            String result = "";
+            result = lifeInMinute / 60 +  " h " + lifeInMinute % 60 + "m";
+            return result;
+        }
+        public String getWifiTime(){
+            int lifeInMinute = 0;
+            try {
+                double totalCurrent = this.cpuAwakeCurrent;
+                if(mmanager.isBluetoothEnabled())
+                    totalCurrent += this.bluetoothCurrent;
+                if(mmanager.isDataEnabled())
+                    totalCurrent += this.radioOnCurrent;
+                if(mmanager.isWifiEnabled())
+                    totalCurrent += this.wifiActiveCurrent;
+                totalCurrent += this.screenOnCurrent * mmanager.getBrightness() / 100;
+                lifeInMinute = (int)(this.leftBattery / totalCurrent * 60);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            String result = "";
+            result = lifeInMinute / 60 +  " hour " + lifeInMinute % 60 + "minutes";
+            return result;
+        }
+
+        public String getMovieTime(){
+            int lifeInMinute = 0;
+            try {
+                double totalCurrent = this.cpuAwakeCurrent;
+                if(mmanager.isBluetoothEnabled())
+                    totalCurrent += this.bluetoothCurrent;
+                if(mmanager.isDataEnabled())
+                    totalCurrent += this.radioOnCurrent;
+                if(mmanager.isWifiEnabled())
+                    totalCurrent += this.wifiOnCurrent;
+                totalCurrent += this.audioCurrent + this.videoCurrent;
+                totalCurrent += this.screenOnCurrent * mmanager.getBrightness() / 100;
+                lifeInMinute = (int)(this.leftBattery / totalCurrent * 60);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            String result = "";
+            result = lifeInMinute / 60 +  " hour " + lifeInMinute % 60 + "minutes";
+            return result;
+        }
+        public String getCellularTime(){
+            int lifeInMinute = 0;
+            try {
+                double totalCurrent = this.cpuAwakeCurrent;
+                if(mmanager.isBluetoothEnabled())
+                    totalCurrent += this.bluetoothCurrent;
+                if(mmanager.isDataEnabled())
+                    totalCurrent += this.radioActiveCurrent;
+                if(mmanager.isWifiEnabled())
+                    totalCurrent += this.wifiOnCurrent;
+                totalCurrent += this.screenOnCurrent * mmanager.getBrightness() / 100;
+                lifeInMinute = (int)(this.leftBattery / totalCurrent * 60);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            String result = "";
+            result = lifeInMinute / 60 +  " hour " + lifeInMinute % 60 + "minutes";
+            return result;
+        }
+
+        public String getMusicTime(){
+            int lifeInMinute = 0;
+            try {
+                double totalCurrent = this.cpuAwakeCurrent;
+                if(mmanager.isBluetoothEnabled())
+                    totalCurrent += this.bluetoothCurrent;
+                if(mmanager.isDataEnabled())
+                    totalCurrent += this.radioOnCurrent;
+                if(mmanager.isWifiEnabled())
+                    totalCurrent += this.wifiOnCurrent;
+                totalCurrent += this.audioCurrent;
+                lifeInMinute = (int)(this.leftBattery / totalCurrent * 60);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            String result = "";
+            result = lifeInMinute / 60 +  " hour " + lifeInMinute % 60 + "minutes";
+            return result;
+        }
+
+        public String getGamingTime(){
+            int lifeInMinute = 0;
+            try {
+                double totalCurrent = this.cpuActiveCurrent;
+                if(mmanager.isBluetoothEnabled())
+                    totalCurrent += this.bluetoothCurrent;
+                if(mmanager.isDataEnabled())
+                    totalCurrent += this.radioOnCurrent;
+                if(mmanager.isWifiEnabled())
+                    totalCurrent += this.wifiOnCurrent;
+                totalCurrent += this.screenOnCurrent * mmanager.getBrightness() / 100;
+                totalCurrent += this.audioCurrent += this.videoCurrent;
+                lifeInMinute = (int)(this.leftBattery / totalCurrent * 60);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            String result = "";
+            result = lifeInMinute / 60 +  " hour " + lifeInMinute % 60 + "minutes";
+            return result;
+        }
+        public String getPhoneTime(){
+            int lifeInMinute = 0;
+            try {
+                double totalCurrent = this.cpuAwakeCurrent;
+                if(mmanager.isBluetoothEnabled())
+                    totalCurrent += this.bluetoothCurrent;
+                if(mmanager.isDataEnabled())
+                    totalCurrent += this.radioActiveCurrent;
+                if(mmanager.isWifiEnabled())
+                    totalCurrent += this.wifiOnCurrent;
+                lifeInMinute = (int)(this.leftBattery / totalCurrent * 60);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            String result = "";
+            result = lifeInMinute / 60 +  " hour " + lifeInMinute % 60 + "minutes";
+            return result;
+        }
+    }
 
 
 
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         batteryPreference = getSharedPreferences("batteryinfo", MODE_PRIVATE);
 
@@ -84,6 +276,12 @@ public class MainActivity extends FragmentActivity {
         layoutInit();
         mBatteryBroadcastReciver = getBatteryBroadcastReceiver();
         registerReceiver(mBatteryBroadcastReciver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        tc = new timeCalculator(this);
+
+
+    }
+
+    void calcLeftTime(){
 
     }
 
@@ -173,7 +371,6 @@ public class MainActivity extends FragmentActivity {
     public void sqliteInit(){
         String createAppDatabase = "create table appinfo (id integer primary key autoincrement, " +
                 "pkgname text, pid integer, proctime integer, runningtime integer, timestamp integer);";
-        String createBatteryDatabase = "create table batteryinfo (id integer primary key autoincrement, quantity integer, timestamp integer);";
         String createAppRatioHistory = "create table appratio (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
         String createAppRatioCMD = "create table apphistory (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
 
@@ -185,12 +382,11 @@ public class MainActivity extends FragmentActivity {
             //    appDatabase.execSQL(createAppRatioCMD);
         }catch (Exception e){
             e.printStackTrace();
-            appDatabase.execSQL("drop table appinfo");
-            appDatabase.execSQL("drop table batteryinfo");
-            appDatabase.execSQL("drop table apphistory");
-            appDatabase.execSQL(createAppDatabase);
-            appDatabase.execSQL(createBatteryDatabase);
-            appDatabase.execSQL(createAppRatioCMD);
+            appDatabase.execSQL("drop table appinfo", new Object[]{});
+            appDatabase.execSQL("drop table batteryinfo",new Object[]{});
+            appDatabase.execSQL("drop table apphistory", new Object[]{});
+            appDatabase.execSQL(createAppDatabase, new Object[]{});
+            appDatabase.execSQL(createAppRatioCMD, new Object[]{});
         }
     }
 
@@ -211,50 +407,76 @@ public class MainActivity extends FragmentActivity {
     public BroadcastReceiver getBatteryBroadcastReceiver(){
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             SharedPreferences.Editor editor = MainActivity.batteryPreference.edit();
+            int lastLevel = 0;
+            long lastStamp = 0;
             public void onReceive(Context context, Intent intent) {
                 int level = (int) (intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
                         / (float) intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100) * 100);
-                editor.putInt("batterylevel", level);
-                Log.e("batterylevel", level + "%");
-                switch (intent.getIntExtra(BatteryManager.EXTRA_STATUS, 1)) {
-                    case BatteryManager.BATTERY_STATUS_CHARGING:
-                        if (intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 1) == BatteryManager.BATTERY_PLUGGED_AC)
-                            editor.putString("isPlugged", "Charging");
-                        else
-                            editor.putString("isPlugged", "Not Plugged");
-                        break;
-                    case BatteryManager.BATTERY_STATUS_DISCHARGING:
-                        //         Log.e("battery ", "dis discharging");
-                        break;
-                    case BatteryManager.BATTERY_STATUS_FULL:
-                        //          Log.e("battery ", "full");
-                        break;
-                    case BatteryManager.BATTERY_STATUS_NOT_CHARGING:
-                        //        Log.e("battery ", "not charging");
-                        break;
+                if((System.currentTimeMillis() - lastStamp) / 1000 > 600 ) {
+                    String sqlCmd = "insert into batteryinfo (level, timestamp) values (" + level + ", " + System.currentTimeMillis() + ");";
+                    try {
+                        Log.e("itme", sqlCmd);
+                        appDatabase.execSQL(sqlCmd, new Object[]{});
+                    }catch(Exception e){
+                        String createBatteryDatabase = "create table batteryinfo (id integer primary key autoincrement, level integer, timestamp integer);";
+                        try{
+                            appDatabase.execSQL(createBatteryDatabase, new Object[]{} );
+                        }catch (Exception exception){
+                            appDatabase.execSQL("drop table batteryinfo;", new Object[]{});
+                            appDatabase.execSQL(createBatteryDatabase, new Object[]{});
+                        }
+                        appDatabase.execSQL(sqlCmd, new Object[]{});
+                    }
+                    editor.putInt("batterylevel", level);
+                    Log.e("batterylevel", level + "%");
+                    switch (intent.getIntExtra(BatteryManager.EXTRA_STATUS, 1)) {
+                        case BatteryManager.BATTERY_STATUS_CHARGING:
+                            if (intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 1) == BatteryManager.BATTERY_PLUGGED_AC)
+                                editor.putString("isPlugged", "Charging");
+                            else
+                                editor.putString("isPlugged", "Not Plugged");
+                            break;
+                        case BatteryManager.BATTERY_STATUS_DISCHARGING:
+                            //         Log.e("battery ", "dis discharging");
+                            break;
+                        case BatteryManager.BATTERY_STATUS_FULL:
+                            //          Log.e("battery ", "full");
+                            break;
+                        case BatteryManager.BATTERY_STATUS_NOT_CHARGING:
+                            //        Log.e("battery ", "not charging");
+                            break;
+                    }
+                    switch (intent.getIntExtra(BatteryManager.EXTRA_HEALTH, 1)) {
+                        case BatteryManager.BATTERY_HEALTH_DEAD:
+                            editor.putString("health", "DEAD");
+                            break;
+                        case BatteryManager.BATTERY_HEALTH_GOOD:
+                            editor.putString("health", "GOOD");
+                            break;
+                        case BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE:
+                            editor.putString("health", "OVER VOLTAGE");
+                            break;
+                        case BatteryManager.BATTERY_HEALTH_OVERHEAT:
+                            editor.putString("health", "OVER HEAD");
+                            break;
+                        case BatteryManager.BATTERY_HEALTH_UNKNOWN:
+                            //        Log.e("battery ", "UNKNOWN");
+                            break;
+                    }
+                    lastStamp = System.currentTimeMillis();
+                    lastLevel = level;
+                    editor.putString("temperature", intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 1) / 10.0 + "°C");
+                    editor.putString("technology", intent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY));
+                    editor.putString("voltage", new DecimalFormat("0.0").format(intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 1) / 1000 )+ " V");
+                    editor.putLong("timestamp", System.currentTimeMillis());
+                    editor.commit();
+                }else{
+                    lastStamp = System.currentTimeMillis();
+                    lastLevel = level;
+                    editor.putInt("batterylevel", level);
+                    editor.putLong("timestamp", System.currentTimeMillis());
+                    editor.commit();
                 }
-                switch (intent.getIntExtra(BatteryManager.EXTRA_HEALTH, 1)) {
-                    case BatteryManager.BATTERY_HEALTH_DEAD:
-                        editor.putString("health", "DEAD");
-                        break;
-                    case BatteryManager.BATTERY_HEALTH_GOOD:
-                        editor.putString("health", "GOOD");
-                        break;
-                    case BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE:
-                        editor.putString("health", "OVER VOLTAGE");
-                        break;
-                    case BatteryManager.BATTERY_HEALTH_OVERHEAT:
-                        editor.putString("health", "OVER HEAD");
-                        break;
-                    case BatteryManager.BATTERY_HEALTH_UNKNOWN:
-                        //        Log.e("battery ", "UNKNOWN");
-                        break;
-                }
-                editor.putString("temperature", intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 1)/10.0 + "°C");
-                editor.putString("technology", intent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY));
-                editor.putString("voltage",  intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 1)  + "mv");
-                editor.commit();
-                //    freshBatteryInfoHandler.sendEmptyMessage(REFRESH);
             }
         };
         return broadcastReceiver;

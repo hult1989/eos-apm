@@ -106,7 +106,7 @@ public class BatteryRateFragment extends Fragment {
         ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.activity_batteryinfomain,container,false);
 
         donutProgress = (DonutProgress)rootview.findViewById(R.id.donut_progress);
-        donutProgress.setText(MainActivity.batteryPreference.getString("level", "1024"));
+        donutProgress.setText(String.valueOf(MainActivity.batteryPreference.getInt("batterylevel", 1024)));
         donutProgress.setTextSize(160);
         donutProgress.setInnerBottomText("Percent Battery");
         donutProgress.setInnerBottomTextColor(Color.WHITE);

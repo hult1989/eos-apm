@@ -96,16 +96,18 @@ public class BatteryChartFragment extends Fragment {
 
     private ArrayList<Item> getData() {
         ArrayList<Item> list = new ArrayList<Item>();
-        Item item1 = new Item(R.drawable.ic_book_open_grey600_48dp, "Reading", "10h23m");
+        Item item1 = new Item(R.drawable.ic_internet_explorer_grey600_48dp, "3G Internet", MainActivity.tc.getCellularTime());
         list.add(item1);
-        Item item2 = new Item(R.drawable.ic_movie_grey600_48dp, "Watching movies", "5h29m");
+        Item item2 = new Item(R.drawable.ic_wifi_grey600_48dp, "WiFi Internet", MainActivity.tc.getWifiTime());
         list.add(item2);
-        Item item3 = new Item(R.drawable.ic_phone_grey600_48dp, "Phoneing", "5h24m");
-        list.add(item3);
-        Item item4 = new Item(R.drawable.ic_camera_grey600_48dp, "Taking pictures", "6h23m");
-        list.add(item4);
-        Item item5 = new Item(R.drawable.ic_wifi_grey600_48dp, "Wifi", "8h12m");
+        Item item6 = new Item(R.drawable.ic_phone_grey600_48dp, "Phone Calling", MainActivity.tc.getPhoneTime());
+        list.add(item6);
+        Item item5 = new Item(R.drawable.ic_gamepad_variant_grey600_48dp, "Playing Game", MainActivity.tc.getGamingTime());
         list.add(item5);
+        Item item3 = new Item(R.drawable.ic_movie_grey600_48dp, "Watching Movie", MainActivity.tc.getMovieTime());
+        list.add(item3);
+        Item item4 = new Item(R.drawable.ic_music_note_grey600_48dp, "Listening Music", MainActivity.tc.getMusicTime());
+        list.add(item4);
         return list;
     }
 
