@@ -265,6 +265,9 @@ public class FragmentMode_tab4 extends Fragment {
                         boolean vibrate = preferences.getBoolean(s+"vibrate", false);
               //          Log.d("vibrate", String.valueOf(vibrate));
                         mm.setAll(bright, time, data, wifi, blue, silence, vibrate);
+                        LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
+                        Intent intent = new Intent(MainActivity.ACTION_BATTERYINFO_CHANGE);
+                        mBroadcastManager.sendBroadcast(intent);
                     }
                 }
             });
@@ -327,12 +330,6 @@ public class FragmentMode_tab4 extends Fragment {
         }
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-    //    Log.d("hide",""+hidden);
-        refresh();
-    }
 
 
 }

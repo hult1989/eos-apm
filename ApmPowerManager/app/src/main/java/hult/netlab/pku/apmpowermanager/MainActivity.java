@@ -56,7 +56,9 @@ public class MainActivity extends FragmentActivity {
     public static SharedPreferences batteryPreference;
 
     static final String ACTION_UPDATE = "hult.netlab.pku.apmpowermanager.UPDATE";
-    public static BroadcastReceiver mBatteryBroadcastReciver;
+    public static final String ACTION_BATTERYINFO_CHANGE = "hult.netlab.pku.apmpowermanager.BATTERYINFO_CHANGE";
+
+    public static  BroadcastReceiver mBatteryBroadcastReciver;
     public static int REFRESH = 0;
     public static modemanager mmanager;
     public static timeCalculator tc;
@@ -125,11 +127,31 @@ public class MainActivity extends FragmentActivity {
                 e.printStackTrace();
             }
             String result = "";
-            result = lifeInMinute / 60 + " h " + lifeInMinute % 60 + "m";
+            result = lifeInMinute / 60 + " h " + lifeInMinute % 60 + " m";
             return result;
         }
 
-        public String getWifiTime() {
+        public String getRemainTime(){
+            int lifeInMinute = 0;
+            try {
+                double totalCurrent = this.cpuActiveCurrent/3;
+                if(mmanager.isBluetoothEnabled())
+                    totalCurrent += this.bluetoothCurrent;
+                if(mmanager.isDataEnabled())
+                    totalCurrent += this.radioOnCurrent;
+                if(mmanager.isWifiEnabled())
+                    totalCurrent += this.wifiOnCurrent;
+                totalCurrent += (this.screenOnCurrent + (this.screenFullCurrent-this.screenOnCurrent) * mmanager.getBrightness() / 100)/5;
+                lifeInMinute = (int)(this.leftBattery / totalCurrent * 60);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            String result = "";
+            result = lifeInMinute / 60 +  " hours " + lifeInMinute % 60 + "minutes";
+            return result;
+        }
+
+        public String getWifiTime(){
             int lifeInMinute = 0;
             try {
                 double totalCurrent = this.cpuAwakeCurrent;
@@ -403,7 +425,7 @@ public class MainActivity extends FragmentActivity {
             SharedPreferences.Editor editor = MainActivity.batteryPreference.edit();
             int lastLevel = 0;
             long lastStamp = 0;
-
+            int  batteryState = BatteryManager.BATTERY_STATUS_NOT_CHARGING;
             public void onReceive(Context context, Intent intent) {
                 int level = (int) (intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
                         / (float) intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100) * 100);
@@ -425,12 +447,10 @@ public class MainActivity extends FragmentActivity {
                     }
                     editor.putInt("batterylevel", level);
                     Log.e("batterylevel", level + "%");
+
                     switch (intent.getIntExtra(BatteryManager.EXTRA_STATUS, 1)) {
                         case BatteryManager.BATTERY_STATUS_CHARGING:
-                            if (intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 1) == BatteryManager.BATTERY_PLUGGED_AC)
-                                editor.putString("isPlugged", "Charging");
-                            else
-                                editor.putString("isPlugged", "Not Plugged");
+                            editor.putString("charging", "Charging");
                             break;
                         case BatteryManager.BATTERY_STATUS_DISCHARGING:
                             //         Log.e("battery ", "dis discharging");
@@ -459,14 +479,26 @@ public class MainActivity extends FragmentActivity {
                             //        Log.e("battery ", "UNKNOWN");
                             break;
                     }
+
                     lastStamp = System.currentTimeMillis();
                     lastLevel = level;
-                    editor.putString("temperature", intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 1) / 10.0 + "°C");
+                    editor.putString("temperature", intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 1) / 10.0 + " °C");
                     editor.putString("technology", intent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY));
                     editor.putString("voltage", new DecimalFormat("0.0").format(intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 1) / 1000) + " V");
                     editor.putLong("timestamp", System.currentTimeMillis());
                     editor.commit();
-                } else {
+                }else{
+                    if(Math.abs(level-lastLevel)>=1 || intent.getIntExtra(BatteryManager.EXTRA_STATUS, 1) != batteryState){
+                        batteryState = intent.getIntExtra(BatteryManager.EXTRA_STATUS, 1);
+                        if(batteryState == BatteryManager.BATTERY_STATUS_CHARGING){
+                            editor.putString("charging", "Charging");
+                        }else{
+                            editor.putString("charging"," ");
+                        }
+                        LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(context);
+                        Intent batteryChangeIntent = new Intent(ACTION_BATTERYINFO_CHANGE);
+                        mBroadcastManager.sendBroadcast(batteryChangeIntent);
+                    }
                     lastStamp = System.currentTimeMillis();
                     lastLevel = level;
                     editor.putInt("batterylevel", level);

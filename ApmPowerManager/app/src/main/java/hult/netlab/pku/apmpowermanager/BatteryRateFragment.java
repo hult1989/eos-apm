@@ -37,7 +37,7 @@ public class BatteryRateFragment extends Fragment {
     private PagerAdapter mPagerAdapter;
     static final String ACTION_UPDATE = "hult.netlab.pku.apmpowermanager.UPDATE";
     int level;
-
+    String innerBottomText;
 
     public BatteryRateFragment() {
         // Required empty public constructor
@@ -46,13 +46,63 @@ public class BatteryRateFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        level = MainActivity.batteryPreference.getInt("batterylevel",0);
      }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        updateBatteryInfo();
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        // Inflate the layout for this fragment
+        ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.activity_batteryinfomain,container,false);
+        donutProgress = (DonutProgress)rootview.findViewById(R.id.donut_progress);
+        donutProgress.setTextSize(140);
+        donutProgress.setSuffixTextSize(60);
+        donutProgress.setInnerBottomTextColor(Color.WHITE);
+        donutProgress.setInnerBottomTextSize(30);
+
+        updateBatteryInfo();
+
+        mPager = (ViewPager)rootview.findViewById(R.id.sub_pager);
+        mPagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+        mPager.setCurrentItem(1);
+        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+            }
+        });
+
+        LocalBroadcastManager mBroadcastManager = LocalBroadcastManager.getInstance(container.getContext());
+        BroadcastReceiver mReceiver;
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MainActivity.ACTION_BATTERYINFO_CHANGE);
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if(intent.getAction().equals(MainActivity.ACTION_BATTERYINFO_CHANGE)){
+                       updateBatteryInfo();
+                       }
+            }
+        };
+        mBroadcastManager.registerReceiver(mReceiver, filter);
+
+        return rootview;
+    }
+
+
+    private void updateBatteryInfo(){
         level = MainActivity.batteryPreference.getInt("batterylevel",0);
+        innerBottomText = MainActivity.tc.getRemainTime();
+
+        donutProgress.setText(level+"");
+        donutProgress.setInnerBottomText(innerBottomText);
+        donutProgress.setPrefixText(MainActivity.batteryPreference.getString("charging"," "));
+
         timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
@@ -71,52 +121,6 @@ public class BatteryRateFragment extends Fragment {
             }
         }, 1, 30);
     }
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
-        ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.activity_batteryinfomain,container,false);
-
-        donutProgress = (DonutProgress)rootview.findViewById(R.id.donut_progress);
-
-        donutProgress.setText(MainActivity.batteryPreference.getInt("batterylevel",0)+"");
-        donutProgress.setTextSize(140);
-        donutProgress.setSuffixTextSize(60);
-        donutProgress.setInnerBottomText("Percent Battery");
-        donutProgress.setInnerBottomTextColor(Color.WHITE);
-        donutProgress.setInnerBottomTextSize(30);
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            public void run() {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(donutProgress.getProgress()>level){
-                            donutProgress.setProgress(0);
-                        }
-                        donutProgress.setProgress(donutProgress.getProgress() + 1);
-                        if (donutProgress.getProgress() == level) {
-                            timer.cancel();
-                        }
-                    }
-                });
-            }
-
-        }, 100, 30);
-
-        mPager = (ViewPager)rootview.findViewById(R.id.sub_pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
-        mPager.setCurrentItem(1);
-        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-            }
-        });
-        return rootview;
-    }
-
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
