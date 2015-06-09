@@ -31,7 +31,7 @@ import java.util.TimerTask;
 
 public class BatteryRateFragment extends Fragment {
     private static final int NUM_PAGES = 2;
-    private Timer timer;
+   // private Timer timer;
     private DonutProgress donutProgress;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
@@ -102,8 +102,8 @@ public class BatteryRateFragment extends Fragment {
         donutProgress.setText(level+"");
         donutProgress.setInnerBottomText(innerBottomText);
         donutProgress.setPrefixText(MainActivity.batteryPreference.getString("charging"," "));
-
-        timer = new Timer();
+       // multiple thread cause conflict when define global variable
+       final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
                 getActivity().runOnUiThread(new Runnable() {
@@ -114,12 +114,13 @@ public class BatteryRateFragment extends Fragment {
                         }
                         donutProgress.setProgress(donutProgress.getProgress() + 1);
                         if (donutProgress.getProgress() == level) {
+                            Log.e("stop","must stop");
                             timer.cancel();
                         }
                     }
                 });
             }
-        }, 1, 30);
+        }, 10, 30);
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

@@ -41,10 +41,6 @@
             android:name=".appinfoActivity"
             android:label="@string/title_activity_appinfo" >
         </activity>
-        <activity
-            android:name=".BatteryInfoMain"
-            android:label="@string/title_activity_batteryinfomain" >
-        </activity>
 
         <activity
             android:name=".aboutActivity"
