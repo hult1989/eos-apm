@@ -59,7 +59,6 @@ public class FragmentMode extends Fragment {
             }
         });
 
-
         return rootview;
     }
 
