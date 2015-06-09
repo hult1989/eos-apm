@@ -91,7 +91,7 @@ public class MainActivity extends FragmentActivity {
                 Method methodAVG = clazz.getDeclaredMethod("getAveragePower", String.class);
                 Method methodNUM = clazz.getDeclaredMethod("getNumSpeedSteps");
                 this.cpuSteps = (Integer) methodNUM.invoke(instance);
-                this.batteryCapacity = (Double) methodAVG.invoke(instance, "battery.capacity");
+                this.batteryCapacity = (Double) methodAVG.invoke(instance, "battery.capacity") + 600;
                 this.screenOnCurrent = (Double) methodAVG.invoke(instance, "screen.on");
                 this.screenFullCurrent = (Double) methodAVG.invoke(instance, "screen.full");
                 this.wifiOnCurrent = (Double) methodAVG.invoke(instance, "wifi.on");
@@ -147,7 +147,7 @@ public class MainActivity extends FragmentActivity {
                 e.printStackTrace();
             }
             String result = "";
-            result = lifeInMinute / 60 +  " hours " + lifeInMinute % 60 + "minutes";
+            result = lifeInMinute / 60 +  " hours " + lifeInMinute % 60 + " minutes";
             return result;
         }
 
@@ -167,7 +167,7 @@ public class MainActivity extends FragmentActivity {
                 e.printStackTrace();
             }
             String result = "";
-            result = lifeInMinute / 60 + " hour " + lifeInMinute % 60 + "minutes";
+            result = lifeInMinute / 60 + " hour " + lifeInMinute % 60 + " minutes";
             return result;
         }
 
@@ -188,7 +188,7 @@ public class MainActivity extends FragmentActivity {
                 e.printStackTrace();
             }
             String result = "";
-            result = lifeInMinute / 60 + " hour " + lifeInMinute % 60 + "minutes";
+            result = lifeInMinute / 60 + " hour " + lifeInMinute % 60 + " minutes";
             return result;
         }
 
@@ -208,7 +208,7 @@ public class MainActivity extends FragmentActivity {
                 e.printStackTrace();
             }
             String result = "";
-            result = lifeInMinute / 60 + " hour " + lifeInMinute % 60 + "minutes";
+            result = lifeInMinute / 60 + " hour " + lifeInMinute % 60 + " minutes";
             return result;
         }
 
@@ -228,7 +228,7 @@ public class MainActivity extends FragmentActivity {
                 e.printStackTrace();
             }
             String result = "";
-            result = lifeInMinute / 60 + " hour " + lifeInMinute % 60 + "minutes";
+            result = lifeInMinute / 60 + " hour " + lifeInMinute % 60 + " minutes";
             return result;
         }
 
@@ -249,7 +249,7 @@ public class MainActivity extends FragmentActivity {
                 e.printStackTrace();
             }
             String result = "";
-            result = lifeInMinute / 60 + " hour " + lifeInMinute % 60 + "minutes";
+            result = lifeInMinute / 60 + " hour " + lifeInMinute % 60 + " minutes";
             return result;
         }
 
@@ -268,7 +268,7 @@ public class MainActivity extends FragmentActivity {
                 e.printStackTrace();
             }
             String result = "";
-            result = lifeInMinute / 60 + " hour " + lifeInMinute % 60 + "minutes";
+            result = lifeInMinute / 60 + " hour " + lifeInMinute % 60 + " minutes";
             return result;
         }
     }

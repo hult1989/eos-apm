@@ -41,6 +41,7 @@ public class MyService extends Service {
         mActivityManager = (ActivityManager)this.getSystemService(ACTIVITY_SERVICE);
             PackageManager pm = getPackageManager();
             List<PackageInfo> packageInfos = pm.getInstalledPackages(0);
+        /*
             for (PackageInfo packageInfo : packageInfos) {
                 String pkgName = packageInfo.packageName.toString();
                 String initAppHistory = "insert into apphistory (pkgname, ratio, timestamp) values("
@@ -54,13 +55,18 @@ public class MyService extends Service {
                     String createAppDatabase = "create table appinfo (id integer primary key autoincrement, " +
                             "pkgname text, pid integer, proctime integer, runningtime integer, timestamp integer);";
                     String createAppRatioCMD = "create table apphistory (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
-                    MainActivity.appDatabase.execSQL(createAppDatabase, new Object[]{});
-                    MainActivity.appDatabase.execSQL(createAppRatioCMD, new Object[]{});
+                    try{
+                        MainActivity.appDatabase.execSQL(createAppDatabase, new Object[]{});
+                        MainActivity.appDatabase.execSQL(createAppRatioCMD, new Object[]{});
 
-                    MainActivity.appDatabase.execSQL(initAppHistory, new Object[]{});
-                    MainActivity.appDatabase.execSQL(initAppInfo, new Object[]{});
+                        MainActivity.appDatabase.execSQL(initAppHistory, new Object[]{});
+                        MainActivity.appDatabase.execSQL(initAppInfo, new Object[]{});
+                    }catch (Exception ne){
+                        ne.printStackTrace();
+                    }
                 }
             }
+            */
     }
 
 
@@ -85,7 +91,11 @@ public class MyService extends Service {
                     String SQLcommand = "insert into appinfo (pkgname, pid, proctime, runningtime, timestamp) "
                             + "values ( \"" + pkgName + "\", " + amProcess.pid + ", "
                             + appProcTime + ", " + runningTime + ", " + System.currentTimeMillis() + ");";
-                    MainActivity.appDatabase.execSQL(SQLcommand, new Object[]{});
+                    try{
+                        MainActivity.appDatabase.execSQL(SQLcommand, new Object[]{});
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                     }
                 }catch (Exception e){
                     e.printStackTrace();
