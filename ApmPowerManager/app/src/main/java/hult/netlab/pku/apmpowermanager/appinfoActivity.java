@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -32,6 +33,7 @@ public class appinfoActivity extends Activity {
     private TextView consumeText = null;
     private TextView uploadText = null;
     private TextView downloadText = null;
+    ProgressBar progressBar;
 
     private Button uninstall_button;
     private Button close_button;
@@ -73,18 +75,21 @@ public class appinfoActivity extends Activity {
         consumeText = (TextView)findViewById(R.id.batteryconsumption);
         uploadText = (TextView)findViewById(R.id.upload);
         downloadText = (TextView)findViewById(R.id.download);
+        progressBar = (ProgressBar)findViewById(R.id.bar);
         String pkgName = (String)intent.getExtras().get("pkgName");
-        String appConsume = (String)intent.getExtras().get("ratio");
+        String ratiotext = (String)intent.getExtras().get("ratiotext");
+        int ratio = Integer.parseInt((String) intent.getExtras().get("ratio"));
         iconView = (ImageView)findViewById(R.id.image);
         double[] num = readSql(pkgName);
-        frameView.addView(new LineChart(num).execute(appinfoActivity.this));
+        frameView.addView(new LineChart(num, "cpu").execute(appinfoActivity.this));
 
 
         try {
+            progressBar.setProgress(ratio );
             iconView.setImageDrawable(pm.getApplicationIcon(pkgName));
             textView.setText(pm.getApplicationLabel(pm.getApplicationInfo(pkgName, 0)));
             int uid = pm.getPackageInfo(pkgName, 0).applicationInfo.uid;
-            consumeText.setText(appConsume);
+            consumeText.setText(ratiotext);
             long cellularDownload = TrafficStats.getUidRxBytes(uid) / 1024;
             long cellularUpload = TrafficStats.getUidTxBytes(uid) / 1024;
             String upload = "";

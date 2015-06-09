@@ -94,7 +94,6 @@ public class FragmentRank extends Fragment {
                 String pkgName = cursor.getString(0);
                 long proctime = cursor.getLong(1);
                 float ratio = (float) proctime / sumCpuTime;
-                Log.e(pkgName, ratio + "");
                 item.put("image", pm.getApplicationIcon(pkgName));
                 item.put("ratiotext", new DecimalFormat("0.0%").format(ratio));
                 item.put("ratio", (int) (ratio * 100));
@@ -111,11 +110,13 @@ public class FragmentRank extends Fragment {
         applistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 String pkgName = (String) mData.get(position).get("pkgname");
-                String appConsume = mData.get(position).get("ratiotext").toString();
+                String ratiotext = mData.get(position).get("ratiotext").toString();
+                String ratio = mData.get(position).get("ratio").toString();
                 Intent intent = new Intent(container.getContext(), appinfoActivity.class);
                 Bundle mBundle = new Bundle();
                 mBundle.putString("pkgName", pkgName);
-                mBundle.putString("ratio", appConsume);
+                mBundle.putString("ratio", ratio);
+                mBundle.putString("ratiotext", ratiotext);
                 intent.putExtras(mBundle);
                 startActivity(intent);
             }

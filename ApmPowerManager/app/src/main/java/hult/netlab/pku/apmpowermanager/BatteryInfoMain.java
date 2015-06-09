@@ -23,7 +23,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class BatteryInfoMain extends Activity {
-    private Timer timer;
     private DonutProgress donutProgress;
     private ArrayList<Mode> modeList;
     private ListView listView;
@@ -33,7 +32,7 @@ public class BatteryInfoMain extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_batteryinfomain);
         donutProgress = (DonutProgress) findViewById(R.id.donut_progress);
-        timer = new Timer();
+        final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {

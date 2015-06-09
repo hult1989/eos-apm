@@ -105,8 +105,6 @@ public class MainActivity extends FragmentActivity {
                 this.cpuActiveCurrent = (Double) methodAVG.invoke(instance, "cpu.active");
                 this.bluetoothCurrent = (Double) methodAVG.invoke(instance, "bluetooth.on");
                 this.leftBattery = MainActivity.batteryPreference.getInt("batterylevel", 1024) * batteryCapacity / 100;
-                Log.e("leftBattery", this.batteryCapacity + "mah");
-                Log.e("cpusteps", this.cpuSteps + ", " + this.cpuAwakeCurrent);
             } catch (Exception ex) {
                 Log.e("test", ex.toString());
             }
@@ -423,13 +421,13 @@ public class MainActivity extends FragmentActivity {
     public BroadcastReceiver getBatteryBroadcastReceiver() {
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             SharedPreferences.Editor editor = MainActivity.batteryPreference.edit();
-            int lastLevel = 0;
-            long lastStamp = 0;
+            int lastLevel = batteryPreference.getInt("batterylevel", 10);
+            long lastStamp = (batteryPreference.getLong("timestamp", 0));
             int  batteryState = BatteryManager.BATTERY_STATUS_NOT_CHARGING;
             public void onReceive(Context context, Intent intent) {
                 int level = (int) (intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
                         / (float) intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100) * 100);
-                if ((System.currentTimeMillis() - lastStamp) / 1000 > 3600) {
+                if ((System.currentTimeMillis() - lastStamp) / 1000 > 300) {
                     String sqlCmd = "insert into batteryinfo (level, timestamp) values (" + level + ", " + System.currentTimeMillis() + ");";
                     Log.e("sqlcmd", sqlCmd);
                     try {
@@ -479,9 +477,7 @@ public class MainActivity extends FragmentActivity {
                             //        Log.e("battery ", "UNKNOWN");
                             break;
                     }
-
-                    lastStamp = System.currentTimeMillis();
-                    lastLevel = level;
+                    editor.putLong("timestamp", System.currentTimeMillis());
                     editor.putString("temperature", intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 1) / 10.0 + " °C");
                     editor.putString("technology", intent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY));
                     editor.putString("voltage", new DecimalFormat("0.0").format(intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 1) / 1000) + " V");
@@ -499,10 +495,8 @@ public class MainActivity extends FragmentActivity {
                         Intent batteryChangeIntent = new Intent(ACTION_BATTERYINFO_CHANGE);
                         mBroadcastManager.sendBroadcast(batteryChangeIntent);
                     }
-                    lastStamp = System.currentTimeMillis();
-                    lastLevel = level;
-                    editor.putInt("batterylevel", level);
                     editor.putLong("timestamp", System.currentTimeMillis());
+                    editor.putInt("batterylevel", level);
                     editor.commit();
                 }
             }

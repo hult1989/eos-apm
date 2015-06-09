@@ -23,6 +23,7 @@ import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +68,7 @@ public class BatterySlidePageFragment extends Fragment {
         // Inflate the layout containing a title and body text.
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.abttery_slide_page, container, false);
-        String sqlCmd = "select level from batteryinfo limit 0, 72;";
+        String sqlCmd = "select level from batteryinfo order by timestamp desc limit 0, 72;";
         Cursor cursor = MainActivity.appDatabase.rawQuery(sqlCmd, null);
         double[] history = new double[72];
         int index = 0;
@@ -83,34 +84,53 @@ public class BatterySlidePageFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             CardView chartLayout = (CardView) rootView.findViewById(R.id.chartview);
             chartLayout.setElevation(6);
-            if (mPageNumber == 0) {
+            if (mPageNumber == 2) {
                 double[] dayBeforeYesterday = new double[24];
                 for (int i = 0; i < 24; i++) {
-                    dayBeforeYesterday[i] = history[i];
+                    dayBeforeYesterday[23-i] = history[i];
                 }
-                View view = new LineChart(dayBeforeYesterday).execute(container.getContext());
+                View view = new LineChart(dayBeforeYesterday, "f").execute(container.getContext());
                 chartLayout.addView(view);
             } else if (mPageNumber == 1) {
                 double[] yesterday = new double[24];
                 for (int i = 0; i < 24; i++) {
-                    yesterday[i] = history[i+24];
+                    yesterday[23-i] = history[i+24];
                 }
-                View view = new LineChart(yesterday).execute(container.getContext());
+                View view = new LineChart(yesterday, "battery").execute(container.getContext());
                 chartLayout.addView(view);
             } else {
                 double[] today = new double[24];
                 for (int i = 0; i < 24; i++) {
-                    today[i] = history[i+48];
+                    today[23-i] = history[i+48];
                 }
-                View view = new LineChart(today).execute(container.getContext());
+                View view = new LineChart(today, "battery").execute(container.getContext());
                 chartLayout.addView(view);
             }
 
         } else {
             LinearLayout chartLayout = (LinearLayout) rootView.findViewById(R.id.chartview);
-
-            View view = new LineChart().execute(container.getContext());
-            chartLayout.addView(view);
+            if (mPageNumber == 2) {
+                double[] dayBeforeYesterday = new double[24];
+                for (int i = 0; i < 24; i++) {
+                    dayBeforeYesterday[i] = history[i];
+                }
+                View view = new LineChart(dayBeforeYesterday, "battery").execute(container.getContext());
+                chartLayout.addView(view);
+            } else if (mPageNumber == 1) {
+                double[] yesterday = new double[24];
+                for (int i = 0; i < 24; i++) {
+                    yesterday[23-i] = history[i+24];
+                }
+                View view = new LineChart(yesterday, "battery").execute(container.getContext());
+                chartLayout.addView(view);
+            } else {
+                double[] today = new double[24];
+                for (int i = 0; i < 24; i++) {
+                    today[23-i] = history[i+48];
+                }
+                View view = new LineChart(today, "battery").execute(container.getContext());
+                chartLayout.addView(view);
+            }
 
         }
 

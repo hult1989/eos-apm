@@ -24,7 +24,8 @@ import android.graphics.Paint.Align;
 //用来画app的cpu耗电的图的
 public class LineChart {
     private double[] appConsume;
-    public LineChart(double[] appConsume) {
+    private String tag;
+    public LineChart(double[] appConsume, String tag) {
         this.appConsume = appConsume;
     }
     public LineChart(){
@@ -40,18 +41,24 @@ public class LineChart {
         for(int i = 0; i < 24; i++){
             timeline[i] = -23 + i;
         }
-        String[] titles = new String[] { "CPU history" };
+        String[] titles = {};
+        if(tag == "cpu") {
+            titles = new String[]{"CPU history"};
+        }else{
+            titles = new String[]{"battery history"};
+        }
         List<double[]> x = new ArrayList<double[]>();
         for (int i = 0; i < titles.length; i++) {
             x.add(timeline);
         }
+        for(int i = 0; i < appConsume.length; i++){
+        }
+
+
         List<double[]> values = new ArrayList<double[]>();
 
         values.add(appConsume);
-        //int[] colors = new int[] { Color.rgb(113, 195, 222)  };
-        //int[] colors = new int[] {  Color.RED};
-   //     int[] colors = new int[]{Color.rgb(0, 189, 167)};
-    //    int[] colors = new int[]{Color.WHITE};
+
         int[] colors = new int[]{Color.rgb(0, 150, 136)};
         PointStyle[] styles = new PointStyle[] { PointStyle.CIRCLE };
         XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
