@@ -377,7 +377,7 @@ public class DonutProgress extends View {
             float bottomTextHeight = innerBottomTextPaint.descent()-innerBottomTextPaint.ascent();
             float bottomTextBaseline = getHeight()/2f + getHeight()/10f + bottomTextHeight ;
             canvas.drawText(getInnerBottomText(), (getWidth() - innerBottomTextPaint.measureText(getInnerBottomText())) / 2.0f, bottomTextBaseline + getHeight() /20, innerBottomTextPaint);
-            canvas.drawText(prefixText,(getWidth() - innerBottomTextPaint.measureText(prefixText)) / 2.0f, bottomTextBaseline+getHeight()/5,innerBottomTextPaint);
+            canvas.drawText(prefixText,(getWidth() - innerBottomTextPaint.measureText(prefixText)) / 2.0f, bottomTextBaseline+getHeight()/6,innerBottomTextPaint);
         }
 
     }

@@ -105,18 +105,24 @@ public class BatteryRateFragment extends Fragment {
         final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(donutProgress.getProgress()>level){
-                            donutProgress.setProgress(0);
+                try{
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(donutProgress.getProgress()>level){
+                                donutProgress.setProgress(0);
+                            }
+                            donutProgress.setProgress(donutProgress.getProgress() + 1);
+                            if (donutProgress.getProgress() == level) {
+                                timer.cancel();
+                            }
                         }
-                        donutProgress.setProgress(donutProgress.getProgress() + 1);
-                        if (donutProgress.getProgress() == level) {
-                            timer.cancel();
-                        }
-                    }
-                });
+                    });
+            }catch (Exception e){
+                    timer.cancel();
+                    e.printStackTrace();
+                }
             }
         }, 1, 30);
     }
