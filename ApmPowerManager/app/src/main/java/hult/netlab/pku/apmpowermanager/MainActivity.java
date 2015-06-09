@@ -39,17 +39,19 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends FragmentActivity {
-    private static final int PAGENUM = 4;
+    private static final int PAGENUM = 5;
     private ViewPager mPager;
     private PagerAdapter mainPagerAdapter;
     private RelativeLayout bottom_tab1;
     private RelativeLayout bottom_tab2;
     private RelativeLayout bottom_tab3;
     private RelativeLayout bottom_tab4;
+    private RelativeLayout bottom_tab5;
     private TextView save_tab;
     private TextView drain_tab;
     private TextView rank_tab;
     private TextView mode_tab;
+    private TextView about_tab;
     public static SQLiteDatabase appDatabase;
 
     public static final long SERVICE_INTERVAL_IN_SECONDS = 3600;
@@ -59,7 +61,6 @@ public class MainActivity extends FragmentActivity {
     public static final String ACTION_BATTERYINFO_CHANGE = "hult.netlab.pku.apmpowermanager.BATTERYINFO_CHANGE";
 
     public static  BroadcastReceiver mBatteryBroadcastReciver;
-    public static int REFRESH = 0;
     public static modemanager mmanager;
     public static timeCalculator tc;
 
@@ -307,13 +308,16 @@ public class MainActivity extends FragmentActivity {
         bottom_tab2 = (RelativeLayout) findViewById(R.id.bottom_tab2);
         bottom_tab3 = (RelativeLayout) findViewById(R.id.bottom_tab3);
         bottom_tab4 = (RelativeLayout) findViewById(R.id.bottom_tab4);
+        bottom_tab5 = (RelativeLayout) findViewById(R.id.bottom_tab5);
+
         save_tab = (TextView) findViewById(R.id.tab_save_text);
         drain_tab = (TextView) findViewById(R.id.tab_drain_text);
         rank_tab = (TextView) findViewById(R.id.tab_rank_text);
         mode_tab = (TextView) findViewById(R.id.tab_mode_text);
+        about_tab = (TextView) findViewById(R.id.tab_mode_about);
 
         mPager = (ViewPager) findViewById(R.id.main_pager);
-        mPager.setOffscreenPageLimit(3);
+        mPager.setOffscreenPageLimit(4);
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mainPagerAdapter);
         mPager.setCurrentItem(0);
@@ -328,30 +332,42 @@ public class MainActivity extends FragmentActivity {
                         drain_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         rank_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         mode_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        about_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         break;
                     case 1:
                         save_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         drain_tab.setTextColor(Color.WHITE);
                         rank_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         mode_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        about_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         break;
                     case 2:
                         save_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         drain_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         rank_tab.setTextColor(Color.WHITE);
                         mode_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        about_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         break;
                     case 3:
                         save_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         drain_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         rank_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         mode_tab.setTextColor(Color.WHITE);
+                        about_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        break;
+                    case 4:
+                        save_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        drain_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        rank_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        mode_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        about_tab.setTextColor(Color.WHITE);
                         break;
                     default:
                         save_tab.setTextColor(Color.WHITE);
                         drain_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         rank_tab.setTextColor(getResources().getColor(R.color.google_teal));
                         mode_tab.setTextColor(getResources().getColor(R.color.google_teal));
+                        about_tab.setTextColor(getResources().getColor(R.color.google_teal));
                 }
             }
         });
@@ -380,7 +396,12 @@ public class MainActivity extends FragmentActivity {
                 mPager.setCurrentItem(3);
             }
         });
-
+        bottom_tab5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPager.setCurrentItem(4);
+            }
+        });
 
     }
 
@@ -527,6 +548,8 @@ public class MainActivity extends FragmentActivity {
                     return new FragmentRank();
                 case 3:
                     return new FragmentMode_tab4();
+                case 4:
+                    return new FragmentAbout();
                 default:
                     return new BatteryRateFragment();
             }
