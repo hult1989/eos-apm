@@ -49,18 +49,18 @@ public class MyService extends Service {
                 String initAppInfo = "insert into appinfo (pkgname , pid , proctime, runningtime, timestamp) "
                         + "values ( \"" + pkgName + "\", 1024, 10, 10, " + System.currentTimeMillis() + ");";
                 try {
-                    MainActivity.appDatabase.execSQL(initAppHistory, new Object[]{});
-                    MainActivity.appDatabase.execSQL(initAppInfo, new Object[]{});
+                    StartActivity.appDatabase.execSQL(initAppHistory, new Object[]{});
+                    StartActivity.appDatabase.execSQL(initAppInfo, new Object[]{});
                 }catch (Exception e){
                     String createAppDatabase = "create table appinfo (id integer primary key autoincrement, " +
                             "pkgname text, pid integer, proctime integer, runningtime integer, timestamp integer);";
                     String createAppRatioCMD = "create table apphistory (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
                     try{
-                        MainActivity.appDatabase.execSQL(createAppDatabase, new Object[]{});
-                        MainActivity.appDatabase.execSQL(createAppRatioCMD, new Object[]{});
+                        StartActivity.appDatabase.execSQL(createAppDatabase, new Object[]{});
+                        StartActivity.appDatabase.execSQL(createAppRatioCMD, new Object[]{});
 
-                        MainActivity.appDatabase.execSQL(initAppHistory, new Object[]{});
-                        MainActivity.appDatabase.execSQL(initAppInfo, new Object[]{});
+                        StartActivity.appDatabase.execSQL(initAppHistory, new Object[]{});
+                        StartActivity.appDatabase.execSQL(initAppInfo, new Object[]{});
                     }catch (Exception ne){
                         ne.printStackTrace();
                     }
@@ -92,7 +92,7 @@ public class MyService extends Service {
                             + "values ( \"" + pkgName + "\", " + amProcess.pid + ", "
                             + appProcTime + ", " + runningTime + ", " + System.currentTimeMillis() + ");";
                     try{
-                        MainActivity.appDatabase.execSQL(SQLcommand, new Object[]{});
+                        StartActivity.appDatabase.execSQL(SQLcommand, new Object[]{});
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -112,7 +112,7 @@ public class MyService extends Service {
                         String insertCMD = "insert into apphistory (pkgname, ratio, timestamp) values" +
                                 " (\"" + pkgName + "\", " + runningtime / totalRunningTime + ", "
                                 + System.currentTimeMillis() + ");";
-                        MainActivity.appDatabase.execSQL(insertCMD, new Object[]{});
+                        StartActivity.appDatabase.execSQL(insertCMD, new Object[]{});
                     }
                 }catch (Exception e){};
             }
@@ -127,7 +127,7 @@ public class MyService extends Service {
 
     public long calcRunningTime (String pkgName, int pid) {
         String cmd = "select pid, proctime from appinfo where pkgname = \"" + pkgName + "\" order by timestamp desc limit 0, 1";
-        Cursor cursor = MainActivity.appDatabase.rawQuery(cmd, null);
+        Cursor cursor = StartActivity.appDatabase.rawQuery(cmd, null);
   //      这里什么也读不到
         cursor.moveToNext();
         int count = cursor.getCount();

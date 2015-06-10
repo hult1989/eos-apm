@@ -44,7 +44,7 @@ public class appinfoActivity extends Activity {
 //                + pkgName + "\" order by timestamp desc limit 0, 24;";
         String sqlCmd = "select ratio from apphistory where pkgname = \""
                 + pkgName + "\" order by timestamp desc limit 0, 24;";
-        Cursor cursor = MainActivity.appDatabase.rawQuery(sqlCmd, null);
+        Cursor cursor = StartActivity.appDatabase.rawQuery(sqlCmd, null);
         int index = 23;
         double[] result = new double[24];
         while(cursor.moveToNext() != false){

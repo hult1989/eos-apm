@@ -56,7 +56,6 @@ public class MainActivity extends FragmentActivity {
     private TextView rank_tab;
     private TextView mode_tab;
     private TextView about_tab;
-    public static SQLiteDatabase appDatabase;
 
     public static final long SERVICE_INTERVAL_IN_SECONDS = 3600;
     public static SharedPreferences batteryPreference;
@@ -287,7 +286,7 @@ public class MainActivity extends FragmentActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sqliteInit();
+                //sqliteInit();
                 startMyService();
             }
         }).start();
@@ -407,44 +406,7 @@ public class MainActivity extends FragmentActivity {
 
     }
 
-    public void sqliteInit() {
-        appDatabase = SQLiteDatabase.openOrCreateDatabase(getFilesDir().toString() + "/appdb.db3", null);
-        SharedPreferences preferences = getSharedPreferences("starttimes", MODE_PRIVATE);
-        int time = preferences.getInt("isfirststart", 0);
-        if(time == 0) {
-            String createAppDatabase = "create table appinfo (id integer primary key autoincrement, " +
-                    "pkgname text, pid integer, proctime integer, runningtime integer, timestamp integer);";
-            String createAppRatioCMD = "create table apphistory (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
-            String createBatteryDatabase = "create table batteryinfo (id integer primary key autoincrement, level integer, timestamp integer);";
-            Log.e("Mainactivity", "sqliteInit first time");
-            appDatabase.execSQL(createBatteryDatabase, new Object[]{});
-            appDatabase.execSQL(createAppDatabase);
-            appDatabase.execSQL(createAppRatioCMD);
 
-            ActivityManager mActivityManager = (ActivityManager)this.getSystemService(ACTIVITY_SERVICE);
-            PackageManager pm = getPackageManager();
-            List<PackageInfo> packageInfos = pm.getInstalledPackages(0);
-            for (PackageInfo packageInfo : packageInfos) {
-                String pkgName = packageInfo.packageName.toString();
-                String initAppHistory = "insert into apphistory (pkgname, ratio, timestamp) values("
-                        + "\"" + pkgName + "\", " + 1 + ", " + System.currentTimeMillis() + ");";
-                String initAppInfo = "insert into appinfo (pkgname , pid , proctime, runningtime, timestamp) "
-                        + "values ( \"" + pkgName + "\", 1024, 10, 10, " + System.currentTimeMillis() + ");";
-                try {
-                    MainActivity.appDatabase.execSQL(initAppHistory, new Object[]{});
-                    MainActivity.appDatabase.execSQL(initAppInfo, new Object[]{});
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-            String insertBatteryInfo = "insert into batteryinfo (level, timestamp) values (" + 0 + ", " + System.currentTimeMillis() + ");";
-            MainActivity.appDatabase.execSQL(insertBatteryInfo, new Object[]{});
-        }
-        Log.e("start time", ": " + time );
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("isfirststart", ++time);
-        editor.commit();
-    }
 
     public void startMyService() {
 
@@ -474,7 +436,7 @@ public class MainActivity extends FragmentActivity {
                     String sqlCmd = "insert into batteryinfo (level, timestamp) values (" + level + ", " + System.currentTimeMillis() + ");";
                     try {
                         Log.e("broadcast", "insert!");
-                        appDatabase.execSQL(sqlCmd, new Object[]{});
+                        StartActivity.appDatabase.execSQL(sqlCmd, new Object[]{});
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
