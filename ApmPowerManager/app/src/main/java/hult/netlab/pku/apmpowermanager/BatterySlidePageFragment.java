@@ -89,21 +89,21 @@ public class BatterySlidePageFragment extends Fragment {
                 for (int i = 0; i < 24; i++) {
                     dayBeforeYesterday[23-i] = history[i];
                 }
-                View view = new LineChart(dayBeforeYesterday, "f").execute(container.getContext());
+                View view = new LineChart(dayBeforeYesterday, 1).execute(container.getContext());
                 chartLayout.addView(view);
             } else if (mPageNumber == 1) {
                 double[] yesterday = new double[24];
                 for (int i = 0; i < 24; i++) {
                     yesterday[23-i] = history[i+24];
                 }
-                View view = new LineChart(yesterday, "battery").execute(container.getContext());
+                View view = new LineChart(yesterday, 1).execute(container.getContext());
                 chartLayout.addView(view);
             } else {
                 double[] today = new double[24];
                 for (int i = 0; i < 24; i++) {
                     today[23-i] = history[i+48];
                 }
-                View view = new LineChart(today, "battery").execute(container.getContext());
+                View view = new LineChart(today, 1).execute(container.getContext());
                 chartLayout.addView(view);
             }
 
@@ -114,21 +114,21 @@ public class BatterySlidePageFragment extends Fragment {
                 for (int i = 0; i < 24; i++) {
                     dayBeforeYesterday[i] = history[i];
                 }
-                View view = new LineChart(dayBeforeYesterday, "battery").execute(container.getContext());
+                View view = new LineChart(dayBeforeYesterday, 1).execute(container.getContext());
                 chartLayout.addView(view);
             } else if (mPageNumber == 1) {
                 double[] yesterday = new double[24];
                 for (int i = 0; i < 24; i++) {
                     yesterday[23-i] = history[i+24];
                 }
-                View view = new LineChart(yesterday, "battery").execute(container.getContext());
+                View view = new LineChart(yesterday, 1).execute(container.getContext());
                 chartLayout.addView(view);
             } else {
                 double[] today = new double[24];
                 for (int i = 0; i < 24; i++) {
                     today[23-i] = history[i+48];
                 }
-                View view = new LineChart(today, "battery").execute(container.getContext());
+                View view = new LineChart(today, 1).execute(container.getContext());
                 chartLayout.addView(view);
             }
 

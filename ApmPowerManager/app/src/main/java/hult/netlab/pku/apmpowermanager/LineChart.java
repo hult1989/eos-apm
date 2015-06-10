@@ -24,9 +24,10 @@ import android.graphics.Paint.Align;
 //用来画app的cpu耗电的图的
 public class LineChart {
     private double[] appConsume;
-    private String tag;
-    public LineChart(double[] appConsume, String tag) {
+    private int tag;
+    public LineChart(double[] appConsume, int tag) {
         this.appConsume = appConsume;
+        this.tag = tag;
     }
     public LineChart(){
         this.appConsume = new double[24];
@@ -42,7 +43,7 @@ public class LineChart {
             timeline[i] = -23 + i;
         }
         String[] titles = {};
-        if(tag == "cpu") {
+        if(tag == 0) {
             titles = new String[]{"CPU history"};
         }else{
             titles = new String[]{"battery history"};

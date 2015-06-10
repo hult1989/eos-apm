@@ -105,7 +105,7 @@ public class MainActivity extends FragmentActivity {
                 this.cpuIdleCurrent = (Double) methodAVG.invoke(instance, "cpu.idle");
                 this.cpuActiveCurrent = (Double) methodAVG.invoke(instance, "cpu.active");
                 this.bluetoothCurrent = (Double) methodAVG.invoke(instance, "bluetooth.on");
-                this.leftBattery = MainActivity.batteryPreference.getInt("batterylevel", 1024) * batteryCapacity / 100;
+                this.leftBattery = (MainActivity.batteryPreference.getInt("batterylevel", 1024) * batteryCapacity / 100);
             } catch (Exception ex) {
                 Log.e("test", ex.toString());
             }
@@ -114,7 +114,7 @@ public class MainActivity extends FragmentActivity {
         public String getStandByTime() {
             int lifeInMinute = 0;
             try {
-                double totalCurrent = this.cpuActiveCurrent / 3;
+                double totalCurrent = this.cpuActiveCurrent;
                 if (mmanager.isBluetoothEnabled())
                     totalCurrent += this.bluetoothCurrent;
                 if (mmanager.isDataEnabled())
@@ -133,14 +133,14 @@ public class MainActivity extends FragmentActivity {
         public String getRemainTime(){
             int lifeInMinute = 0;
             try {
-                double totalCurrent = this.cpuActiveCurrent/3;
+                double totalCurrent = this.cpuActiveCurrent;
                 if(mmanager.isBluetoothEnabled())
                     totalCurrent += this.bluetoothCurrent;
                 if(mmanager.isDataEnabled())
                     totalCurrent += this.radioOnCurrent;
                 if(mmanager.isWifiEnabled())
                     totalCurrent += this.wifiOnCurrent;
-                totalCurrent += (this.screenOnCurrent + (this.screenFullCurrent-this.screenOnCurrent) * mmanager.getBrightness() / 100)/5;
+                totalCurrent += (this.screenOnCurrent + (this.screenFullCurrent-this.screenOnCurrent) * mmanager.getBrightness() / 100)/3;
                 lifeInMinute = (int)(this.leftBattery / totalCurrent * 60);
             }catch (Exception e){
                 e.printStackTrace();
@@ -153,7 +153,7 @@ public class MainActivity extends FragmentActivity {
         public String getWifiTime(){
             int lifeInMinute = 0;
             try {
-                double totalCurrent = this.cpuAwakeCurrent;
+                double totalCurrent = this.cpuActiveCurrent;
                 if (mmanager.isBluetoothEnabled())
                     totalCurrent += this.bluetoothCurrent;
                 if (mmanager.isDataEnabled())
@@ -173,7 +173,7 @@ public class MainActivity extends FragmentActivity {
         public String getMovieTime() {
             int lifeInMinute = 0;
             try {
-                double totalCurrent = this.cpuAwakeCurrent;
+                double totalCurrent = this.cpuActiveCurrent;
                 if (mmanager.isBluetoothEnabled())
                     totalCurrent += this.bluetoothCurrent;
                 if (mmanager.isDataEnabled())
@@ -194,7 +194,7 @@ public class MainActivity extends FragmentActivity {
         public String getCellularTime() {
             int lifeInMinute = 0;
             try {
-                double totalCurrent = this.cpuAwakeCurrent;
+                double totalCurrent = this.cpuActiveCurrent;
                 if (mmanager.isBluetoothEnabled())
                     totalCurrent += this.bluetoothCurrent;
                 if (mmanager.isDataEnabled())
@@ -214,7 +214,7 @@ public class MainActivity extends FragmentActivity {
         public String getMusicTime() {
             int lifeInMinute = 0;
             try {
-                double totalCurrent = this.cpuAwakeCurrent;
+                double totalCurrent = this.cpuActiveCurrent;
                 if (mmanager.isBluetoothEnabled())
                     totalCurrent += this.bluetoothCurrent;
                 if (mmanager.isDataEnabled())
@@ -448,7 +448,7 @@ public class MainActivity extends FragmentActivity {
             public void onReceive(Context context, Intent intent) {
                 int level = (int) (intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
                         / (float) intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100) * 100);
-                if ((System.currentTimeMillis() - lastStamp) / 1000 > 300) {
+                if ((System.currentTimeMillis() - lastStamp) / 1000 > SERVICE_INTERVAL_IN_SECONDS) {
                     String sqlCmd = "insert into batteryinfo (level, timestamp) values (" + level + ", " + System.currentTimeMillis() + ");";
                     Log.e("sqlcmd", sqlCmd);
                     try {

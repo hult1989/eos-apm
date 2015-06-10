@@ -81,7 +81,7 @@ public class appinfoActivity extends Activity {
         int ratio = Integer.parseInt((String) intent.getExtras().get("ratio"));
         iconView = (ImageView)findViewById(R.id.image);
         double[] num = readSql(pkgName);
-        frameView.addView(new LineChart(num, "cpu").execute(appinfoActivity.this));
+        frameView.addView(new LineChart(num, 0).execute(appinfoActivity.this));
 
 
         try {

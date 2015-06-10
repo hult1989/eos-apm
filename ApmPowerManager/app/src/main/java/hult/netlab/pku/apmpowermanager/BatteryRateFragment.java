@@ -126,7 +126,7 @@ public class BatteryRateFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-        }, 10, 30);
+        }, 100, 30);
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

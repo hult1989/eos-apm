@@ -3,6 +3,7 @@ package hult.netlab.pku.apmpowermanager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
@@ -45,6 +46,10 @@ public class ModeEdit extends Activity {
 
 
     protected void onCreate(Bundle savedInstanceState) {
+        getActionBar().setTitle("Mode Profile");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActionBar().setElevation(0);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mode_edit);
 
