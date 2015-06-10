@@ -116,7 +116,6 @@ public class BatteryRateFragment extends Fragment {
                             }
                             donutProgress.setProgress(donutProgress.getProgress() + 1);
                             if (donutProgress.getProgress() == level) {
-                                Log.e("stop", "must stop");
                                 timer.cancel();
                             }
                         }

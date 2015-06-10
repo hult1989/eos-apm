@@ -1,5 +1,7 @@
 package hult.netlab.pku.apmpowermanager;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -7,6 +9,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.BatteryManager;
@@ -107,7 +111,6 @@ public class MainActivity extends FragmentActivity {
                 this.bluetoothCurrent = (Double) methodAVG.invoke(instance, "bluetooth.on");
                 this.leftBattery = (MainActivity.batteryPreference.getInt("batterylevel", 1024) * batteryCapacity / 100);
             } catch (Exception ex) {
-                Log.e("test", ex.toString());
             }
         }
 
@@ -302,6 +305,7 @@ public class MainActivity extends FragmentActivity {
 
 
     void layoutInit() {
+
         bottom_tab1 = (RelativeLayout) findViewById(R.id.bottom_tab1);
         bottom_tab2 = (RelativeLayout) findViewById(R.id.bottom_tab2);
         bottom_tab3 = (RelativeLayout) findViewById(R.id.bottom_tab3);
@@ -404,28 +408,46 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void sqliteInit() {
-        String createAppDatabase = "create table appinfo (id integer primary key autoincrement, " +
-                "pkgname text, pid integer, proctime integer, runningtime integer, timestamp integer);";
-        String createAppRatioHistory = "create table appratio (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
-        String createAppRatioCMD = "create table apphistory (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
+        appDatabase = SQLiteDatabase.openOrCreateDatabase(getFilesDir().toString() + "/appdb.db3", null);
+        SharedPreferences preferences = getSharedPreferences("starttimes", MODE_PRIVATE);
+        int time = preferences.getInt("isfirststart", 0);
+        if(time == 0) {
+            String createAppDatabase = "create table appinfo (id integer primary key autoincrement, " +
+                    "pkgname text, pid integer, proctime integer, runningtime integer, timestamp integer);";
+            String createAppRatioCMD = "create table apphistory (id integer primary key autoincrement, pkgname text,  ratio integer, timestamp integer);";
+            String createBatteryDatabase = "create table batteryinfo (id integer primary key autoincrement, level integer, timestamp integer);";
+            Log.e("Mainactivity", "sqliteInit first time");
+            appDatabase.execSQL(createBatteryDatabase, new Object[]{});
+            appDatabase.execSQL(createAppDatabase);
+            appDatabase.execSQL(createAppRatioCMD);
 
-        try {
-            appDatabase = SQLiteDatabase.openOrCreateDatabase(getFilesDir().toString() + "/appdb.db3", null);
-            Log.e("file location", getFilesDir().toString());
-            //    appDatabase.execSQL(createAppDatabase);
-            //    appDatabase.execSQL(createBatteryDatabase);
-            //    appDatabase.execSQL(createAppRatioCMD);
-        } catch (Exception e) {
-            e.printStackTrace();
-            appDatabase.execSQL("drop table appinfo", new Object[]{});
-            appDatabase.execSQL("drop table batteryinfo", new Object[]{});
-            appDatabase.execSQL("drop table apphistory", new Object[]{});
-            appDatabase.execSQL(createAppDatabase, new Object[]{});
-            appDatabase.execSQL(createAppRatioCMD, new Object[]{});
+            ActivityManager mActivityManager = (ActivityManager)this.getSystemService(ACTIVITY_SERVICE);
+            PackageManager pm = getPackageManager();
+            List<PackageInfo> packageInfos = pm.getInstalledPackages(0);
+            for (PackageInfo packageInfo : packageInfos) {
+                String pkgName = packageInfo.packageName.toString();
+                String initAppHistory = "insert into apphistory (pkgname, ratio, timestamp) values("
+                        + "\"" + pkgName + "\", " + 1 + ", " + System.currentTimeMillis() + ");";
+                String initAppInfo = "insert into appinfo (pkgname , pid , proctime, runningtime, timestamp) "
+                        + "values ( \"" + pkgName + "\", 1024, 10, 10, " + System.currentTimeMillis() + ");";
+                try {
+                    MainActivity.appDatabase.execSQL(initAppHistory, new Object[]{});
+                    MainActivity.appDatabase.execSQL(initAppInfo, new Object[]{});
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            String insertBatteryInfo = "insert into batteryinfo (level, timestamp) values (" + 0 + ", " + System.currentTimeMillis() + ");";
+            MainActivity.appDatabase.execSQL(insertBatteryInfo, new Object[]{});
         }
+        Log.e("start time", ": " + time );
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("isfirststart", ++time);
+        editor.commit();
     }
 
     public void startMyService() {
+
        /*
         Intent intent = new Intent();
         intent.setAction("MyService");
@@ -450,35 +472,23 @@ public class MainActivity extends FragmentActivity {
                         / (float) intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100) * 100);
                 if ((System.currentTimeMillis() - lastStamp) / 1000 > SERVICE_INTERVAL_IN_SECONDS) {
                     String sqlCmd = "insert into batteryinfo (level, timestamp) values (" + level + ", " + System.currentTimeMillis() + ");";
-                    Log.e("sqlcmd", sqlCmd);
                     try {
-                        Log.e("itme", sqlCmd);
+                        Log.e("broadcast", "insert!");
                         appDatabase.execSQL(sqlCmd, new Object[]{});
                     } catch (Exception e) {
-                        String createBatteryDatabase = "create table batteryinfo (id integer primary key autoincrement, level integer, timestamp integer);";
-                        try {
-                            appDatabase.execSQL(createBatteryDatabase, new Object[]{});
-                        } catch (Exception exception) {
-                            appDatabase.execSQL("drop table batteryinfo;", new Object[]{});
-                            appDatabase.execSQL(createBatteryDatabase, new Object[]{});
-                        }
-                        appDatabase.execSQL(sqlCmd, new Object[]{});
+                        e.printStackTrace();
                     }
                     editor.putInt("batterylevel", level);
-                    Log.e("batterylevel", level + "%");
 
                     switch (intent.getIntExtra(BatteryManager.EXTRA_STATUS, 1)) {
                         case BatteryManager.BATTERY_STATUS_CHARGING:
                             editor.putString("charging", "Charging");
                             break;
                         case BatteryManager.BATTERY_STATUS_DISCHARGING:
-                            //         Log.e("battery ", "dis discharging");
                             break;
                         case BatteryManager.BATTERY_STATUS_FULL:
-                            //          Log.e("battery ", "full");
                             break;
                         case BatteryManager.BATTERY_STATUS_NOT_CHARGING:
-                            //        Log.e("battery ", "not charging");
                             break;
                     }
                     switch (intent.getIntExtra(BatteryManager.EXTRA_HEALTH, 1)) {
@@ -495,7 +505,6 @@ public class MainActivity extends FragmentActivity {
                             editor.putString("health", "OVER HEAD");
                             break;
                         case BatteryManager.BATTERY_HEALTH_UNKNOWN:
-                            //        Log.e("battery ", "UNKNOWN");
                             break;
                     }
                     editor.putLong("timestamp", System.currentTimeMillis());

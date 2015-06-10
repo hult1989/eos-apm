@@ -131,7 +131,6 @@ public class MyService extends Service {
   //      这里什么也读不到
         cursor.moveToNext();
         int count = cursor.getCount();
-  //      Log.e("will this be executed?", "count" + count);
         long pidInSql = cursor.getLong(0);
 
         long runningTimeInSql = cursor.getLong(1);

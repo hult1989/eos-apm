@@ -79,16 +79,14 @@ public class FragmentRank extends Fragment {
 
         String selectSqlCmd = "select pkgname, proctime from appinfo group by pkgname order by proctime desc";
         Cursor cursor = MainActivity.appDatabase.rawQuery(selectSqlCmd, null);
+        Log.e("Fragment rank", "on create view raw query");
         long sumCpuTime = 0;
         while (cursor.moveToNext()) {
-            //       Log.e(cursor.getString(0), index + ": " + cursor.getLong(1));
             sumCpuTime += cursor.getLong(1);
         }
 
-        //   Log.e("total cpu time",sumCpuTime + " ");
         cursor.moveToPosition(-1);
         while (cursor.moveToNext()) {
-            //        Log.e(cursor.getString(0), index + ": " + cursor.getLong(1));
             try {
                 HashMap<String, Object> item = new HashMap<>();
                 String pkgName = cursor.getString(0);
