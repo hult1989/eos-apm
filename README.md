@@ -15,6 +15,16 @@ In order no to confuse yourself and myself, here are the instructions:
 
 
 - - -
+**update snapscreens, 16th Sept, 2015**
+
+<img src="https://cloud.githubusercontent.com/assets/7779861/9882202/1b8ea7ce-5c06-11e5-9d0b-d0bbe374b4c2.png" width="360px"/>
+<img src="https://cloud.githubusercontent.com/assets/7779861/9882426/199e1c96-5c07-11e5-9bf7-d9da137a0641.png" width="360px"/>
+<img src="https://cloud.githubusercontent.com/assets/7779861/9882214/243ec1ec-5c06-11e5-9285-f42bfdcdaaba.png" width="360px"/>
+<img src="https://cloud.githubusercontent.com/assets/7779861/9882231/2fe75496-5c06-11e5-9681-c9e4da4f8580.png" width="360px"/>
+<img src="https://cloud.githubusercontent.com/assets/7779861/9882238/365480c4-5c06-11e5-8b11-f8328cde8715.png" width="360px"/>
+<img src="https://cloud.githubusercontent.com/assets/7779861/9882245/3c046bd8-5c06-11e5-887a-634f252ca8c3.png" width="360px"/>
+
+
 **a appinfoview demo at 2nd June, 2015**
 
 1. update all main userface and batteryinfo view by @pkufool 
@@ -33,7 +43,6 @@ In order no to confuse yourself and myself, here are the instructions:
 3. wrap time consuming operation in runOnUiThread by @hult1989
 
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/applistcolored.png" width="360px"/>
-
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/appinfocolored.png" width="360px"/>
 
 - - -
@@ -44,9 +53,7 @@ In order no to confuse yourself and myself, here are the instructions:
 3. apply cardview to each item in listview, add click listener to each item by @hult1989
 
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/batterychart.png" width="360px"/>
-
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/appinfoviewv3.png" width="360px"/>
-
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/listviewv2.png" width="360px" />
 
 - - -
@@ -56,7 +63,6 @@ In order no to confuse yourself and myself, here are the instructions:
 2. change cardview's color to white, take a lot of time to get achartengine done by @hult1989
 
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/firstview.png" width="360px"/>
-
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/appinfoviewv2.png" width="360px"/>
 
 
@@ -71,8 +77,6 @@ add a appinfoview with with chart. `achartengine library already included`
 
 - - -
 **a listview demo at 24th May, 2015**
-
 something wrong with imagebutton, need someone fix it!
 
 <img src="https://raw.githubusercontent.com/hult1989/eos-apm/dev/ApmPowerManager/pic/listview.png" width="360px" />
- 
